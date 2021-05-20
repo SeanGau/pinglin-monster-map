@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}註冊{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/register.css', version=GLOBAL_VERSION)}}" />
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <h1 class="text-center">註冊帳號</h1>            
+            <p class="text-center">已有帳號？<a href="/register">點我登入</a></p>
+            <form id="register-form">
+                <div class="row mb-3">
+                    <label for="InputEmail" class="form-label">Email 電子信箱</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="InputEmail" required>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-warning" role="button" href="#">驗證</a>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword1" class="form-label">登入密碼</label>
+                    <input type="password" class="form-control" id="InputPassword1" maxlength="20" minlength="8" required>
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword2" class="form-label">再次輸入密碼</label>
+                    <input type="password" class="form-control" id="InputPassword2" required>
+                    <span style="color: red; transition: .3s;" class="d-none" id="pw-wrong">輸入錯誤</span>
+                </div>
+                <div class="mb-3">
+                    <label for="InputName" class="form-label">顯示名稱</label>
+                    <input type="text" class="form-control" id="InputName" maxlength="12" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="CheckAgree" required>
+                    <label class="form-check-label" for="CheckAgree">我同意<a href="#">使用者條款</a></label>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-warning btn-lg">申請註冊</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $("#register-form").on('submit', function (e) {
+        e.preventDefault();
+        if ($("#InputPassword1").val() != $("#InputPassword2").val()) {
+            $("#pw-wrong").removeClass("d-none");
+        }
+        else {
+            let export_data = {
+                "email": $("#InputEmail").val(),
+                "password": $("#InputPassword1").val(),
+                "username": $("#InputName").val(),
+            }
+            $.ajax({
+                type: "POST",
+                url: "/register",
+                data: JSON.stringify(export_data),
+                success: function(cb) {
+                    if(cb == "ok") {
+                        alert("註冊成功！");
+                        window.location.href = "/login";
+                    }
+                    else {
+                        alert(cb);
+                        window.location.href = "/register";
+                    }
+                },
+                contentType: "application/json"
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,65 @@
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background-color: #F3DFC3;
+  min-height: 100vh; }
+
+#loading {
+  background-color: #F3DFC3;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99999999999; }
+  #loading img {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    left: 45%;
+    top: 45%; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: bold; }
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  word-break: break-all; }
+
+::-webkit-scrollbar {
+  width: 10px; }
+
+::-webkit-scrollbar-track {
+  background: #111; }
+
+::-webkit-scrollbar-thumb {
+  background: #333; }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #222; }
+
+.vertical-alignment-helper {
+  display: table;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  /* This makes sure that we can still click outside of the modal to close it */ }
+
+.navbar-light .navbar-text {
+  text-decoration: none; }
+
+.vertical-align-center {
+  /* To center vertically */
+  display: table-cell;
+  vertical-align: middle;
+  pointer-events: none; }
+
+.modal-content {
+  /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+  width: inherit;
+  max-width: inherit;
+  /* For Bootstrap 4 - to avoid the modal window stretching full width */
+  height: inherit;
+  /* To center horizontally */
+  margin: 0 auto;
+  pointer-events: all; }
+
+/*# sourceMappingURL=common.css.map */

@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "register.css",
+	"sources": [
+		"../sass/register.sass"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,gBAAgB,CAAC;EACb,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,GAAG;EACR,aAAa,EAAE,gBAAgB;EAC/B,SAAS,EAAE,gBAAgB,GAAG"
+}

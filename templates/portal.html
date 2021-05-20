@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}管理{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/portal.css', version=GLOBAL_VERSION)}}" />
+{% endblock %}
+
+{% block body %}
+{% include "module/nav.html" %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <form id="edit-form">
+                <div class="row mb-3">
+                    <label for="InputEmail" class="form-label">Email 電子信箱(無法更改)</label>
+                    <div class="col">
+                        <input type="email" class="form-control" id="InputEmail" value={{login_data["email"]}} readonly>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="InputName" class="form-label">顯示名稱</label>
+                    <input type="text" class="form-control" id="InputName" value={{login_data["username"]}}
+                        maxlength="12" required>
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword1" class="form-label">更改密碼</label>
+                    <input type="password" class="form-control" id="InputPassword1" maxlength="20" minlength="8">
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword2" class="form-label">確認更改密碼</label>
+                    <input type="password" class="form-control" id="InputPassword2">
+                    <span style="color: red; transition: .3s;" class="d-none" id="pw-wrong">輸入錯誤</span>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-warning btn-lg">確認更改資料</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $("#edit-form").on('submit', function (e) {
+        e.preventDefault();
+        if ($("#InputPassword1").val() != $("#InputPassword2").val()) {
+            $("#pw-wrong").removeClass("d-none");
+        }
+        else {
+            let export_data = {
+                "email": $("#InputEmail").val(),
+                "password": $("#InputPassword1").val(),
+                "username": $("#InputName").val(),
+            }
+            $.ajax({
+                type: "POST",
+                url: "/portal",
+                data: JSON.stringify(export_data),
+                success: function (cb) {
+                    if (cb == "ok") {
+                        alert("修改成功！");
+                    }
+                    else {
+                        alert(cb);
+                    }
+                    window.location.href = "/portal";
+                },
+                contentType: "application/json"
+            });
+        }
+    });
+</script>
+{% endblock %}
