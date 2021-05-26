@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{monster_id}}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/monster.css', version=GLOBAL_VERSION)}}" />
+{% endblock %}
+
+{% block body %}
+<div class="container d-flex flex-grow-1">
+    <div class="col row flex-grow-1 p-4">
+        <div class="col-lg-1 align-self-center py-4 order-lg-3" id="data-brief">
+            <div class="row">
+                <div class="col write-verticle">
+                    <h1 id="data-name"><span class="bg-color-wind"></span>妖怪名稱</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col write-verticle">
+                    <a id="data-finder"><b>發現者 </b><span>高任翔</span><span class="d-lg-none"><br></span></a>
+                    <a id="data-date"><b>日期 </b><span>2021/5/24</span></a><br>
+                    <a id="data-keyworld"><b>關鍵字 </b><span>#AA #BB #CC #DD</span></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 d-lg-none">
+        <div class="col col-lg-6 align-self-center order-lg-1" style="padding-bottom: 4em">
+            <div id="carousel" class="carousel slide" data-bs-interval="false">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-current="true"
+                        aria-label="Slide 2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{url_for('static', filename='img/cloud.png', version=GLOBAL_VERSION)}}"
+                            class="d-block" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{url_for('static', filename='img/main.jpg', version=GLOBAL_VERSION)}}"
+                            class="d-block" alt="...">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 d-lg-none">
+        <div class="col col-lg-5 align-self-center order-lg-2" id="data-box">
+            <div class="row">
+                <div class="col col-4 write-verticle">
+                    <h3>特殊技能</h3>
+                    <div class="px-2">強項</div>
+                    <div class="px-2">特點</div>
+                </div>
+                <div class="col write-verticle">
+                    <h3>妖怪棲地</h3>
+                    <p>
+                        己看下球爸，我收運：生斯有無古，謝有紀才基處天點招青卻代目體最子傳傳許不讀能當學時然！收機出命照過說主是。政時票是關火了：年不是老；不快到多調果關那近。力生裡力管我；最電個：教兒苦大北？此生否，化我信被帶以可樹媽名孩機然我人手高日時識、張像下調了大是連把北本家電出蘭人會！
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col write-verticle">
+                    <h3>怪奇故事</h3>
+                    <p>下來的一個月來就很，現在的，都不帽子，可能是報我來說裡面的個人都，義這種誕節又覺得，次啦也可快。杖悠仁的身材根本沒小卡，之後就上有。好一年接受，就可還有這有多，能上是裡，打不股努力啊啊我麼，故事也。很喜歡有一句的是很然理解，我是反正我差不，原來如孩子的那個⋯格另一個要買，見了到個月不會事我樣事情的快：其了大真三就算巧克力。你看學好看裝老不然我，沒有些：自己是另一件事情這樣有看到，花那名好好看例需要：年的後的大大有一要怎麼⋯有以不認好快樂。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

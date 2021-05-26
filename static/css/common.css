@@ -1,7 +1,48 @@
+.bg-color-bg {
+  background-color: #F3DFC3; }
+
+.bg-color-border {
+  background-color: #698C80; }
+
+.bg-color-wind {
+  background-color: #7CAD82; }
+
+.bg-color-fire {
+  background-color: #EE7839; }
+
+.bg-color-ground {
+  background-color: #DBB853; }
+
+.bg-color-water {
+  background-color: #5B9E98; }
+
+.color-bg {
+  color: #F3DFC3; }
+
+.color-border {
+  color: #698C80; }
+
+.color-wind {
+  color: #7CAD82; }
+
+.color-fire {
+  color: #EE7839; }
+
+.color-ground {
+  color: #DBB853; }
+
+.color-water {
+  color: #5B9E98; }
+
 body {
   font-family: 'Noto Sans TC', sans-serif;
   background-color: #F3DFC3;
   min-height: 100vh; }
+
+#body-box {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; }
 
 #loading {
   background-color: #F3DFC3;
@@ -29,12 +70,13 @@ p {
   width: 10px; }
 
 ::-webkit-scrollbar-track {
-  background: #111; }
+  background: #DDD; }
 
 ::-webkit-scrollbar-thumb {
-  background: #333; }
+  border-radius: 5px;
+  background: #AAA; }
   ::-webkit-scrollbar-thumb:hover {
-    background: #222; }
+    background: #666; }
 
 .vertical-alignment-helper {
   display: table;

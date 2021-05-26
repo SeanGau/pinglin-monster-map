@@ -1,14 +1,17 @@
+from logging import log
 import flask, os, json, hashlib
 from datetime import datetime
+from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from os import walk
 from sassutils.wsgi import SassMiddleware
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
-app.jinja_env.globals['GLOBAL_TITLE'] = "坪林尋怪地圖"
+app.jinja_env.globals['GLOBAL_TITLE'] = "坪林怪奇圖錄"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
+mail = Mail(app)
 
 app.wsgi_app = SassMiddleware(app.wsgi_app, {
     'app': {
@@ -30,6 +33,12 @@ def alert(message, redir): #alert then redirect
 						alert("{message}");
 						window.location.href = "{redir}";
 						</script>'''
+
+def send_mail(recevier_array, subject, html_content):
+	msg = Message(subject=subject, recipients=recevier_array, html=html_content)
+	#mail.send(msg)
+
+#------------------------------------------------------------------------------------------------------------------
 
 @app.route('/')
 def index():
@@ -60,6 +69,24 @@ def portal():
             db.session.commit()
             return "ok"
     else:        
+        login_data['data'] = [
+            {
+                "name": "醉猴0",
+                "slug": "0"
+            },
+            {
+                "name": "醉猴1",
+                "slug": "1"
+            },
+            {
+                "name": "醉猴2",
+                "slug": "2"
+            },
+            {
+                "name": "醉猴3",
+                "slug": "3"
+            }
+        ]
         return flask.render_template('portal.html', login_data = login_data)
 
 
@@ -73,6 +100,7 @@ def login():
             cb_data = dict(cb[0])
             flask.session.permanent = False
             flask.session['login_data'] = json.dumps(cb_data)
+            send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
             return alert("登入成功", "/")
         else:
             return alert("帳號或密碼錯誤！", flask.url_for('login'))
@@ -82,7 +110,7 @@ def login():
 @app.route('/logout')
 def logout():
     flask.session.clear()
-    return alert("您以登出！", "/")
+    return alert("您已登出！", "/")
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -99,6 +127,24 @@ def register():
             return "註冊失敗，請聯絡管理員"
     else:
         return flask.render_template('register.html')
+
+@app.route('/monster/<monster_id>')
+def monster(monster_id):
+    login_data = flask.session.get('login_data', None)
+    if login_data is not None:
+        login_data = json.loads(login_data)
+    return flask.render_template('monster.html', login_data = login_data, monster_id = monster_id)
+
+@app.route('/test', methods=['GET'])
+def test():
+    msg_to = ['rrtw0627@gmail.com','haca00193@gmail.com']
+    msg_subject = 'TEST'
+    msg_content = f'''
+        <h1>test</h1>
+        <p>yoyoyo</p>
+    '''
+    send_mail(msg_to, msg_subject, msg_content)
+    return "SEND"
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000, debug=True)

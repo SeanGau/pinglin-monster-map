@@ -54,6 +54,7 @@ mymap.addControl(new L.Control.Gps({ position: 'topright' }));
 var popup = L.popup().setContent(`
 <h1>醉猴</h1>
 <p>哇哈哈</p>
+<a href="/monster/0" class="btn btn-warning">詳細資訊</a>
 `);
 let test_marker = L.marker([24.937602, 121.712626],{
   icon: L.divIcon({

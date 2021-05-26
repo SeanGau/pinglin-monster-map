@@ -2,6 +2,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="/">{{GLOBAL_TITLE}}</a>
         <div class="d-flex">
+            {% if login_data is defined %}
             {% if login_data is none %}
             <a href="/register" role="button" class="btn btn-warning ">註冊帳號</a>
             <a href="/login" role="button" class="btn btn-info ms-1">登入</a>
@@ -9,6 +10,7 @@
             <a class="navbar-text">歡迎 <span class="fw-bold">{{login_data['username']}}</span></a>
             <a href="/portal" role="button" class="btn btn-warning ms-2">管理</a>
             <a href="/logout" role="button" class="btn btn-info ms-2">登出</a>
+            {% endif %}
             {% endif %}
         </div>
     </div>

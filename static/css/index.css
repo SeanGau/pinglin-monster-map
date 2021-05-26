@@ -4,10 +4,6 @@ body {
   width: 100vw;
   overflow: hidden; }
 
-#body-box {
-  display: flex;
-  flex-direction: column; }
-
 #map {
   display: flex;
   flex: 1;
@@ -16,12 +12,15 @@ body {
 .leaflet-popup-content-wrapper {
   padding: 4em 4em 8em 4em;
   background: 0;
+  color: black;
   box-shadow: none;
   background-image: url(../img/cloud.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   text-align: center; }
+  .leaflet-popup-content-wrapper a {
+    color: black; }
 
 .leaflet-popup-tip-container {
   display: none; }
