@@ -3,12 +3,17 @@
 #body-box
     background: linear-gradient(90deg, $color-wind, $color-bg)
 
-.write-verticle
+
+.write-verticle-lr
+    writing-mode: vertical-lr
+    h1, h2, h3, h4, h5
+        margin: 0 1rem
+.write-verticle-rl
     writing-mode: vertical-rl
-    h1, h2, h3, h4, h5, a, p
-        writing-mode: vertical-rl
-    div
-        writing-mode: horizontal-tb
+    h1, h2, h3, h4, h5
+        margin: 0 1rem
+.write-initial
+    writing-mode: initial
 
 #carousel
     height: 50vh
@@ -24,49 +29,30 @@
         margin-bottom: -4rem
         [data-bs-target]
             background-color: $color-bg
-            width: 1em
-            height: 1em
+            width: 1rem
+            height: 1rem
             border-top: 0
             border-bottom: 0
-            border-radius: 0.5em
+            border-radius: 0.5rem
 
-#data-box, #data-brief
-    h1, h2, h3, h4, h5
-        margin: 0 0 0 0.25em
-    .row
-        height: 30vh
-    .col
-        //outline: 1px solid $color-border
+#data-element, #data-tag
+    margin: 1rem 0 0 0
+    a
+        margin: 0.5rem 0 0 0
 
-#data-brief
-    #data-finder, #data-date, #data-keyword
-        margin: 0 0 2em 1em
-        span
-            margin-top: 0.5em
+#data-date
+    span
+        writing-mode: initial
 
-    #data-name
-        span
-            display: inline-block
-            box-sizing: border-box
-            width: 0.5em
-            height: 0.5em
-            border-radius: 0.25em
-            margin: 0.5em
-
-@media(max-width: 992px)
-    #data-box
-        .row
-            height: 50vh
-    #data-brief
-        .row
-            height: 8vh
-            .write-verticle
-                writing-mode: horizontal-tb
-                h1, h2, h3, h4, h5, a, p
-                    writing-mode: horizontal-tb
-                div
-                    writing-mode: horizontal-tb
-        #data-finder, #data-date, #data-keyword
-            margin: 0
-        #data-name
-            text-align: right
+#data-top, #data-bottom
+    height: 30vh
+    outline: 2px solid $color-border
+    div
+        outline: 1px solid $color-border
+    .write-verticle-rl
+        padding: 0.5rem
+        font-size: 1.25rem
+        flex: 1
+    .col-title
+        text-align: center
+        writing-mode: initial

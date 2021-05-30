@@ -2,7 +2,7 @@
   background-color: #F3DFC3; }
 
 .bg-color-border {
-  background-color: #698C80; }
+  background-color: rgba(0, 0, 0, 0.2); }
 
 .bg-color-wind {
   background-color: #7CAD82; }
@@ -20,7 +20,7 @@
   color: #F3DFC3; }
 
 .color-border {
-  color: #698C80; }
+  color: rgba(0, 0, 0, 0.2); }
 
 .color-wind {
   color: #7CAD82; }
@@ -34,13 +34,16 @@
 .color-water {
   color: #5B9E98; }
 
+html {
+  height: 100%; }
+
 body {
   font-family: 'Noto Sans TC', sans-serif;
   background-color: #F3DFC3;
-  min-height: 100vh; }
+  height: 100%; }
 
 #body-box {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column; }
 
@@ -60,11 +63,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Noto Serif TC', serif;
   font-weight: bold; }
-
-p {
-  text-align: justify;
-  text-justify: inter-word;
-  word-break: break-all; }
 
 ::-webkit-scrollbar {
   width: 10px; }

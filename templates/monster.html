@@ -6,24 +6,9 @@
 {% endblock %}
 
 {% block body %}
-<div class="container d-flex flex-grow-1">
-    <div class="col row flex-grow-1 p-4">
-        <div class="col-lg-1 align-self-center py-4 order-lg-3" id="data-brief">
-            <div class="row">
-                <div class="col write-verticle">
-                    <h1 id="data-name"><span class="bg-color-wind"></span>妖怪名稱</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col write-verticle">
-                    <a id="data-finder"><b>發現者 </b><span>高任翔</span><span class="d-lg-none"><br></span></a>
-                    <a id="data-date"><b>日期 </b><span>2021/5/24</span></a><br>
-                    <a id="data-keyworld"><b>關鍵字 </b><span>#AA #BB #CC #DD</span></a>
-                </div>
-            </div>
-        </div>
-        <hr class="my-4 d-lg-none">
-        <div class="col col-lg-6 align-self-center order-lg-1" style="padding-bottom: 4em">
+<div class="container d-flex flex-grow-1 justify-content-center align-items-center p-4">
+    <div class="row flex-grow-1">
+        <div class="col-5 p-4">
             <div id="carousel" class="carousel slide" data-bs-interval="false">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
@@ -43,25 +28,57 @@
                 </div>
             </div>
         </div>
-        <hr class="my-4 d-lg-none">
-        <div class="col col-lg-5 align-self-center order-lg-2" id="data-box">
-            <div class="row">
-                <div class="col col-4 write-verticle">
-                    <h3>特殊技能</h3>
-                    <div class="px-2">強項</div>
-                    <div class="px-2">特點</div>
+        <div class="col-6 d-flex flex-column">
+            <div class="row flex-grow-1 mb-4" id="data-top">
+                <div class="col-1 d-flex flex-column p-0">
+                    <div class="col-title"><a>弱點</a></div>
+                    <div class="write-verticle-rl" id="data-weak"></div>
                 </div>
-                <div class="col write-verticle">
-                    <h3>妖怪棲地</h3>
+                <div class="col-1 d-flex flex-column p-0">
+                    <div class="col-title">強項</div>
+                    <div class="write-verticle-rl" id="data-strong"></div>
+                </div>
+                <div class="write-verticle-lr" style="width: auto;">
+                    <h5 class="m-0 pt-2">特殊技能</h5>
+                </div>
+                <div class="col d-flex flex-column p-0">
+                    <div class="col-title">描述</div>
+                    <div class="write-verticle-rl" id="data-disc">出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。</div>
+                </div>
+                <div class="col-1 d-flex flex-column p-0">
+                    <div class="col-title">地點</div>
+                    <div class="write-verticle-rl" id="data-local">北勢溪親水吊橋下方</div>
+                </div>
+                <div class="write-verticle-lr"  style="width: auto;">
+                    <h5 class="m-0 pt-2">妖怪棲地</h5>
+                </div>
+            </div>
+            <div class="row flex-grow-1" id="data-bottom">
+                <div class="col d-flex flex-column p-0">
+                    <div class="write-verticle-rl" id="data-story">一堆噁心的垃圾在原本清澈的北勢溪漂流著，要問是誰做的？其實就是我們自己。人們因為懶惰，不把垃圾丟入垃圾桶，反而直接丟在河裡，所以才會製造出垃圾怪，垃圾怪一開始會把人們所丟的垃圾收集起來，等收到一定的量，再全部放出來，使河川遭受永久性的污染，就是為了讓河川裡的魚蝦等...受到傷害。垃圾怪喜歡暗暗的地方，而且很怕被人發現，所以都待在河川深處，大家都覺得垃圾怪很可惡，殊不知人類才是罪惡的共犯。</div>
+                </div>
+                <div class="write-verticle-lr"  style="width: auto;">
+                    <h5 class="m-0 pt-2">北勢溪的漂流垃圾垃圾</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 d-flex flex-column">
+            <div class="flex-grow-1">
+                <div class="write-verticle-lr">
+                    <h1 id="data-name">妖怪名稱</h1>
                     <p>
-                        己看下球爸，我收運：生斯有無古，謝有紀才基處天點招青卻代目體最子傳傳許不讀能當學時然！收機出命照過說主是。政時票是關火了：年不是老；不快到多調果關那近。力生裡力管我；最電個：教兒苦大北？此生否，化我信被帶以可樹媽名孩機然我人手高日時識、張像下調了大是連把北本家電出蘭人會！
+                        <a id="data-element">聚落。火</a>
+                        <span id="data-tag">
+                            <a>#關鍵字1</a><a>#關鍵字2</a><a>#關鍵字3</a>
+                        </span>
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col write-verticle">
-                    <h3>怪奇故事</h3>
-                    <p>下來的一個月來就很，現在的，都不帽子，可能是報我來說裡面的個人都，義這種誕節又覺得，次啦也可快。杖悠仁的身材根本沒小卡，之後就上有。好一年接受，就可還有這有多，能上是裡，打不股努力啊啊我麼，故事也。很喜歡有一句的是很然理解，我是反正我差不，原來如孩子的那個⋯格另一個要買，見了到個月不會事我樣事情的快：其了大真三就算巧克力。你看學好看裝老不然我，沒有些：自己是另一件事情這樣有看到，花那名好好看例需要：年的後的大大有一要怎麼⋯有以不認好快樂。
+            <div class="flex-grow-1">
+                <div class="write-verticle-lr" style="border: 1px solid; border-width: 1px 0; padding: 1em 0;">
+                    <p class="m-2">日期<span style="margin: 0.5em 0; border-bottom: 1px solid;"></span><a
+                            id="data-date"><span>2021</span>.<span>05</span>.<span>30</span></a></p>
+                    <p class="m-2">目擊者<span style="margin: 0.5em 0; border-bottom: 1px solid;"></span><a id="data-founder">高任翔</a>
                     </p>
                 </div>
             </div>
