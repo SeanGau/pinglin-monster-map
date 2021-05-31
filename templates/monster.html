@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid d-flex flex-grow-1 justify-content-center align-items-center p-4 monster-{{monster_data['element']}}"
+<div class="container-fluid d-flex flex-grow-1 justify-content-center align-items-center px-4 monster-{{monster_data['element']}}"
     id="monster-box">
     <div class="row flex-grow-1">
         <div class="col-lg-4 d-flex align-items-center p-4 order-2 order-lg-1">
@@ -30,7 +30,19 @@
             </div>
         </div>
         <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
-            <table class="write-verticle-rl mb-4" id="data-mid-top">
+            <table class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
+                <tr class="row-title">
+                    <td colspan="2">
+                        <h5>{{monster_data['title']}}</h5>
+                    </td>
+                </tr>
+                <tr class="ex-row">
+                    <td class="ex-col">
+                        <p>{{monster_data['story']}}</p>
+                    </td>
+                </tr>
+            </table>
+            <table class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
                 <tr class="row-title">
                     <td colspan="2">
                         <h5>妖怪棲地</h5>
@@ -60,23 +72,10 @@
                     <td>{{monster_data['weak']}}</td>
                 </tr>
             </table>
-            <table class="write-verticle-rl" id="data-mid-bottom">
-                <tr class="row-title">
-                    <td colspan="2">
-                        <h5>{{monster_data['title']}}</h5>
-                    </td>
-                </tr>
-                <tr class="ex-row">
-                    <td class="ex-col">
-                        <p>{{monster_data['story']}}</p>
-                    </td>
-                </tr>
-            </table>
-
         </div>
-        <div class="col-lg-2 order-1 order-lg-3" id="data-right">
+        <div class="col-lg-2 order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
             <div class="row h-100">
-                <div class="col-lg-4 write-verticle-rl order-lg-last mb-2 px-4">
+                <div class="col-lg-4 order-lg-last mb-2 px-4">
                     <a id="data-element">{{monster_data['category']}}。{{monster_data['element']}}</a>
                     <span id="data-tag">
                         {% for tag in monster_data['tag'] %}
@@ -84,17 +83,17 @@
                         {% endfor %}
                     </span>
                 </div>
-                <div class="col-lg-8 d-flex flex-lg-column">
+                <div class="col-lg-8 d-flex flex-column">
                     <div class="write-verticle-rl flex-grow-1">
                         <h1 id="data-name">{{monster_data['name']}}</h1>
                     </div>
                     <div class="write-verticle-rl" id="data-found-box">
-                        <p class="m-2">日期<span class="data-seperator"></span><a
+                        <div class="m-2">
+                            目擊者<span class="data-seperator"></span><a id="data-founder">{{monster_data['founder']}}</a>
+                            <span class="d-lg-block m-1"></span>
+                            日期<span class="data-seperator"></span><a
                                 id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
-                        </p>
-                        <p class="m-2">目擊者<span class="data-seperator"></span><a
-                                id="data-founder">{{monster_data['founder']}}</a>
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>

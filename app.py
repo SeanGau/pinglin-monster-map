@@ -8,7 +8,7 @@ from sassutils.wsgi import SassMiddleware
 app = flask.Flask(__name__)
 app.config.from_object('config')
 #app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
-app.jinja_env.globals['GLOBAL_TITLE'] = "坪林怪奇圖錄"
+app.jinja_env.globals['GLOBAL_TITLE'] = "坪林尋怪"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
