@@ -6,93 +6,97 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid d-flex flex-grow-1 justify-content-center align-items-center px-4 monster-{{monster_data['element']}}"
-    id="monster-box">
-    <div class="row flex-grow-1">
-        <div class="col-lg-4 d-flex align-items-center p-4 order-2 order-lg-1">
-            <div id="carousel" class="carousel slide" data-bs-interval="false">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-current="true"
-                        aria-label="Slide 2"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{url_for('static', filename='img/cloud.png', version=GLOBAL_VERSION)}}"
-                            class="d-block" alt="...">
+<div class="monster-{{monster_data['element']}} container-fluid d-flex flex-grow-1" id="monster-box">
+    <div class="container d-flex flex-grow-1 justify-content-center align-items-center">
+        <div class="row flex-grow-1">
+            <div class="col-lg-4 d-flex align-items-center p-4 order-2 order-lg-1">
+                <div id="carousel" class="carousel slide" data-bs-interval="false">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-current="true"
+                            aria-label="Slide 2"></button>
                     </div>
-                    <div class="carousel-item">
-                        <img src="{{url_for('static', filename='img/main.jpg', version=GLOBAL_VERSION)}}"
-                            class="d-block" alt="...">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{url_for('static', filename='img/cloud.png', version=GLOBAL_VERSION)}}"
+                                class="d-block" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{url_for('static', filename='img/main.jpg', version=GLOBAL_VERSION)}}"
+                                class="d-block" alt="...">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
-            <table class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
-                <tr class="row-title">
-                    <td colspan="2">
-                        <h5>{{monster_data['title']}}</h5>
-                    </td>
-                </tr>
-                <tr class="ex-row">
-                    <td class="ex-col">
-                        <p>{{monster_data['story']}}</p>
-                    </td>
-                </tr>
-            </table>
-            <table class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
-                <tr class="row-title">
-                    <td colspan="2">
-                        <h5>妖怪棲地</h5>
-                    </td>
-                </tr>
-                <tr>
-                    <td>地點</td>
-                    <td>{{monster_data['local']}}</td>
-                </tr>
-                <tr class="ex-row">
-                    <td>描述</td>
-                    <td class="ex-col">
-                        <p>{{monster_data['disc']}}</p>
-                    </td>
-                </tr>
-                <tr class="row-title">
-                    <td colspan="2">
-                        <h5>特殊技能</h5>
-                    </td>
-                </tr>
-                <tr>
-                    <td>強項</td>
-                    <td>{{monster_data['strong']}}</td>
-                </tr>
-                <tr>
-                    <td>弱點</td>
-                    <td>{{monster_data['weak']}}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-lg-2 order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
-            <div class="row h-100">
-                <div class="col-lg-4 order-lg-last mb-2 px-4 text-lg-center">
-                    <img id="data-element" src="{{url_for('static', filename='img/category/'+monster_data['category']+monster_data['element']+'.svg')}}" alt="">
-                    <span id="data-tag" class="write-verticle-rl">
-                        {% for tag in monster_data['tag'] %}
-                        <a>#{{tag}}</a>
-                        {% endfor %}
-                    </span>
-                </div>
-                <div class="col-lg-8 d-flex flex-column">
-                    <div class="write-verticle-rl flex-grow-1">
-                        <h1 id="data-name">{{monster_data['name']}}</h1>
+            <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
+                <table class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
+                    <tr class="row-title">
+                        <td colspan="2">
+                            <h5>{{monster_data['title']}}</h5>
+                        </td>
+                    </tr>
+                    <tr class="ex-row">
+                        <td class="ex-col">
+                            <p>{{monster_data['story']}}</p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
+                    <tr class="row-title">
+                        <td colspan="2">
+                            <h5>妖怪棲地</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>地點</td>
+                        <td>{{monster_data['local']}}</td>
+                    </tr>
+                    <tr class="ex-row">
+                        <td>描述</td>
+                        <td class="ex-col">
+                            <p>{{monster_data['disc']}}</p>
+                        </td>
+                    </tr>
+                    <tr class="row-title">
+                        <td colspan="2">
+                            <h5>特殊技能</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>強項</td>
+                        <td>{{monster_data['strong']}}</td>
+                    </tr>
+                    <tr>
+                        <td>弱點</td>
+                        <td>{{monster_data['weak']}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-2 order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
+                <div class="row h-100">
+                    <div class="col-lg order-lg-last px-4 px-lg-0 write-verticle-rl flex-grow-0">
+                        <img id="data-element"
+                            src="{{url_for('static', filename='img/category/'+monster_data['category']+monster_data['element']+'.svg')}}"
+                            alt="">
+                        <span id="data-tag">
+                            {% for tag in monster_data['tag'] %}
+                            <a>#{{tag}}</a>
+                            {% endfor %}
+                        </span>
                     </div>
-                    <div class="write-verticle-rl" id="data-found-box">
-                        <div class="m-2">
-                            目擊者<span class="data-seperator"></span><a id="data-founder">{{monster_data['founder']}}</a>
-                            <span class="d-lg-block m-1"></span>
-                            日期<span class="data-seperator"></span><a
-                                id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
+                    <div class="col-lg d-flex flex-column flex-grow-0">
+                        <div class="write-verticle-rl flex-grow-1">
+                            <h1 id="data-name">{{monster_data['name']}}</h1>
+                        </div>
+                        <div class="write-verticle-rl" id="data-found-box">
+                            <div class="m-2">
+                                目擊者<span class="data-seperator"></span><a
+                                    id="data-founder">{{monster_data['founder']}}</a>
+                                <span class="d-lg-block m-1"></span>
+                                日期<span class="data-seperator"></span><a
+                                    id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -146,6 +146,10 @@
     #data-mid-top .row-title h5, #data-mid-bottom .row-title h5 {
       margin: 0; }
 
+@media (min-width: 1200px) {
+  #data-mid-top td, #data-mid-bottom td {
+    font-size: 1.25rem; } }
+
 @media (max-width: 991px) {
   #data-element {
     position: absolute;
