@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block title %}{{monster_id}}{% endblock %}
+{% block title %}{{monster_data['name']}}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/monster.css', version=GLOBAL_VERSION)}}" />
 {% endblock %}
 
 {% block body %}
-<div class="container d-flex flex-grow-1 justify-content-center align-items-center p-4">
+<div class="container-fluid d-flex flex-grow-1 justify-content-center align-items-center p-4 monster-{{monster_data['element']}}"
+    id="monster-box">
     <div class="row flex-grow-1">
-        <div class="col-5 p-4">
+        <div class="col-lg-4 d-flex align-items-center p-4 order-2 order-lg-1">
             <div id="carousel" class="carousel slide" data-bs-interval="false">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
@@ -28,58 +29,73 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 d-flex flex-column">
-            <div class="row flex-grow-1 mb-4" id="data-top">
-                <div class="col-1 d-flex flex-column p-0">
-                    <div class="col-title"><a>弱點</a></div>
-                    <div class="write-verticle-rl" id="data-weak"></div>
-                </div>
-                <div class="col-1 d-flex flex-column p-0">
-                    <div class="col-title">強項</div>
-                    <div class="write-verticle-rl" id="data-strong"></div>
-                </div>
-                <div class="write-verticle-lr" style="width: auto;">
-                    <h5 class="m-0 pt-2">特殊技能</h5>
-                </div>
-                <div class="col d-flex flex-column p-0">
-                    <div class="col-title">描述</div>
-                    <div class="write-verticle-rl" id="data-disc">出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。</div>
-                </div>
-                <div class="col-1 d-flex flex-column p-0">
-                    <div class="col-title">地點</div>
-                    <div class="write-verticle-rl" id="data-local">北勢溪親水吊橋下方</div>
-                </div>
-                <div class="write-verticle-lr"  style="width: auto;">
-                    <h5 class="m-0 pt-2">妖怪棲地</h5>
-                </div>
-            </div>
-            <div class="row flex-grow-1" id="data-bottom">
-                <div class="col d-flex flex-column p-0">
-                    <div class="write-verticle-rl" id="data-story">一堆噁心的垃圾在原本清澈的北勢溪漂流著，要問是誰做的？其實就是我們自己。人們因為懶惰，不把垃圾丟入垃圾桶，反而直接丟在河裡，所以才會製造出垃圾怪，垃圾怪一開始會把人們所丟的垃圾收集起來，等收到一定的量，再全部放出來，使河川遭受永久性的污染，就是為了讓河川裡的魚蝦等...受到傷害。垃圾怪喜歡暗暗的地方，而且很怕被人發現，所以都待在河川深處，大家都覺得垃圾怪很可惡，殊不知人類才是罪惡的共犯。</div>
-                </div>
-                <div class="write-verticle-lr"  style="width: auto;">
-                    <h5 class="m-0 pt-2">北勢溪的漂流垃圾垃圾</h5>
-                </div>
-            </div>
+        <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
+            <table class="write-verticle-rl mb-4" id="data-mid-top">
+                <tr class="row-title">
+                    <td colspan="2">
+                        <h5>妖怪棲地</h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td>地點</td>
+                    <td>{{monster_data['local']}}</td>
+                </tr>
+                <tr class="ex-row">
+                    <td>描述</td>
+                    <td class="ex-col">
+                        <p>{{monster_data['disc']}}</p>
+                    </td>
+                </tr>
+                <tr class="row-title">
+                    <td colspan="2">
+                        <h5>特殊技能</h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td>強項</td>
+                    <td>{{monster_data['strong']}}</td>
+                </tr>
+                <tr>
+                    <td>弱點</td>
+                    <td>{{monster_data['weak']}}</td>
+                </tr>
+            </table>
+            <table class="write-verticle-rl" id="data-mid-bottom">
+                <tr class="row-title">
+                    <td colspan="2">
+                        <h5>{{monster_data['title']}}</h5>
+                    </td>
+                </tr>
+                <tr class="ex-row">
+                    <td class="ex-col">
+                        <p>{{monster_data['story']}}</p>
+                    </td>
+                </tr>
+            </table>
+
         </div>
-        <div class="col-1 d-flex flex-column">
-            <div class="flex-grow-1">
-                <div class="write-verticle-lr">
-                    <h1 id="data-name">妖怪名稱</h1>
-                    <p>
-                        <a id="data-element">聚落。火</a>
-                        <span id="data-tag">
-                            <a>#關鍵字1</a><a>#關鍵字2</a><a>#關鍵字3</a>
-                        </span>
-                    </p>
+        <div class="col-lg-2 order-1 order-lg-3" id="data-right">
+            <div class="row h-100">
+                <div class="col-lg-4 write-verticle-rl order-lg-last mb-2 px-4">
+                    <a id="data-element">{{monster_data['category']}}。{{monster_data['element']}}</a>
+                    <span id="data-tag">
+                        {% for tag in monster_data['tag'] %}
+                        <a>#{{tag}}</a>
+                        {% endfor %}
+                    </span>
                 </div>
-            </div>
-            <div class="flex-grow-1">
-                <div class="write-verticle-lr" style="border: 1px solid; border-width: 1px 0; padding: 1em 0;">
-                    <p class="m-2">日期<span style="margin: 0.5em 0; border-bottom: 1px solid;"></span><a
-                            id="data-date"><span>2021</span>.<span>05</span>.<span>30</span></a></p>
-                    <p class="m-2">目擊者<span style="margin: 0.5em 0; border-bottom: 1px solid;"></span><a id="data-founder">高任翔</a>
-                    </p>
+                <div class="col-lg-8 d-flex flex-lg-column">
+                    <div class="write-verticle-rl flex-grow-1">
+                        <h1 id="data-name">{{monster_data['name']}}</h1>
+                    </div>
+                    <div class="write-verticle-rl" id="data-found-box">
+                        <p class="m-2">日期<span class="data-seperator"></span><a
+                                id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
+                        </p>
+                        <p class="m-2">目擊者<span class="data-seperator"></span><a
+                                id="data-founder">{{monster_data['founder']}}</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

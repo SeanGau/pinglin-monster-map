@@ -1,13 +1,13 @@
-from logging import log
-import flask, os, json, hashlib
+import flask, json, hashlib
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
-from os import walk
 from sassutils.wsgi import SassMiddleware
+#import pypugjs
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
+#app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.jinja_env.globals['GLOBAL_TITLE'] = "坪林怪奇圖錄"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
@@ -130,10 +130,24 @@ def register():
 
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
+    monster_data = {
+        "name": "垃圾怪",
+        "tag": ["北勢溪","漂流垃圾","人就是共犯"],
+        "category": "水域", #人文、過度、水域、山野
+        "element": "water", #water, ground, wind, fire
+        "founder": "黃玟霖",
+        "date": ["2011","5","10"],
+        "local": "北勢溪親水吊橋下方",
+        "disc": "出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。",
+        "strong": "收集垃圾一口吐出",
+        "weak": "怕光、怕人",
+        "title": "北勢溪的漂流垃圾垃圾",
+        "story": "一堆噁心的垃圾在原本清澈的北勢溪漂流著，要問是誰做的？其實就是我們自己。人們因為懶惰，不把垃圾丟入垃圾桶，反而直接丟在河裡，所以才會製造出垃圾怪，垃圾怪一開始會把人們所丟的垃圾收集起來，等收到一定的量，再全部放出來，使河川遭受永久性的污染，就是為了讓河川裡的魚蝦等...受到傷害。垃圾怪喜歡暗暗的地方，而且很怕被人發現，所以都待在河川深處，大家都覺得垃圾怪很可惡，殊不知人類才是罪惡的共犯。"
+    }
     login_data = flask.session.get('login_data', None)
     if login_data is not None:
         login_data = json.loads(login_data)
-    return flask.render_template('monster.html', login_data = login_data, monster_id = monster_id)
+    return flask.render_template('monster.html', login_data = login_data, monster_data = monster_data)
 
 @app.route('/test', methods=['GET'])
 def test():
@@ -143,8 +157,9 @@ def test():
         <h1>test</h1>
         <p>yoyoyo</p>
     '''
-    send_mail(msg_to, msg_subject, msg_content)
-    return "SEND"
+    #send_mail(msg_to, msg_subject, msg_content)
+    return "TEST"
+    #return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000, debug=True)
