@@ -4,7 +4,7 @@
         background: linear-gradient(90deg, $color-element, $color-bg)
     @media (max-width: 991px)
         #monster-box.monster-#{$element} #data-right
-            background: linear-gradient(90deg, $color-element, $color-bg)
+            background: linear-gradient(90deg, $color-element -3%, $color-bg 103%)
             
 
 @include element-parser("water", $color-water)
@@ -54,16 +54,18 @@
     .data-seperator
         display: inline-block
         width: 0
-        height: 1em
-        margin: 0.4em
+        height: 0.75em
+        margin: 0.25em
         border: 1px solid
         border-width: 0 1px 0 0
 
 #data-element    
-    writing-mode: vertical-rl
-
-#data-element, #data-tag
+    height: 5rem
+    margin-bottom: 1rem
+#data-tag
     margin: 0
+    a
+        margin-bottom: 0.5em
 
 #data-date
     span
@@ -97,6 +99,7 @@
     #data-element
         position: absolute
         right: 1rem
+        top: 2rem
 
     #data-found-box
         height: fit-content
@@ -105,7 +108,7 @@
         padding: 0
         margin-left: 0
         .data-seperator
-            width: 1em
+            width: 0.75em
             height: 0
             border-width: 1px 0 0 0
 
@@ -120,11 +123,7 @@
         .row-title
             text-align: center
             height: fit-content
-    .write-verticle-lr
+    .write-verticle-lr, .write-verticle-rl
         writing-mode: initial
         h1, h2, h3, h4, h5
-            margin: 0 1rem
-    .write-verticle-rl
-        writing-mode: initial
-        h1, h2, h3, h4, h5
-            margin: 0 1rem
+            margin: 0 0.5rem

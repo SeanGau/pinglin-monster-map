@@ -39,28 +39,28 @@
 
 @media (max-width: 991px) {
   #monster-box.monster-water #data-right {
-    background: linear-gradient(90deg, #5B9E98, #F3DFC3); } }
+    background: linear-gradient(90deg, #5B9E98 -3%, #F3DFC3 103%); } }
 
 #monster-box.monster-ground {
   background: linear-gradient(90deg, #DBB853, #F3DFC3); }
 
 @media (max-width: 991px) {
   #monster-box.monster-ground #data-right {
-    background: linear-gradient(90deg, #DBB853, #F3DFC3); } }
+    background: linear-gradient(90deg, #DBB853 -3%, #F3DFC3 103%); } }
 
 #monster-box.monster-wind {
   background: linear-gradient(90deg, #7CAD82, #F3DFC3); }
 
 @media (max-width: 991px) {
   #monster-box.monster-wind #data-right {
-    background: linear-gradient(90deg, #7CAD82, #F3DFC3); } }
+    background: linear-gradient(90deg, #7CAD82 -3%, #F3DFC3 103%); } }
 
 #monster-box.monster-fire {
   background: linear-gradient(90deg, #EE7839, #F3DFC3); }
 
 @media (max-width: 991px) {
   #monster-box.monster-fire #data-right {
-    background: linear-gradient(90deg, #EE7839, #F3DFC3); } }
+    background: linear-gradient(90deg, #EE7839 -3%, #F3DFC3 103%); } }
 
 .write-verticle-lr {
   writing-mode: vertical-lr; }
@@ -105,16 +105,19 @@
   #data-found-box .data-seperator {
     display: inline-block;
     width: 0;
-    height: 1em;
-    margin: 0.4em;
+    height: 0.75em;
+    margin: 0.25em;
     border: 1px solid;
     border-width: 0 1px 0 0; }
 
 #data-element {
-  writing-mode: vertical-rl; }
+  height: 5rem;
+  margin-bottom: 1rem; }
 
-#data-element, #data-tag {
+#data-tag {
   margin: 0; }
+  #data-tag a {
+    margin-bottom: 0.5em; }
 
 #data-date span {
   writing-mode: initial; }
@@ -146,7 +149,8 @@
 @media (max-width: 991px) {
   #data-element {
     position: absolute;
-    right: 1rem; }
+    right: 1rem;
+    top: 2rem; }
   #data-found-box {
     height: fit-content;
     border: 1px solid;
@@ -154,7 +158,7 @@
     padding: 0;
     margin-left: 0; }
     #data-found-box .data-seperator {
-      width: 1em;
+      width: 0.75em;
       height: 0;
       border-width: 1px 0 0 0; }
   #data-mid-top, #data-mid-bottom {
@@ -167,13 +171,9 @@
     #data-mid-top .row-title, #data-mid-bottom .row-title {
       text-align: center;
       height: fit-content; }
-  .write-verticle-lr {
+  .write-verticle-lr, .write-verticle-rl {
     writing-mode: initial; }
-    .write-verticle-lr h1, .write-verticle-lr h2, .write-verticle-lr h3, .write-verticle-lr h4, .write-verticle-lr h5 {
-      margin: 0 1rem; }
-  .write-verticle-rl {
-    writing-mode: initial; }
-    .write-verticle-rl h1, .write-verticle-rl h2, .write-verticle-rl h3, .write-verticle-rl h4, .write-verticle-rl h5 {
-      margin: 0 1rem; } }
+    .write-verticle-lr h1, .write-verticle-lr h2, .write-verticle-lr h3, .write-verticle-lr h4, .write-verticle-lr h5, .write-verticle-rl h1, .write-verticle-rl h2, .write-verticle-rl h3, .write-verticle-rl h4, .write-verticle-rl h5 {
+      margin: 0 0.5rem; } }
 
 /*# sourceMappingURL=monster.css.map */

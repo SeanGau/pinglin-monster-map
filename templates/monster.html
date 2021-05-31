@@ -75,9 +75,9 @@
         </div>
         <div class="col-lg-2 order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
             <div class="row h-100">
-                <div class="col-lg-4 order-lg-last mb-2 px-4">
-                    <a id="data-element">{{monster_data['category']}}。{{monster_data['element']}}</a>
-                    <span id="data-tag">
+                <div class="col-lg-4 order-lg-last mb-2 px-4 text-lg-center">
+                    <img id="data-element" src="{{url_for('static', filename='img/category/'+monster_data['category']+monster_data['element']+'.svg')}}" alt="">
+                    <span id="data-tag" class="write-verticle-rl">
                         {% for tag in monster_data['tag'] %}
                         <a>#{{tag}}</a>
                         {% endfor %}
