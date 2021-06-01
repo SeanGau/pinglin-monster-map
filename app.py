@@ -1,4 +1,4 @@
-import flask, json, hashlib
+import flask, json, hashlib, string, random
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
@@ -20,13 +20,17 @@ app.wsgi_app = SassMiddleware(app.wsgi_app, {
         'strip_extension': True,
     }
 })
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
 
 def gethashed(data):
-	data = data+app.config['SECRET_KEY']
-	s = hashlib.sha256()
-	s.update(data.encode("UTF-8"))
-	h = s.hexdigest()
-	return h
+    data = data+app.config['SECRET_KEY']
+    s = hashlib.sha256()
+    s.update(data.encode("UTF-8"))
+    h = s.hexdigest()
+    return h
 
 def alert(message, redir): #alert then redirect
 	return f'''<script type="text/javascript">
@@ -35,8 +39,8 @@ def alert(message, redir): #alert then redirect
 						</script>'''
 
 def send_mail(recevier_array, subject, html_content):
-	msg = Message(subject=subject, recipients=recevier_array, html=html_content)
-	#mail.send(msg)
+	msg = Message(subject=app.jinja_env.globals['GLOBAL_TITLE']+" - "+subject, recipients=recevier_array, html=html_content)
+	mail.send(msg)
 
 #------------------------------------------------------------------------------------------------------------------
 
@@ -98,9 +102,14 @@ def login():
         cb = cb.all()
         if len(cb) > 0:
             cb_data = dict(cb[0])
+            session_data = {
+                "email": cb_data['email'],
+                "username": cb_data['username'],
+                "id": cb_data['id']
+            }
             flask.session.permanent = False
-            flask.session['login_data'] = json.dumps(cb_data)
-            send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
+            flask.session['login_data'] = json.dumps(session_data)
+            #send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
             return alert("登入成功", "/")
         else:
             return alert("帳號或密碼錯誤！", flask.url_for('login'))
@@ -112,14 +121,55 @@ def logout():
     flask.session.clear()
     return alert("您已登出！", "/")
 
+@app.route('/reset', methods = ['GET', 'POST'])
+def reset():
+    if flask.request.method == 'POST':
+        _data = flask.request.get_json()
+        cb = db.session.execute(f"SELECT * FROM token_table WHERE token='{_data['token']}'")
+        cb = cb.all()
+        if len(cb) > 0:
+            cb_data = dict(cb[0])
+            exp_t = cb_data['token_expire']
+            if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password'])>=8 and len(_data['password'])<=20:
+                db.session.execute(f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{cb_data['email']}'")
+                db.session.execute(f"DELETE FROM public.token_table WHERE email='{cb_data['email']}'")
+                db.session.commit()
+                return "ok"
+        return "error"
+    else:
+        return flask.render_template('reset.html')
+
+@app.route('/forget', methods = ['GET', 'POST'])
+def forget():
+    if flask.request.method == 'POST':
+        _data = flask.request.form
+        token = gethashed(str(datetime.now().timestamp())+_data['email'])
+        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+        if len(cb.all())==0:
+            return alert("此信箱尚未註冊！", flask.url_for('forget'))
+        db.session.execute(f"INSERT INTO public.token_table (email,token,token_expire) VALUES('{_data['email']}','{token}',(NOW() + interval '1 hour'))")
+        db.session.commit()
+        send_mail([_data['email']],"忘記密碼", f'''
+				<div style="font-size: 1.5em; text-align: center;">
+				<p>您好，</p>
+				<p>坪林巡怪地圖收到<b>重設密碼</b>請求<p>
+				<p>請點擊以下連結進行重設</p>
+				<p><a href="https://strangepinglin.collective.tw/reset?token={token}" style="padding: 1em; background-color: #666;color: white; border-radius: 5px;">https://strangepinglin.collective.tw/reset?token={token}</a></p>
+				<p>若無法點擊，請複製連結貼到​​​您的​​​瀏覽器</p>
+				</div>
+        ''')
+        return alert("請至信箱收信！", flask.url_for('login'))
+    else:
+        return flask.render_template('forget.html')
+
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
-        if len(cb.all())==0:
-            return "此帳號已被註冊！"
-        elif len(_data['username'])>0 and len(_data['username'])<=12 and len(_data['password'])>=8 and len(_data['password'])<=20:
+        if len(cb.all())>0:
+            return "此信箱已被註冊！"
+        elif _data['email']==flask.session['email_verify']['email'] and _data['code']==flask.session['email_verify']['code'] and len(_data['username'])>0 and len(_data['username'])<=12 and len(_data['password'])>=8 and len(_data['password'])<=20:
             cb = db.session.execute(f"INSERT INTO public.users (username,email,password) VALUES('{_data['username']}','{_data['email']}','{gethashed(_data['password'])}')")
             db.session.commit()
             return "ok"
@@ -127,6 +177,39 @@ def register():
             return "註冊失敗，請聯絡管理員"
     else:
         return flask.render_template('register.html')
+
+@app.route('/register/verify', methods = ['GET', 'POST'])
+def register_verify():
+    if flask.request.method == 'POST':
+        _data = flask.request.get_json()
+        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+        if len(cb.all())>0:
+            return "此信箱已被註冊！"
+        else:
+            code = get_random_string(10)
+            send_mail([_data['email']],"信箱認證", f'''
+                    <div style="font-size: 1.5em;">
+                    <p>您好，</p>
+                    <p>您的信箱認證碼為<a style="padding-left: 1em; color: red; border-radius: 5px;">{code}</a></p>
+                    </div>
+            ''')
+            flask.session.permanent = False
+            flask.session['email_verify'] = {
+                "email": _data['email'],
+                "code": code
+            }
+            return "ok"
+    else:
+        _data = {
+            "email": flask.request.args.get("email"),
+            "code": flask.request.args.get("code")
+        }
+        if _data != flask.session['email_verify']:
+            return "ERROR"
+        else:
+            return "ok"
+
+
 
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
@@ -151,13 +234,15 @@ def monster(monster_id):
 
 @app.route('/test', methods=['GET'])
 def test():
+    if app.debug is not True:
+        return flask.abort(403)
     msg_to = ['rrtw0627@gmail.com','haca00193@gmail.com']
     msg_subject = 'TEST'
     msg_content = f'''
         <h1>test</h1>
         <p>yoyoyo</p>
     '''
-    #send_mail(msg_to, msg_subject, msg_content)
+    send_mail(msg_to, msg_subject, msg_content)
     return "TEST"
     #return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
 

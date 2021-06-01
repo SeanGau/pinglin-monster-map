@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}登入{% endblock %}
+{% block title %}忘記密碼{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/login.css', version=GLOBAL_VERSION)}}" />
@@ -9,20 +9,14 @@
 <div class="container-fluid" id="form-box">
     <div class="row justify-content-center">
         <div class="col-lg-4">
-            <h1 class="text-center">登入</h1>
-            <form id="login-form" action="/login" method="post">
+            <h1 class="text-center">忘記密碼</h1>
+            <form id="login-form" action="/forget" method="post">
                 <div class="mb-3">
                     <label for="InputEmail" class="form-label">Email 電子信箱</label>
                     <input type="email" class="form-control" name="email" id="InputEmail" required>
                 </div>
-                <div class="mb-3">
-                    <label for="InputPassword1" class="form-label">登入密碼</label>
-                    <input type="password" class="form-control" name="password" id="InputPassword1" maxlength="20" minlength="8"
-                        required>
-                </div>
-                <p>尚未註冊？<a href="/register">點我註冊帳號</a>│忘記密碼？<a href="/forget">點我重設密碼</a></p>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-warning btn-lg">登入</button>
+                    <button type="submit" class="btn btn-warning btn-lg">送出</button>
                 </div>
             </form>
         </div>

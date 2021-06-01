@@ -9,21 +9,28 @@
 <div class="container-fluid" id="form-box">
     <div class="row justify-content-center">
         <div class="col-lg-4">
-            <h1 class="text-center">註冊帳號</h1>            
+            <h1 class="text-center">註冊帳號</h1>
             <p class="text-center">已有帳號？<a href="/register">點我登入</a></p>
-            <form id="register-form">
-                <div class="row mb-3">
+            <form id="register-email">
+                <div class="mb-2">
                     <label for="InputEmail" class="form-label">Email 電子信箱</label>
-                    <div class="col">
-                        <input type="email" class="form-control" id="InputEmail" required>
+                    <input type="email" class="form-control" id="InputEmail" required>
+                </div>
+                <div class="row mb-3 justify-content-end">
+                    <div class="col-4 d-grid">
+                        <button class="btn btn-warning" type="submit">寄送驗證碼</button>
                     </div>
-                    <div class="col-3">
-                        <a class="btn btn-warning" role="button" href="#">驗證</a>
+                    <div class="col-4 d-none" id="verify-email-code">
+                        <input type="password" class="form-control" maxlength="10"
+                            placeholder="驗證碼">
                     </div>
                 </div>
+            </form>
+            <form id="register-form">
                 <div class="mb-3">
                     <label for="InputPassword1" class="form-label">登入密碼</label>
-                    <input type="password" class="form-control" id="InputPassword1" maxlength="20" minlength="8" required>
+                    <input type="password" class="form-control" id="InputPassword1" maxlength="20" minlength="8"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="InputPassword2" class="form-label">再次輸入密碼</label>
@@ -49,6 +56,25 @@
 
 {% block script %}
 <script>
+    $("#register-email").on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/register/verify",
+            data: JSON.stringify({ "email": $("#InputEmail").val() }),
+            success: function (cb) {
+                if (cb == "ok") {
+                }
+                else {
+                    alert(cb);
+                }
+            },
+            contentType: "application/json"
+        });
+        $("#verify-email-code").removeClass("d-none");
+        alert("請至信箱收取驗證碼");
+    });
+
     $("#register-form").on('submit', function (e) {
         e.preventDefault();
         if ($("#InputPassword1").val() != $("#InputPassword2").val()) {
@@ -59,19 +85,19 @@
                 "email": $("#InputEmail").val(),
                 "password": $("#InputPassword1").val(),
                 "username": $("#InputName").val(),
+                "code": $("#verify-email-code input").val() 
             }
             $.ajax({
                 type: "POST",
                 url: "/register",
                 data: JSON.stringify(export_data),
-                success: function(cb) {
-                    if(cb == "ok") {
+                success: function (cb) {
+                    if (cb == "ok") {
                         alert("註冊成功！");
                         window.location.href = "/login";
                     }
                     else {
                         alert(cb);
-                        window.location.href = "/register";
                     }
                 },
                 contentType: "application/json"

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}重設密碼{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/register.css', version=GLOBAL_VERSION)}}" />
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" id="form-box">
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <h1 class="text-center">重設密碼</h1>
+            <form id="register-form">
+                <div class="mb-3">
+                    <label for="InputPassword1" class="form-label">登入密碼</label>
+                    <input type="password" class="form-control" id="InputPassword1" maxlength="20" minlength="8"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword2" class="form-label">再次輸入密碼</label>
+                    <input type="password" class="form-control" id="InputPassword2" required>
+                    <span style="color: red; transition: .3s;" class="d-none" id="pw-wrong">輸入錯誤</span>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-warning btn-lg">重設密碼</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $("#register-form").on('submit', function (e) {
+        e.preventDefault();
+        if ($("#InputPassword1").val() != $("#InputPassword2").val()) {
+            $("#pw-wrong").removeClass("d-none");
+        }
+        else {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            let export_data = {
+                "password": $("#InputPassword1").val(),
+                "token": urlParams.get('token')
+            }
+            $.ajax({
+                type: "POST",
+                url: "/reset",
+                data: JSON.stringify(export_data),
+                success: function (cb) {
+                    if (cb == "ok") {
+                        alert("重設成功！");
+                        window.location.href = "/login";
+                    }
+                    else {
+                        alert(cb);
+                        window.location.href = "/reset";
+                    }
+                },
+                contentType: "application/json"
+            });
+        }
+    });
+</script>
+{% endblock %}
