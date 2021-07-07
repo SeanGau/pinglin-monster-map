@@ -12,6 +12,14 @@
 <div class="container">
   <form class="p-5 mx-lg-5" id="monster-data-form">
     <div class="mb-3">
+      <label for="monster-name" class="form-label">圖片</label>
+      <div id="image-list">
+        {% for image in monster_data['image'] %}
+        <p><a href="#">{{image}}</a><a href="#" class="btn btn-danger remove-image" data-image="{{image}}"><i class="fas fa-trash-alt"></i></a></p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="mb-3">
       <label for="monster-name" class="form-label">妖怪名稱</label>
       <input type="text" class="form-control" id="monster-name" value="{{monster_data['name']}}" required>
     </div>

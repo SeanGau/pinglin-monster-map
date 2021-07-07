@@ -1,4 +1,4 @@
-$("#monster-data-form").on('submit', function (e) {
+$("#monster-data-form").on('submit', function(e) {
     e.preventDefault();
     $("#loading").fadeIn(100);
     let _data = {
@@ -29,4 +29,8 @@ $("#monster-data-form").on('submit', function (e) {
         },
         contentType: "application/json"
     });
+});
+
+$("#image-list .remove-image").on('click', function(e) {
+    console.log($(this).data("image"));
 });
