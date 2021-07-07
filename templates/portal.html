@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container py-4">
+<div class="container p-5 mx-lg-5">
     <div class="row justify-content-center">
         <h2 class="text-center">個人資料</h2>
         <div class="col-lg-6">
@@ -64,7 +64,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/portal",
+                url: window.location.href,
                 data: JSON.stringify(export_data),
                 success: function (cb) {
                     if (cb == "ok") {

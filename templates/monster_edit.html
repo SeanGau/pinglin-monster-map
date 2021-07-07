@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}編輯{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />
+<link rel="stylesheet" href="{{url_for('static', filename='css/edit.css', version=GLOBAL_VERSION)}}" />
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <form class="p-5 mx-lg-5" id="monster-data-form">
+    <div class="mb-3">
+      <label for="monster-name" class="form-label">妖怪名稱</label>
+      <input type="text" class="form-control" id="monster-name" value="{{monster_data['name']}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-tag" class="form-label">妖怪標籤</label>
+      <input type="text" class="form-control" id="monster-tag" value="{{','.join(monster_data['tag'])}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-category" class="form-label">妖怪分類</label>
+      <select id="monster-category" class="form-select" required>        
+        <option value="山野" {% if monster_data['category'] == '山野'%}selected{% endif %}>山野（原始山地、森林等充滿植披之處）</option>
+        <option value="水域" {% if monster_data['category'] == '水域'%}selected{% endif %}>水域（有水的天然環境、如溪流、湖泊、水塘、瀑布等）</option>
+        <option value="過渡" {% if monster_data['category'] == '過渡'%}selected{% endif %}>過渡（介於上二者的天然環境與下方人為環境之間的過渡地帶，如廢墟、墓地、水利設施、茶園、菜園竹林等）</option>
+        <option value="人文" {% if monster_data['category'] == '人文'%}selected{% endif %}>人文（有人長時間居住生活之處，如老街、學校、廟宇、公車站等人為活動空間）</option>
+      </select>      
+    </div>
+    <div class="mb-3">
+      <label for="monster-element" class="form-label">妖怪屬性</label>
+      <select id="monster-element" class="form-select" required>
+        <option value="ground" {% if monster_data['element'] == 'ground'%}selected{% endif %}>地</option>
+        <option value="water" {% if monster_data['element'] == 'water'%}selected{% endif %}>水</option>
+        <option value="fire" {% if monster_data['element'] == 'fire'%}selected{% endif %}>火</option>
+        <option value="wind" {% if monster_data['element'] == 'wind'%}selected{% endif %}>風</option>
+      </select>      
+    </div>
+    <div class="mb-3">
+      <label for="monster-date" class="form-label">發現日期</label>
+      <input type="date" class="form-control" id="monster-date" value="{{'-'.join(monster_data['date'])}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-local" class="form-label">妖怪棲地</label>
+      <input type="text" class="form-control" id="monster-local" value="{{monster_data['local']}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-disc" class="form-label">棲地環境介紹</label>
+      <textarea class="form-control" id="monster-disc" rows="3">{{monster_data['disc']}}</textarea>
+    </div>
+    <div class="mb-3">
+      <label for="monster-strong" class="form-label">妖怪強項</label>
+      <input type="text" class="form-control" id="monster-strong" value="{{monster_data['strong']}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-weak" class="form-label">妖怪弱點</label>
+      <input type="text" class="form-control" id="monster-weak" value="{{monster_data['weak']}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-title" class="form-label">標題</label>
+      <input type="text" class="form-control" id="monster-title" value="{{monster_data['title']}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="monster-story" class="form-label">妖怪故事</label>
+      <textarea class="form-control" id="monster-story" rows="6">{{monster_data['story']}}</textarea>
+    </div>
+    <hr>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-warning btn-lg">確認更改資料</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<script src="{{url_for('static', filename='js/edit.js', version=GLOBAL_VERSION)}}"></script>
+{% endblock %}

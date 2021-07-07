@@ -104,7 +104,15 @@
         </div>
     </div>
 </div>
+{% if can_edit == True %}
+<a href="#" class="btn btn-info" style="position: fixed; bottom:1rem; right: 1rem" id="edit-button">編輯</a>
+{% endif %}
 {% endblock %}
 
 {% block script %}
+<script>
+    $("#edit-button").on('click', function(e) {
+        window.location.href = window.location.href.replace("monster", "edit");
+    });
+</script>
 {% endblock %}

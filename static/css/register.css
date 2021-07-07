@@ -4,4 +4,9 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%); }
 
+#user-terms {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: 1.25rem; }
+
 /*# sourceMappingURL=register.css.map */

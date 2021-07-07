@@ -13,6 +13,23 @@ app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
 
+demo_monster_data = {
+    "image": ["demo_A.png","demo_B.png","demo_C.png"],
+    "founder_id": 1,
+    "founder": "黃玟霖",
+    "name": "垃圾怪",
+    "tag": ["北勢溪","漂流垃圾","人就是共犯"],
+    "category": "水域", #人文、過度、水域、山野
+    "element": "water", #water, ground, wind, fire
+    "date": ["2011","05","10"],
+    "local": "北勢溪親水吊橋下方",
+    "disc": "出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。",
+    "strong": "收集垃圾一口吐出",
+    "weak": "怕光、怕人",
+    "title": "北勢溪的漂流垃圾垃圾",
+    "story": "一堆噁心的垃圾在原本清澈的北勢溪漂流著，要問是誰做的？其實就是我們自己。人們因為懶惰，不把垃圾丟入垃圾桶，反而直接丟在河裡，所以才會製造出垃圾怪，垃圾怪一開始會把人們所丟的垃圾收集起來，等收到一定的量，再全部放出來，使河川遭受永久性的污染，就是為了讓河川裡的魚蝦等...受到傷害。垃圾怪喜歡暗暗的地方，而且很怕被人發現，所以都待在河川深處，大家都覺得垃圾怪很可惡，殊不知人類才是罪惡的共犯。"
+}
+
 app.wsgi_app = SassMiddleware(app.wsgi_app, {
     'app': {
         'sass_path': 'static/sass',
@@ -98,10 +115,9 @@ def portal():
 def login():
     if flask.request.method == 'POST':
         _data = flask.request.form
-        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}' AND password='{gethashed(_data['password'])}'")
-        cb = cb.all()
-        if len(cb) > 0:
-            cb_data = dict(cb[0])
+        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}' AND password='{gethashed(_data['password'])}'").first()
+        if cb is not None:
+            cb_data = dict(cb)
             session_data = {
                 "email": cb_data['email'],
                 "username": cb_data['username'],
@@ -125,10 +141,9 @@ def logout():
 def reset():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
-        cb = db.session.execute(f"SELECT * FROM token_table WHERE token='{_data['token']}'")
-        cb = cb.all()
-        if len(cb) > 0:
-            cb_data = dict(cb[0])
+        cb = db.session.execute(f"SELECT * FROM token_table WHERE token='{_data['token']}'").first()
+        if cb is not None:
+            cb_data = dict(cb)
             exp_t = cb_data['token_expire']
             if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password'])>=8 and len(_data['password'])<=20:
                 db.session.execute(f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{cb_data['email']}'")
@@ -165,6 +180,8 @@ def forget():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if flask.request.method == 'POST':
+        if flask.session.get('email_verify', None) is None:
+            return "請先輸入並驗證Email"
         _data = flask.request.get_json()
         cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
         if len(cb.all())>0:
@@ -209,28 +226,47 @@ def register_verify():
         else:
             return "ok"
 
+@app.route('/edit/<monster_id>', methods=['GET','POST'])
+def edit(monster_id):
+    login_data = flask.session.get('login_data', None)
+    if login_data is None:
+        return flask.abort(403)
+    else:
+        login_data = json.loads(login_data)
 
+    if flask.request.method == 'POST':
+        if monster_id != flask.session.get('current_editing', None):
+            return "error"
+        _data = flask.request.get_json()
+        _data['founder_id'] = flask.session.get('id')
+        _data['founder'] = flask.session.get('username')
+        print(_data)
+        return "ok"
+    else:
+        cb = db.session.execute(f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
+        if cb is None:
+            return flask.abort(404)
+        if login_data['id'] != cb['founder']:
+            return flask.abort(403)    
+        flask.session['current_editing'] = monster_id
+        return flask.render_template('monster_edit.html', login_data = login_data, monster_data = cb['data'])
 
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
-    monster_data = {
-        "name": "垃圾怪",
-        "tag": ["北勢溪","漂流垃圾","人就是共犯"],
-        "category": "水域", #人文、過度、水域、山野
-        "element": "water", #water, ground, wind, fire
-        "founder": "黃玟霖",
-        "date": ["2011","5","10"],
-        "local": "北勢溪親水吊橋下方",
-        "disc": "出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。",
-        "strong": "收集垃圾一口吐出",
-        "weak": "怕光、怕人",
-        "title": "北勢溪的漂流垃圾垃圾",
-        "story": "一堆噁心的垃圾在原本清澈的北勢溪漂流著，要問是誰做的？其實就是我們自己。人們因為懶惰，不把垃圾丟入垃圾桶，反而直接丟在河裡，所以才會製造出垃圾怪，垃圾怪一開始會把人們所丟的垃圾收集起來，等收到一定的量，再全部放出來，使河川遭受永久性的污染，就是為了讓河川裡的魚蝦等...受到傷害。垃圾怪喜歡暗暗的地方，而且很怕被人發現，所以都待在河川深處，大家都覺得垃圾怪很可惡，殊不知人類才是罪惡的共犯。"
-    }
-    login_data = flask.session.get('login_data', None)
-    if login_data is not None:
-        login_data = json.loads(login_data)
-    return flask.render_template('monster.html', login_data = login_data, monster_data = monster_data)
+    cb = db.session.execute(f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
+    if cb is None:
+        return flask.abort(404)
+    else:
+        login_data = flask.session.get('login_data', None)
+        can_edit = False
+        if login_data is not None:
+            login_data = json.loads(login_data)
+            if login_data['id'] == cb['founder']:
+                can_edit = True
+        monster_data = cb['data']
+        founder = db.session.execute(f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
+        monster_data['founder'] = founder['username']
+        return flask.render_template('monster.html', login_data = login_data, monster_data = monster_data, can_edit = can_edit)
 
 @app.route('/test', methods=['GET'])
 def test():
