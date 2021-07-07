@@ -92,20 +92,8 @@ def portal():
     else:        
         login_data['data'] = [
             {
-                "name": "醉猴0",
-                "slug": "0"
-            },
-            {
                 "name": "醉猴1",
                 "slug": "1"
-            },
-            {
-                "name": "醉猴2",
-                "slug": "2"
-            },
-            {
-                "name": "醉猴3",
-                "slug": "3"
             }
         ]
         return flask.render_template('portal.html', login_data = login_data)
@@ -264,6 +252,7 @@ def monster(monster_id):
             if login_data['id'] == cb['founder']:
                 can_edit = True
         monster_data = cb['data']
+        monster_data['id'] = monster_id
         founder = db.session.execute(f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
         monster_data['founder'] = founder['username']
         return flask.render_template('monster.html', login_data = login_data, monster_data = monster_data, can_edit = can_edit)
