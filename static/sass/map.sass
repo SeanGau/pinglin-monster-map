@@ -3,23 +3,24 @@
     flex: 1
     width: 100%
 
-.leaflet-popup-content-wrapper
-    padding: 4em 4em 8em 4em
-    background: 0
-    color: black
-    box-shadow: none
-    background-image: url(../img/cloud.png)
-    background-size: contain
-    background-repeat: no-repeat
-    background-position: center
-    text-align: center
-    a
+.cloud-popup
+    .leaflet-popup-content-wrapper
+        padding: 4em 4em 8em 4em
+        background: 0
         color: black
-
-.leaflet-popup-tip-container
-    display: none
-
-.leaflet-popup-content
-    h1
-        font-weight: bold
+        box-shadow: none
+        background-image: url(../img/cloud.png)
+        background-size: contain
+        background-repeat: no-repeat
+        background-position: center
         text-align: center
+        a
+            color: black
+
+    .leaflet-popup-tip-container
+        display: none
+
+    .leaflet-popup-content
+        h1
+            font-weight: bold
+            text-align: center

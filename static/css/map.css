@@ -3,7 +3,7 @@
   flex: 1;
   width: 100%; }
 
-.leaflet-popup-content-wrapper {
+.cloud-popup .leaflet-popup-content-wrapper {
   padding: 4em 4em 8em 4em;
   background: 0;
   color: black;
@@ -13,13 +13,13 @@
   background-repeat: no-repeat;
   background-position: center;
   text-align: center; }
-  .leaflet-popup-content-wrapper a {
+  .cloud-popup .leaflet-popup-content-wrapper a {
     color: black; }
 
-.leaflet-popup-tip-container {
+.cloud-popup .leaflet-popup-tip-container {
   display: none; }
 
-.leaflet-popup-content h1 {
+.cloud-popup .leaflet-popup-content h1 {
   font-weight: bold;
   text-align: center; }
 

@@ -2,7 +2,7 @@
     height: 360vh
     &::after
         content: ""
-        z-index: -1
+        z-index: -999
         position: fixed
         left: 0
         top: 0
@@ -14,6 +14,7 @@
         background-attachment: fixed
     .gradient
         position: absolute
+        z-index: -1
         left: 0
         top: 0
         height: 360vh
@@ -22,6 +23,7 @@
         opacity: .2
     .inner-0
         position: absolute
+        z-index: -1
         left: 0
         top: 0
         height: 100vh
@@ -32,21 +34,16 @@
         background-repeat: no-repeat
     .inner-1
         height: 100vh
-        z-index: 1
         background-image: url("../img/index/index_1_front.png")
         background-size: contain
         background-position: center
         background-repeat: no-repeat
     .inner-2
         height: 100vh
-        margin-top: 20vh
         overflow: hidden
-        #inner-2-front
+        #inner-2-anchor
+            margin-top: 60vh
             height: 100%
-            background-image: url("../img/index/index_2_front.png")
-            background-size: contain
-            background-position: center
-            background-repeat: no-repeat
         img
             width: 100%
         .monster
@@ -80,7 +77,17 @@
             background-size: cover
             background-position: center
             background-repeat: no-repeat
+        .front
+            top: 0
+            left: 0
+            height: 100%
+            width: 100%
+            background-image: url("../img/index/index_2_front.png")
+            background-size: contain
+            background-position: center
+            background-repeat: no-repeat
+
     .inner-3
         height: 100vh
-        margin-top: 20vh
+        margin-top: 60vh
         background-color: rgba(0,0,0,0.1)

@@ -3,33 +3,34 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/index.css', version=GLOBAL_VERSION)}}" />
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 <div id="index-block-1">
     <div class="inner-0"></div>
     <div class="gradient"></div>
-    <div class="inner-1" data-aos="fade-up"></div>
+    <div class="inner-1" data-aos="fade-in" data-aos-mirror="true"></div>
     <div class="inner-2">
-        <div class="monster monster-1" data-aos="fade-right" data-aos-anchor="#inner-2-front"><img
+        <div class="monster monster-1" data-aos="fade-right" data-aos-anchor="#inner-2-anchor" data-aos-delay="0"><img
                 src="{{url_for('static', filename='img/index/index_2_monster_1.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="monster monster-2" data-aos="fade-right" data-aos-anchor="#inner-2-front"><img
+        <div class="monster monster-2" data-aos="fade-right" data-aos-anchor="#inner-2-anchor" data-aos-delay="100"><img
                 src="{{url_for('static', filename='img/index/index_2_monster_2.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="monster monster-3" data-aos="fade-left" data-aos-anchor="#inner-2-front"><img
+        <div class="monster monster-3" data-aos="fade-left" data-aos-anchor="#inner-2-anchor" data-aos-delay="200"><img
                 src="{{url_for('static', filename='img/index/index_2_monster_3.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="monster monster-4" data-aos="fade-left" data-aos-anchor="#inner-2-front"><img
+        <div class="monster monster-4" data-aos="fade-left" data-aos-anchor="#inner-2-anchor" data-aos-delay="300"><img
                 src="{{url_for('static', filename='img/index/index_2_monster_4.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="monster monster-5" data-aos="fade" data-aos-anchor="#inner-2-front"><img
+        <div class="monster monster-5" data-aos="fade-in" data-aos-anchor="#inner-2-anchor" data-aos-delay="400"><img
                 src="{{url_for('static', filename='img/index/index_2_monster_5.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="monster montain" data-aos="fade" data-aos-anchor="#inner-2-front">
+        <div class="monster montain" data-aos="fade-in" data-aos-anchor="#inner-2-anchor">
         </div>
-        <div id="inner-2-front" data-aos="fade-up"></div>
+        <div class="monster front" data-aos="fade-up" data-aos-anchor="#inner-2-anchor" data-aos-mirror="true"></div>
+        <div id="inner-2-anchor"></div>
     </div>
     <div class="inner-3">
 
@@ -38,6 +39,6 @@
 {% endblock %}
 
 {% block script %}
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script src="{{url_for('static', filename='js/index.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}
