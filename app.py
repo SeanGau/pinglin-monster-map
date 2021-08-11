@@ -68,6 +68,13 @@ def index():
         login_data = json.loads(login_data)
     return flask.render_template('index.html', login_data = login_data)
 
+@app.route('/map')
+def map():
+    login_data = flask.session.get('login_data', None)
+    if login_data is not None:
+        login_data = json.loads(login_data)
+    return flask.render_template('map.html', login_data = login_data)
+
 @app.route('/portal', methods = ['GET', 'POST'])
 def portal():
     login_data = flask.session.get('login_data', None)

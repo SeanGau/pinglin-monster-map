@@ -1,25 +1,86 @@
-#map
-    display: flex
-    flex: 1
-    width: 100%
-
-.leaflet-popup-content-wrapper
-    padding: 4em 4em 8em 4em
-    background: 0
-    color: black
-    box-shadow: none
-    background-image: url(../img/cloud.png)
-    background-size: contain
-    background-repeat: no-repeat
-    background-position: center
-    text-align: center
-    a
-        color: black
-
-.leaflet-popup-tip-container
-    display: none
-
-.leaflet-popup-content
-    h1
-        font-weight: bold
-        text-align: center
+#index-block-1
+    height: 360vh
+    &::after
+        content: ""
+        z-index: -1
+        position: fixed
+        left: 0
+        top: 0
+        height: 100%
+        width: 100%
+        background-image: url("../img/index/index_1_back.png")
+        background-size: cover
+        background-position: center
+        background-attachment: fixed
+    .gradient
+        position: absolute
+        left: 0
+        top: 0
+        height: 360vh
+        width: 100%
+        background: linear-gradient(210deg, #5C9D96 0%, rgb(255,255,255) 10%, #CB6971 30%)
+        opacity: .2
+    .inner-0
+        position: absolute
+        left: 0
+        top: 0
+        height: 100vh
+        width: 100%
+        background-image: url("../img/index/index_1_back_2.png")
+        background-size: 100%
+        background-position: top
+        background-repeat: no-repeat
+    .inner-1
+        height: 100vh
+        z-index: 1
+        background-image: url("../img/index/index_1_front.png")
+        background-size: contain
+        background-position: center
+        background-repeat: no-repeat
+    .inner-2
+        height: 100vh
+        margin-top: 20vh
+        overflow: hidden
+        #inner-2-front
+            height: 100%
+            background-image: url("../img/index/index_2_front.png")
+            background-size: contain
+            background-position: center
+            background-repeat: no-repeat
+        img
+            width: 100%
+        .monster
+            position: fixed
+        .monster-1
+            top: 0%
+            left: -5%
+            width: 35%
+        .monster-2
+            left: 5%
+            bottom: 5%
+            width: 15%
+        .monster-3
+            right: 5%
+            top: 15%
+            width: 15%
+        .monster-4
+            right: 0%
+            bottom: 0%
+            width: 50%
+        .monster-5
+            left: 42%
+            top: 40%
+            width: 16%
+        .montain
+            top: 0
+            left: 0
+            height: 100%
+            width: 100%
+            background-image: url("../img/index/index_2_montain.png")
+            background-size: cover
+            background-position: center
+            background-repeat: no-repeat
+    .inner-3
+        height: 100vh
+        margin-top: 20vh
+        background-color: rgba(0,0,0,0.1)

@@ -2,21 +2,42 @@
 {% block title %}首頁{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin="" />
 <link rel="stylesheet" href="{{url_for('static', filename='css/index.css', version=GLOBAL_VERSION)}}" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<div id="map"></div>
+<div id="index-block-1">
+    <div class="inner-0"></div>
+    <div class="gradient"></div>
+    <div class="inner-1" data-aos="fade-up"></div>
+    <div class="inner-2">
+        <div class="monster monster-1" data-aos="fade-right" data-aos-anchor="#inner-2-front"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_1.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="monster monster-2" data-aos="fade-right" data-aos-anchor="#inner-2-front"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_2.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="monster monster-3" data-aos="fade-left" data-aos-anchor="#inner-2-front"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_3.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="monster monster-4" data-aos="fade-left" data-aos-anchor="#inner-2-front"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_4.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="monster monster-5" data-aos="fade" data-aos-anchor="#inner-2-front"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_5.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="monster montain" data-aos="fade" data-aos-anchor="#inner-2-front">
+        </div>
+        <div id="inner-2-front" data-aos="fade-up"></div>
+    </div>
+    <div class="inner-3">
+
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
-<script src="{{url_for('static', filename='js/leaflet-gps.min.js', version=GLOBAL_VERSION)}}"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="{{url_for('static', filename='js/index.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}
