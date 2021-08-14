@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #index-block-1 {
   height: 360vh; }
   #index-block-1::after {
@@ -12,13 +13,12 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed; }
+  #index-block-1 .p-fixed {
+    position: fixed; }
+  #index-block-1 .inner-anchor {
+    margin-top: 60vh;
+    height: 100%; }
   #index-block-1 .gradient {
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    height: 360vh;
-    width: 100%;
     background: linear-gradient(210deg, #5C9D96 0%, white 10%, #CB6971 30%);
     opacity: .2; }
   #index-block-1 .inner-0 {
@@ -32,6 +32,13 @@
     background-size: 100%;
     background-position: top;
     background-repeat: no-repeat; }
+  #index-block-1 .inner-0-overlay {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    height: 360vh;
+    width: 100%; }
   #index-block-1 .inner-1 {
     height: 100vh;
     background-image: url("../img/index/index_1_front.png");
@@ -41,25 +48,36 @@
   #index-block-1 .inner-2 {
     height: 100vh;
     overflow: hidden; }
-    #index-block-1 .inner-2 #inner-2-anchor {
-      margin-top: 60vh;
-      height: 100%; }
     #index-block-1 .inner-2 img {
       width: 100%; }
-    #index-block-1 .inner-2 .monster {
-      position: fixed; }
+
+@keyframes monster-1-keyframe {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(-10deg); } }
     #index-block-1 .inner-2 .monster-1 {
       top: 0%;
       left: -5%;
       width: 35%; }
+      #index-block-1 .inner-2 .monster-1 img {
+        animation: monster-1-keyframe 1.2s ease-in-out infinite alternate; }
     #index-block-1 .inner-2 .monster-2 {
       left: 5%;
       bottom: 5%;
       width: 15%; }
+
+@keyframes monster-3-keyframe {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(-20deg); } }
     #index-block-1 .inner-2 .monster-3 {
       right: 5%;
       top: 15%;
       width: 15%; }
+      #index-block-1 .inner-2 .monster-3 img {
+        animation: monster-3-keyframe 1.1s ease-in-out infinite alternate; }
     #index-block-1 .inner-2 .monster-4 {
       right: 0%;
       bottom: 0%;
@@ -88,7 +106,47 @@
       background-repeat: no-repeat; }
   #index-block-1 .inner-3 {
     height: 100vh;
-    margin-top: 60vh;
-    background-color: rgba(0, 0, 0, 0.1); }
+    overflow: hidden;
+    margin-top: 60vh; }
+    #index-block-1 .inner-3 .inner-3-overlay {
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.3); }
+    #index-block-1 .inner-3 .inner-3-text-block {
+      padding: 1.5rem 1rem;
+      height: 60%;
+      width: 80%;
+      top: 20%;
+      left: 10%;
+      background-color: #F3E0C5; }
+      #index-block-1 .inner-3 .inner-3-text-block img {
+        height: 100%; }
+      #index-block-1 .inner-3 .inner-3-text-block:before {
+        content: "";
+        position: absolute;
+        height: calc( 100% - 2rem);
+        width: calc( 100% - 2rem);
+        top: 1rem;
+        left: 1rem;
+        outline: 2px solid #C6543C; }
+      #index-block-1 .inner-3 .inner-3-text-block:after {
+        position: absolute;
+        right: 0;
+        top: 2rem;
+        content: "計畫說明";
+        writing-mode: vertical-rl;
+        background-color: #C6543C;
+        width: auto;
+        height: auto;
+        padding: 10px 5px;
+        color: white; }
+      #index-block-1 .inner-3 .inner-3-text-block .inner-3-text-scroll {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        overflow-x: scroll;
+        overflow-y: hidden; }
 
 /*# sourceMappingURL=index.css.map */

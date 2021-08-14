@@ -53,18 +53,19 @@ L.control.locate({
   position: 'topright'
 }).addTo(mymap);
 
+function popupAddNew(latlng) {
+  let popLocation = latlng;
+  let popup = L.popup({'className': 'cloud-popup'})
+    .setLatLng(popLocation)
+    .setContent('開始標記你發現的坪林妖怪!<br>把雲霧移動到發現的地點增加妖怪資料。')
+    .openOn(mymap);
+}
+
 mymap.addControl(new L.Control.Gps({ position: 'topright' }));
 const search = new GeoSearch.GeoSearchControl({
-  marker: {
-    icon: new L.Icon.Default(),
-    draggable: true,
-  },
   style: 'bar',
   searchLabel: '搜尋地點',
-  showPopup: true,
-  popupFormat: ({ query, result }) => {
-    return "開始標記你發現的坪林妖怪!把雲霧移動到發現的地點增加妖怪資料。"
-  },
+  autoClose: true,
   provider: new GeoSearch.OpenStreetMapProvider({
     params: {
       countrycodes: 'TW'
@@ -72,6 +73,10 @@ const search = new GeoSearch.GeoSearchControl({
   }),
 });
 mymap.addControl(search);
+mymap.on('geosearch/showlocation', function (e) {
+  popupAddNew(e.marker.getLatLng());
+});
+
 
 var popup = `
 <h1>醉猴</h1>
@@ -87,9 +92,13 @@ let test_marker = L.marker([24.937602, 121.712626], {
     iconAnchor: [0, 0],
     labelAnchor: [0, 0],
     popupAnchor: [60, 8],
-    html: `<span style="${icon_style("rgb(252,112,5)")}" />`
+    html: `<span style="${icon_style(colors.wind)}" />`
   }),
   closeButton: false,
 }).addTo(mymap);
 
 test_marker.bindPopup(popup, customPopupOptions).openPopup();
+
+mymap.on('click', function (e) {
+  popupAddNew(e.latlng);
+});
