@@ -6,7 +6,6 @@
 
 #index-block-1
     z-index: 1
-    height: 420vh
     &::after
         content: ""
         z-index: -999
@@ -23,7 +22,7 @@
         position: fixed
     .inner-anchor
         margin-top: 60vh
-        height: 100%
+        height: 50%
     .inner-0
         position: absolute
         z-index: -1
@@ -108,7 +107,8 @@
     .inner-3
         height: 100vh
         overflow: hidden
-        margin-top: 60vh
+        margin-top: 30vh
+        margin-bottom: 30vh
         .inner-3-overlay
             height: 100%
             width: 100%
@@ -149,10 +149,44 @@
                 position: relative
                 overflow-x: scroll
                 overflow-y: hidden
+    .inner-3-v
+        position: relative
+        min-height: 100vh
+        background-color: #F3E0C5
+        .inner-3-text-block
+            padding: 6rem 4rem
+            position: relative
+            &:before
+                content: ""
+                position: absolute
+                height: calc( 100% - 2rem )
+                width: calc( 100% - 2rem )
+                top: 1rem
+                left: 1rem
+                outline: 2px solid #C6543C
+            &:after
+                position: absolute
+                right: 0
+                top: 2rem
+                content: "計畫說明"
+                font-family: sans-serif
+                writing-mode: vertical-rl
+                background-color: #C6543C                
+                width: auto
+                height: auto
+                padding: 10px 5px
+                color: white
+            img
+                width: 20%
+                position: absolute
+                bottom: 0
+                right: 0
+
 #index-block-2
     z-index: 2
-    height: 125vh
+    height: 150vh
     background-color: #F3E0C5
+    position: relative
     .inner
         height: 100vh
         width: 100%
@@ -178,6 +212,60 @@
             background-size: contain
             background-position: center
             background-repeat: no-repeat
+    #block-2-anchor
+        margin-top: 25vh
+
+.inner-block-3
+    z-index: 3
+    position: relative
+    min-height: 100vh
+    background-color: #F3E0C5
+    .inner-3-text-block
+        padding: 6rem 4rem
+        position: relative
+        p
+            text-align: center
+        &:before
+            content: ""
+            position: absolute
+            height: calc( 100% - 2rem )
+            width: calc( 100% - 2rem )
+            top: 1rem
+            left: 1rem
+            outline: 2px solid #C6543C
+        &:after
+            position: absolute
+            right: 0
+            top: 2rem
+            content: "計畫參與"
+            font-family: sans-serif
+            writing-mode: vertical-rl
+            background-color: #C6543C                
+            width: auto
+            height: auto
+            padding: 10px 5px
+            color: white
+        img
+            width: calc( 100% - 4rem )
+            margin: 2rem
+        .go-map-overlay
+            position: fixed
+            bottom: 8rem
+            left: 0
+            height: 50%
+            width: 100%
+            #go-map
+                display: block
+                width: 100%
+                height: 100%
+                background-image: url("../img/index/gomap_v.png")
+                background-size: contain
+                background-position: center
+                background-repeat: no-repeat
+
+        #block-3-anchor
+            margin-top: 5rem
+            margin-bottom: 7rem
 
 
         
@@ -198,3 +286,10 @@
                 width: 40%
             .front
                 background-size: 150%
+    #index-block-2
+        height: 100%
+        .inner
+            175vh
+            background-image: url("../img/index/index_4_banner_v.png")
+        #block-2-anchor
+            margin-top: 0

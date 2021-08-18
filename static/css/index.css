@@ -6,8 +6,7 @@
   opacity: .2; }
 
 #index-block-1 {
-  z-index: 1;
-  height: 420vh; }
+  z-index: 1; }
   #index-block-1::after {
     content: "";
     z-index: -999;
@@ -24,7 +23,7 @@
     position: fixed; }
   #index-block-1 .inner-anchor {
     margin-top: 60vh;
-    height: 100%; }
+    height: 50%; }
   #index-block-1 .inner-0 {
     position: absolute;
     z-index: -1;
@@ -111,7 +110,8 @@
   #index-block-1 .inner-3 {
     height: 100vh;
     overflow: hidden;
-    margin-top: 60vh; }
+    margin-top: 30vh;
+    margin-bottom: 30vh; }
     #index-block-1 .inner-3 .inner-3-overlay {
       height: 100%;
       width: 100%;
@@ -152,11 +152,44 @@
         position: relative;
         overflow-x: scroll;
         overflow-y: hidden; }
+  #index-block-1 .inner-3-v {
+    position: relative;
+    min-height: 100vh;
+    background-color: #F3E0C5; }
+    #index-block-1 .inner-3-v .inner-3-text-block {
+      padding: 6rem 4rem;
+      position: relative; }
+      #index-block-1 .inner-3-v .inner-3-text-block:before {
+        content: "";
+        position: absolute;
+        height: calc( 100% - 2rem);
+        width: calc( 100% - 2rem);
+        top: 1rem;
+        left: 1rem;
+        outline: 2px solid #C6543C; }
+      #index-block-1 .inner-3-v .inner-3-text-block:after {
+        position: absolute;
+        right: 0;
+        top: 2rem;
+        content: "計畫說明";
+        font-family: sans-serif;
+        writing-mode: vertical-rl;
+        background-color: #C6543C;
+        width: auto;
+        height: auto;
+        padding: 10px 5px;
+        color: white; }
+      #index-block-1 .inner-3-v .inner-3-text-block img {
+        width: 20%;
+        position: absolute;
+        bottom: 0;
+        right: 0; }
 
 #index-block-2 {
   z-index: 2;
-  height: 125vh;
-  background-color: #F3E0C5; }
+  height: 150vh;
+  background-color: #F3E0C5;
+  position: relative; }
   #index-block-2 .inner {
     height: 100vh;
     width: 100%;
@@ -182,6 +215,59 @@
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat; }
+  #index-block-2 #block-2-anchor {
+    margin-top: 25vh; }
+
+.inner-block-3 {
+  z-index: 3;
+  position: relative;
+  min-height: 100vh;
+  background-color: #F3E0C5; }
+  .inner-block-3 .inner-3-text-block {
+    padding: 6rem 4rem;
+    position: relative; }
+    .inner-block-3 .inner-3-text-block p {
+      text-align: center; }
+    .inner-block-3 .inner-3-text-block:before {
+      content: "";
+      position: absolute;
+      height: calc( 100% - 2rem);
+      width: calc( 100% - 2rem);
+      top: 1rem;
+      left: 1rem;
+      outline: 2px solid #C6543C; }
+    .inner-block-3 .inner-3-text-block:after {
+      position: absolute;
+      right: 0;
+      top: 2rem;
+      content: "計畫參與";
+      font-family: sans-serif;
+      writing-mode: vertical-rl;
+      background-color: #C6543C;
+      width: auto;
+      height: auto;
+      padding: 10px 5px;
+      color: white; }
+    .inner-block-3 .inner-3-text-block img {
+      width: calc( 100% - 4rem);
+      margin: 2rem; }
+    .inner-block-3 .inner-3-text-block .go-map-overlay {
+      position: fixed;
+      bottom: 8rem;
+      left: 0;
+      height: 50%;
+      width: 100%; }
+      .inner-block-3 .inner-3-text-block .go-map-overlay #go-map {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("../img/index/gomap_v.png");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat; }
+    .inner-block-3 .inner-3-text-block #block-3-anchor {
+      margin-top: 5rem;
+      margin-bottom: 7rem; }
 
 @media (max-width: 968px) {
   #index-block-1 .inner-2 .monster-1 {
@@ -197,6 +283,12 @@
     top: 40%;
     width: 40%; }
   #index-block-1 .inner-2 .front {
-    background-size: 150%; } }
+    background-size: 150%; }
+  #index-block-2 {
+    height: 100%; }
+    #index-block-2 .inner {
+      background-image: url("../img/index/index_4_banner_v.png"); }
+    #index-block-2 #block-2-anchor {
+      margin-top: 0; } }
 
 /*# sourceMappingURL=index.css.map */
