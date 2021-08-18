@@ -1,6 +1,13 @@
 @charset "UTF-8";
+.gradient {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(210deg, #5C9D96 0%, white 10%, #CB6971 30%);
+  opacity: .2; }
+
 #index-block-1 {
-  height: 360vh; }
+  z-index: 1;
+  height: 420vh; }
   #index-block-1::after {
     content: "";
     z-index: -999;
@@ -18,9 +25,6 @@
   #index-block-1 .inner-anchor {
     margin-top: 60vh;
     height: 100%; }
-  #index-block-1 .gradient {
-    background: linear-gradient(210deg, #5C9D96 0%, white 10%, #CB6971 30%);
-    opacity: .2; }
   #index-block-1 .inner-0 {
     position: absolute;
     z-index: -1;
@@ -37,7 +41,7 @@
     z-index: -1;
     left: 0;
     top: 0;
-    height: 360vh;
+    height: 420vh;
     width: 100%; }
   #index-block-1 .inner-1 {
     height: 100vh;
@@ -115,7 +119,7 @@
       left: 0;
       background-color: rgba(0, 0, 0, 0.3); }
     #index-block-1 .inner-3 .inner-3-text-block {
-      padding: 1.5rem 1rem;
+      padding: 1.5rem 1rem 1rem 1rem;
       height: 60%;
       width: 80%;
       top: 20%;
@@ -148,5 +152,51 @@
         position: relative;
         overflow-x: scroll;
         overflow-y: hidden; }
+
+#index-block-2 {
+  z-index: 2;
+  height: 125vh;
+  background-color: #F3E0C5; }
+  #index-block-2 .inner {
+    height: 100vh;
+    width: 100%;
+    background-image: url("../img/index/index_4_banner.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
+    #index-block-2 .inner .go-map-overlay {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5); }
+    #index-block-2 .inner #go-map {
+      display: block;
+      position: absolute;
+      height: 50%;
+      width: 50%;
+      top: 25%;
+      left: 25%;
+      background-image: url("../img/index/gomap.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; }
+
+@media (max-width: 968px) {
+  #index-block-1 .inner-2 .monster-1 {
+    width: 60%; }
+  #index-block-1 .inner-2 .monster-2 {
+    width: 40%; }
+  #index-block-1 .inner-2 .monster-3 {
+    width: 20%; }
+  #index-block-1 .inner-2 .monster-4 {
+    width: 80%; }
+  #index-block-1 .inner-2 .monster-5 {
+    left: 30%;
+    top: 40%;
+    width: 40%; }
+  #index-block-1 .inner-2 .front {
+    background-size: 150%; } }
 
 /*# sourceMappingURL=index.css.map */

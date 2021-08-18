@@ -8,51 +8,52 @@
 
 {% block body %}
 <div id="index-block-1">
-        <div class="inner-0"></div>
-        <div class="inner-0-overlay gradient"></div>
-        <div class="inner-1" data-aos="fade-in" data-aos-mirror="true"></div>
-        <div class="inner-2">
-                <div class="p-fixed monster-1" data-aos="fade-right" data-aos-anchor="#inner-2-anchor"
-                        data-aos-delay="0"><img
-                                src="{{url_for('static', filename='img/index/index_2_monster_1.png', version=GLOBAL_VERSION)}}"
-                                alt="">
-                </div>
-                <div class="p-fixed monster-2" data-aos="fade-right" data-aos-anchor="#inner-2-anchor"
-                        data-aos-delay="50"><img
-                                src="{{url_for('static', filename='img/index/index_2_monster_2.png', version=GLOBAL_VERSION)}}"
-                                alt="">
-                </div>
-                <div class="p-fixed monster-3" data-aos="fade-left" data-aos-anchor="#inner-2-anchor"
-                        data-aos-delay="100"><img
-                                src="{{url_for('static', filename='img/index/index_2_monster_3.png', version=GLOBAL_VERSION)}}"
-                                alt="">
-                </div>
-                <div class="p-fixed monster-4" data-aos="fade-left" data-aos-anchor="#inner-2-anchor"
-                        data-aos-delay="150"><img
-                                src="{{url_for('static', filename='img/index/index_2_monster_4.png', version=GLOBAL_VERSION)}}"
-                                alt="">
-                </div>
-                <div class="p-fixed monster-5" data-aos="fade-in" data-aos-anchor="#inner-2-anchor"
-                        data-aos-delay="200"><img
-                                src="{{url_for('static', filename='img/index/index_2_monster_5.png', version=GLOBAL_VERSION)}}"
-                                alt="">
-                </div>
-                <div class="p-fixed montain" data-aos="fade-in" data-aos-anchor="#inner-2-anchor">
-                </div>
-                <div class="p-fixed front" data-aos="fade-up" data-aos-anchor="#inner-2-anchor" data-aos-mirror="true">
-                </div>
-                <div id="inner-2-anchor" class="inner-anchor"></div>
+    <div class="inner-0"></div>
+    <div class="inner-0-overlay gradient"></div>
+    <div class="inner-1" data-aos="fade-in" data-aos-mirror="true"></div>
+    <div class="inner-2">
+        <div class="p-fixed monster-1" data-aos="fade-right" data-aos-anchor="#inner-2-anchor" data-aos-delay="0"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_1.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
-        <div class="inner-3">
-                <div class="p-fixed inner-3-overlay" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"></div>
-                <div class="p-fixed inner-3-text-block" data-aos="fade-in" data-aos-anchor="#inner-3-anchor">
-                        <div class="inner-3-text-scroll">
-                                <img src="{{url_for('static', filename='img/index/index_3_texts.png', version=GLOBAL_VERSION)}}"
-                                        alt="">
-                        </div>
-                </div>
-                <div id="inner-3-anchor" class="inner-anchor"></div>
+        <div class="p-fixed monster-2" data-aos="fade-right" data-aos-anchor="#inner-2-anchor" data-aos-delay="50"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_2.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
+        <div class="p-fixed monster-3" data-aos="fade-left" data-aos-anchor="#inner-2-anchor" data-aos-delay="100"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_3.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="p-fixed monster-4" data-aos="fade-left" data-aos-anchor="#inner-2-anchor" data-aos-delay="150"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_4.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="p-fixed monster-5" data-aos="fade-in" data-aos-anchor="#inner-2-anchor" data-aos-delay="200"><img
+                src="{{url_for('static', filename='img/index/index_2_monster_5.png', version=GLOBAL_VERSION)}}" alt="">
+        </div>
+        <div class="p-fixed montain" data-aos="fade-in" data-aos-anchor="#inner-2-anchor">
+        </div>
+        <div class="p-fixed front" data-aos="fade-up" data-aos-anchor="#inner-2-anchor" data-aos-mirror="true">
+        </div>
+        <div id="inner-2-anchor" class="inner-anchor"></div>
+    </div>
+    <div class="inner-3">
+        <div class="p-fixed inner-3-overlay" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"></div>
+        <div class="p-fixed inner-3-text-block" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"
+            data-aos-mirror="true">
+            <div class="inner-3-text-scroll">
+                <img src="{{url_for('static', filename='img/index/index_3_texts.png', version=GLOBAL_VERSION)}}" alt="">
+            </div>
+        </div>
+        <div id="inner-3-anchor" class="inner-anchor"></div>
+    </div>
+</div>
+<div id="index-block-2">
+    <div class="inner sticky-top">
+        <div class="gradient">
+        </div>
+        <div class="go-map-overlay" data-aos="fade-in" data-aos-anchor="#block-2-anchor">
+            <a href="/map" id="go-map">
+            </a>
+        </div>
+    </div>
+    <div id="block-2-anchor"></div>
 </div>
 {% endblock %}
 
