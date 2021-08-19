@@ -140,6 +140,7 @@
         right: 0;
         top: 2rem;
         content: "計畫說明";
+        font-family: 'Noto Serif TC', sans-serif;
         writing-mode: vertical-rl;
         background-color: #C6543C;
         width: auto;
@@ -172,7 +173,7 @@
         right: 0;
         top: 2rem;
         content: "計畫說明";
-        font-family: sans-serif;
+        font-family: 'Noto Serif TC', sans-serif;
         writing-mode: vertical-rl;
         background-color: #C6543C;
         width: auto;
@@ -241,7 +242,7 @@
       right: 0;
       top: 2rem;
       content: "計畫參與";
-      font-family: sans-serif;
+      font-family: 'Noto Serif TC', sans-serif;
       writing-mode: vertical-rl;
       background-color: #C6543C;
       width: auto;
