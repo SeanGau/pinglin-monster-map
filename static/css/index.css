@@ -1,12 +1,11 @@
 @charset "UTF-8";
-.gradient {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(210deg, #5C9D96 0%, white 10%, #CB6971 30%);
-  opacity: .2; }
-
 #index-block-1 {
   z-index: 1; }
+  #index-block-1 .gradient {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(210deg, #5C9D96 0%, white 10%, #CB6971 30%);
+    opacity: .2; }
   #index-block-1::after {
     content: "";
     z-index: -999;
@@ -191,6 +190,11 @@
   height: 150vh;
   background-color: #F3E0C5;
   position: relative; }
+  #index-block-2 .gradient {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(30deg, #5C9D96 0%, white 50%, #CB6971 100%);
+    opacity: .3; }
   #index-block-2 .inner {
     height: 100vh;
     width: 100%;
