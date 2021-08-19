@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="og:title" content="坪林尋怪地圖" />
+    <meta name="og:image" content="{{url_for('static', filename='img/index/index_4_banner.png', version=GLOBAL_VERSION)}}" />
+    <meta name="og:description" content="是誰在湖桶古道傳出陣陣哀嚎？是誰黏住雪隧裡的車子讓大家不得動彈、在北宜公路造成那麼多交通意外？是誰讓坪林的人口越來越少，公車座位和班次卻永遠不夠？夜裡群聚的流浪狗是在對誰悲鳴？山裡的樹木又被誰拔去？" />
+
     <title>{% block title %}{% endblock %} - {{GLOBAL_TITLE}}</title>
     <link rel="shortcut icon" type="image/ico" href="{{url_for( 'static' ,filename='favicon.ico' )}}" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
