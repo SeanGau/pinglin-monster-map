@@ -63,7 +63,6 @@ function popupAddNew(latlng) {
         .openOn(mymap);
 }
 
-mymap.addControl(new L.Control.Gps({ position: 'topright' }));
 const search = new GeoSearch.GeoSearchControl({
     style: 'bar',
     searchLabel: '搜尋地點',

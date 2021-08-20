@@ -121,7 +121,7 @@ def login():
             flask.session.permanent = False
             flask.session['login_data'] = json.dumps(session_data)
             #send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
-            return alert("登入成功", "/")
+            return alert("登入成功", "/map")
         else:
             return alert("帳號或密碼錯誤！", flask.url_for('login'))
     else:
@@ -130,7 +130,7 @@ def login():
 @app.route('/logout')
 def logout():
     flask.session.clear()
-    return alert("您已登出！", "/")
+    return alert("您已登出！", "/map")
 
 @app.route('/reset', methods = ['GET', 'POST'])
 def reset():

@@ -12,6 +12,26 @@
 
 {% block body %}
 <div id="map"></div>
+<div id="panel" class="d-flex flex-column justify-content-center">
+    <div class="btn-group-vertical align-self-center">
+        {% if login_data is defined %}
+        {% if login_data is none %}
+        <a href="/login" role="button" class="btn btn-potato">登入</a>
+        <a href="/register" role="button" class="btn btn-potato">註冊</a>
+        {% else %}
+        <a href="/logout" role="button" class="btn btn-tomato">登出</a>
+        <a href="/portal" role="button" class="btn btn-tomato">管理</a>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="title-image"></div>
+    <a href="#" role="button" class="d-block elements-help align-self-center"></a>
+    <div class="index-links align-self-center">
+        <a href="/#discription" role="button" class="d-block">計畫說明</a>
+        <span></span>
+        <a href="/#monstersets" role="button" class="d-block">怪奇圖錄</a>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -19,8 +39,8 @@
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
-<script src="{{url_for('static', filename='js/leaflet-gps.min.js', version=GLOBAL_VERSION)}}"></script>
 <script src="{{url_for('static', filename='js/map.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}

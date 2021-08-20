@@ -1,9 +1,83 @@
+.btn-tomato {
+  color: #F3E0C5;
+  background-color: tomato; }
+  .btn-tomato:hover {
+    color: #F3E0C5;
+    background-color: #e6503c; }
+
+.btn-potato {
+  color: tomato;
+  background-color: #f3e3c5; }
+  .btn-potato:hover {
+    color: tomato;
+    background-color: #e9d9bb; }
+
+.leaflet-control a[href="#"] {
+  background-color: #f3e3c5; }
+  .leaflet-control a[href="#"].leaflet-disabled {
+    background-color: #e9d9bb; }
+
 #map {
   display: flex;
   flex: 1;
   width: 100%; }
   #map .leaflet-control-container {
     width: 100%; }
+
+#panel {
+  height: 100%;
+  width: 10%;
+  min-width: 4rem;
+  position: absolute;
+  z-index: 999;
+  background-color: rgba(255, 200, 150, 0.8); }
+  #panel:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(0deg, #5C9D96 0%, white 50%, #CB6971 100%);
+    opacity: .2; }
+  #panel .btn-group-vertical {
+    width: 4rem;
+    height: 4rem; }
+  #panel .title-image {
+    background-image: url("../img/title_v.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 50%; }
+
+@keyframes elements-help-keyframe {
+  0% {
+    transform: translateY(0); }
+  100% {
+    transform: translateY(10px); } }
+  #panel .elements-help {
+    width: 3rem;
+    height: 3rem;
+    background-image: url("../img/element_icon.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: elements-help-keyframe 1s ease-in-out infinite alternate; }
+    #panel .elements-help:hover {
+      opacity: .8; }
+  #panel .index-links {
+    margin-top: 100%; }
+    #panel .index-links a, #panel .index-links span {
+      color: tomato;
+      text-decoration: none;
+      transition: .3s; }
+    #panel .index-links a:hover {
+      font-weight: bold; }
+    #panel .index-links span {
+      margin: 5px 0;
+      display: block;
+      border-bottom: 2px solid; }
 
 .cloud-popup .leaflet-popup-content-wrapper {
   padding: 4rem 4rem 8rem 4rem;

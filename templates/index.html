@@ -33,43 +33,48 @@
         </div>
         <div id="inner-2-anchor" class="inner-anchor"></div>
     </div>
-    <div class="inner-3 d-none d-md-block">
-        <div class="p-fixed inner-3-overlay" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"></div>
-        <div class="p-fixed inner-3-text-block" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"
-            data-aos-mirror="true">
-            <div class="inner-3-text-scroll">
-                <img src="{{url_for('static', filename='img/index/index_3_texts.png', version=GLOBAL_VERSION)}}" alt="">
+    <div id="discription">
+        <div class="inner-3 d-none d-md-block">
+            <div class="p-fixed inner-3-overlay" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"></div>
+            <div class="p-fixed inner-3-text-block" data-aos="fade-in" data-aos-anchor="#inner-3-anchor"
+                data-aos-mirror="true">
+                <div class="inner-3-text-scroll">
+                    <img src="{{url_for('static', filename='img/index/index_3_texts.png', version=GLOBAL_VERSION)}}"
+                        alt="">
+                </div>
+            </div>
+            <div id="inner-3-anchor" class="inner-anchor"></div>
+        </div>
+        <div class="inner-3-v d-md-none d-flex align-items-center" data-aos="fade-in">
+            <div class="inner-3-text-block">
+                <p>「噓，你聽說了嗎？」</p>
+                <p>是誰在湖桶古道傳出陣陣哀嚎？是誰黏住雪隧裡的車子讓大家不得動彈、在北宜公路造成那麼多交通意外？是誰讓坪林的人口越來越少，公車座位和班次卻永遠不夠？夜裡群聚的流浪狗是在對誰悲鳴？山裡的樹木又被誰拔去？
+                </p>
+                <p>這份尋怪地圖始於坪林故事採集團隊與坪林國中走讀課程的合作，八年級的同學們挖掘已存在於坪林的鄉野怪奇故事，也透過轉化生活議題創作妖怪角色。這份尋怪地圖屬於所有人，你可以在這裡尋找、紀錄妖怪與祂們的產地，同時爬梳坪林古今不同時空裡交錯的記憶。怪奇故事，讓這些傳說和地方議題再次被看見，並以新的姿態延續下去。
+                </p>
+                <p>是時候出發了，握緊地圖，一旦踏入雲霧之中就放輕腳步、聽見聲音就悄悄回頭，說不定會有意料之外的收穫，祝你有一趟如夢似幻的旅程。</p>
+                <img src="{{url_for('static', filename='img/index/index_3_small.png', version=GLOBAL_VERSION)}}" alt="">
             </div>
         </div>
-        <div id="inner-3-anchor" class="inner-anchor"></div>
-    </div>
-    <div class="inner-3-v d-md-none d-flex align-items-center" data-aos="fade-in">
-        <div class="inner-3-text-block">
-            <p>「噓，你聽說了嗎？」</p>
-            <p>是誰在湖桶古道傳出陣陣哀嚎？是誰黏住雪隧裡的車子讓大家不得動彈、在北宜公路造成那麼多交通意外？是誰讓坪林的人口越來越少，公車座位和班次卻永遠不夠？夜裡群聚的流浪狗是在對誰悲鳴？山裡的樹木又被誰拔去？</p>
-            <p>這份尋怪地圖始於坪林故事採集團隊與坪林國中走讀課程的合作，八年級的同學們挖掘已存在於坪林的鄉野怪奇故事，也透過轉化生活議題創作妖怪角色。這份尋怪地圖屬於所有人，你可以在這裡尋找、紀錄妖怪與祂們的產地，同時爬梳坪林古今不同時空裡交錯的記憶。怪奇故事，讓這些傳說和地方議題再次被看見，並以新的姿態延續下去。
-            </p>
-            <p>是時候出發了，握緊地圖，一旦踏入雲霧之中就放輕腳步、聽見聲音就悄悄回頭，說不定會有意料之外的收穫，祝你有一趟如夢似幻的旅程。</p>
-            <img src="{{url_for('static', filename='img/index/index_3_small.png', version=GLOBAL_VERSION)}}" alt="">
-        </div>
     </div>
 </div>
-<div id="index-block-2">
-    <div class="inner sticky-top d-none d-md-block" data-aos="fade-in">
-        <div class="gradient">
+<div id="monstersets">
+    <div id="index-block-2">
+        <div class="inner sticky-top d-none d-md-block" data-aos="fade-in">
+            <div class="gradient">
+            </div>
+            <div class="go-map-overlay" data-aos="fade-in" data-aos-anchor="#block-2-anchor">
+                <a href="/map" id="go-map">
+                </a>
+            </div>
         </div>
-        <div class="go-map-overlay" data-aos="fade-in" data-aos-anchor="#block-2-anchor">
-            <a href="/map" id="go-map">
-            </a>
+        <div class="d-md-none" data-aos="fade-in">
+            <img class="w-100"
+                src="{{url_for('static', filename='img/index/index_4_banner_v.png', version=GLOBAL_VERSION)}}" alt="">
         </div>
+        <div id="block-2-anchor"></div>
     </div>
-    <div class="d-md-none" data-aos="fade-in">
-        <img class="w-100"
-            src="{{url_for('static', filename='img/index/index_4_banner_v.png', version=GLOBAL_VERSION)}}" alt="">
-    </div>
-    <div id="block-2-anchor"></div>
 </div>
-
 <div class="inner-block-3 d-md-none d-flex align-items-center">
     <div class="inner-3-text-block" data-aos="fade-in">
         <p>
