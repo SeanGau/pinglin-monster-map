@@ -1,16 +1,38 @@
-.btn-tomato {
-  color: #F3E0C5;
-  background-color: tomato; }
-  .btn-tomato:hover {
-    color: #F3E0C5;
-    background-color: #e6503c; }
+.bg-color-bg {
+  background-color: #F3DFC3; }
 
-.btn-potato {
-  color: tomato;
-  background-color: #f3e3c5; }
-  .btn-potato:hover {
-    color: tomato;
-    background-color: #e9d9bb; }
+.bg-color-border {
+  background-color: rgba(0, 0, 0, 0.25); }
+
+.bg-color-wind {
+  background-color: #7CAD82; }
+
+.bg-color-fire {
+  background-color: #EE7839; }
+
+.bg-color-ground {
+  background-color: #DBB853; }
+
+.bg-color-water {
+  background-color: #5B9E98; }
+
+.color-bg {
+  color: #F3DFC3; }
+
+.color-border {
+  color: rgba(0, 0, 0, 0.25); }
+
+.color-wind {
+  color: #7CAD82; }
+
+.color-fire {
+  color: #EE7839; }
+
+.color-ground {
+  color: #DBB853; }
+
+.color-water {
+  color: #5B9E98; }
 
 .leaflet-control a[href="#"] {
   background-color: #f3e3c5; }
@@ -27,10 +49,10 @@
 #panel {
   height: 100%;
   width: 10%;
-  min-width: 4rem;
+  min-width: 5rem;
   position: absolute;
-  z-index: 999;
-  background-color: rgba(255, 200, 150, 0.8); }
+  z-index: 9999;
+  background-color: rgba(255, 200, 150, 0.7); }
   #panel:before {
     content: "";
     position: absolute;
@@ -40,11 +62,12 @@
     height: 100%;
     width: 100%;
     background: linear-gradient(0deg, #5C9D96 0%, white 50%, #CB6971 100%);
-    opacity: .2; }
+    opacity: .1; }
   #panel .btn-group-vertical {
     width: 4rem;
     height: 4rem; }
   #panel .title-image {
+    margin: 2rem 0;
     background-image: url("../img/title_v.png");
     background-position: center;
     background-size: contain;
@@ -53,10 +76,11 @@
 
 @keyframes elements-help-keyframe {
   0% {
-    transform: translateY(0); }
+    transform: translateY(-5px); }
   100% {
-    transform: translateY(10px); } }
+    transform: translateY(5px); } }
   #panel .elements-help {
+    margin: 1rem 0;
     width: 3rem;
     height: 3rem;
     background-image: url("../img/element_icon.png");
@@ -69,34 +93,62 @@
   #panel .index-links {
     margin-top: 100%; }
     #panel .index-links a, #panel .index-links span {
-      color: tomato;
+      color: #c6543c;
+      font-weight: bold;
       text-decoration: none;
       transition: .3s; }
     #panel .index-links a:hover {
-      font-weight: bold; }
+      color: #bc4a32; }
     #panel .index-links span {
       margin: 5px 0;
       display: block;
       border-bottom: 2px solid; }
 
-.cloud-popup .leaflet-popup-content-wrapper {
-  padding: 4rem 4rem 8rem 4rem;
-  background: 0;
-  color: black;
-  box-shadow: none;
-  background-image: url(../img/cloud.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  text-align: center; }
-  .cloud-popup .leaflet-popup-content-wrapper a {
-    color: black; }
+#elements-help-overlay {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); }
+  #elements-help-overlay .inner {
+    width: 90%;
+    max-width: 60rem;
+    height: 90%;
+    background-image: url("../img/element_help.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; }
 
-.cloud-popup .leaflet-popup-tip-container {
-  display: none; }
+.cloud-popup {
+  pointer-events: none; }
+  .cloud-popup .leaflet-popup-content-wrapper {
+    padding: 4rem 4rem 8rem 4rem;
+    background: 0;
+    color: black;
+    box-shadow: none;
+    background-image: url(../img/cloud.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center; }
+    .cloud-popup .leaflet-popup-content-wrapper .link {
+      color: black;
+      pointer-events: all; }
+  .cloud-popup .leaflet-popup-tip-container {
+    display: none; }
+  .cloud-popup .leaflet-popup-content h1 {
+    font-weight: bold;
+    text-align: center; }
 
-.cloud-popup .leaflet-popup-content h1 {
-  font-weight: bold;
-  text-align: center; }
+@media (max-width: 991px) {
+  #panel {
+    height: fit-content;
+    bottom: 0; }
+    #panel .title-image {
+      display: none; }
+    #panel .index-links {
+      margin-top: 0; } }
 
 /*# sourceMappingURL=map.css.map */

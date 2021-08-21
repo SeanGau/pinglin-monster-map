@@ -10,10 +10,9 @@ let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStree
 let satellite = L.tileLayer(MymbUrl, { id: 'ckmemz8hn1m4r17t8hu2sd80i', attribution: mbAttr }),
     streets = L.tileLayer(MymbUrl, {
         maxNativeZoom: 18,
-        id: 'ckova8spg0as318mobuqnirjh',
+        id: 'cksldzvyx9x3617pd62xaxskn',
         attribution: mbAttr
     });
-
 function icon_style(color) {
     return `
 	color: black;
@@ -82,7 +81,7 @@ mymap.on('geosearch/showlocation', function (e) {
 var popup = `
 <h1>醉猴</h1>
 <p>哇哈哈</p>
-<a href="/monster/1" class="btn btn-warning">詳細資訊</a>
+<a href="/monster/1" class="btn btn-warning link">詳細資訊</a>
 `;
 var customPopupOptions = {
     'className': 'cloud-popup'

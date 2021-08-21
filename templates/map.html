@@ -12,15 +12,17 @@
 
 {% block body %}
 <div id="map"></div>
-<div id="panel" class="d-flex flex-column justify-content-center">
-    <div class="btn-group-vertical align-self-center">
+<div id="panel" class="d-flex flex-column justify-content-center p-2">
+    <div class="align-self-center">
         {% if login_data is defined %}
         {% if login_data is none %}
-        <a href="/login" role="button" class="btn btn-potato">登入</a>
-        <a href="/register" role="button" class="btn btn-potato">註冊</a>
+        <a href="/login" role="button" class="btn btn-potato btn-rounded mb-1">登入</a>
+        <br/>
+        <a href="/register" role="button" class="btn btn-potato btn-rounded">註冊</a>
         {% else %}
-        <a href="/logout" role="button" class="btn btn-tomato">登出</a>
-        <a href="/portal" role="button" class="btn btn-tomato">管理</a>
+        <a href="/logout" role="button" class="btn btn-tomato btn-rounded mb-1">登出</a>
+        <br/>
+        <a href="/portal" role="button" class="btn btn-tomato btn-rounded">管理</a>
         {% endif %}
         {% endif %}
     </div>
@@ -31,6 +33,9 @@
         <span></span>
         <a href="/#monstersets" role="button" class="d-block">怪奇圖錄</a>
     </div>
+</div>
+<div class="d-none align-self-center d-flex justify-content-center" id="elements-help-overlay">
+    <div class="inner align-self-center"></div>
 </div>
 {% endblock %}
 
@@ -43,4 +48,12 @@
     charset="utf-8"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
 <script src="{{url_for('static', filename='js/map.js', version=GLOBAL_VERSION)}}"></script>
+<script>
+    $(".elements-help").on("click", function (e) {
+        $("#elements-help-overlay").toggleClass("d-none");
+    });
+    $("#elements-help-overlay").on("click", function (e) {
+        $("#elements-help-overlay").toggleClass("d-none");
+    });
+</script>
 {% endblock %}

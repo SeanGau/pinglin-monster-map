@@ -13,13 +13,14 @@
                 <div id="carousel" class="carousel slide" data-bs-interval="false">
                     <div class="carousel-indicators">
                         {% for image in monster_data['image'] %}
-                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{loop.index - 1}}" class="{% if loop.index == 1 %}active{% endif %}"
-                            aria-current="true"></button>
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{loop.index - 1}}"
+                            class="{% if loop.index == 1 %}active{% endif %}" aria-current="true"></button>
                         {% endfor %}
                     </div>
                     <div class="carousel-inner">
                         {% for image in monster_data['image'] %}
-                        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}" style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
+                        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
+                            style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
                         </div>
                         {% endfor %}
                     </div>
@@ -72,9 +73,11 @@
             <div class="col-lg-auto order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
                 <div class="row h-100">
                     <div class="col-lg order-lg-last px-4 px-lg-0 write-verticle-rl flex-grow-0">
-                        <img id="data-element"
-                            src="{{url_for('static', filename='img/category/'+monster_data['category']+monster_data['element']+'.svg')}}"
-                            alt="">
+                        <a href="#" id="elements-help">
+                            <img id="data-element"
+                                src="{{url_for('static', filename='img/category/'+monster_data['category']+monster_data['element']+'.svg')}}"
+                                alt="">
+                        </a>
                         <span id="data-tag">
                             {% for tag in monster_data['tag'] %}
                             <a>#{{tag}}</a>
@@ -101,14 +104,24 @@
     </div>
 </div>
 {% if can_edit == True %}
-<a href="#" class="btn btn-info" style="position: fixed; bottom:1rem; right: 1rem" id="edit-button">編輯</a>
+<a href="#" class="btn btn-tomato" style="position: fixed; bottom:1rem; right: 1rem" id="edit-button">編輯</a>
 {% endif %}
+<div class="d-none align-self-center d-flex justify-content-center" id="elements-help-overlay">
+    <div class="inner align-self-center"></div>
+</div>
+<a href="/map" class="btn btn-potato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i class="fas fa-angle-double-left"></i></a>
 {% endblock %}
 
 {% block script %}
 <script>
-    $("#edit-button").on('click', function(e) {
+    $("#edit-button").on('click', function (e) {
         window.location.href = window.location.href.replace("monster", "edit");
+    });
+    $("#elements-help").on("click", function (e) {
+        $("#elements-help-overlay").toggleClass("d-none");
+    });
+    $("#elements-help-overlay").on("click", function (e) {
+        $("#elements-help-overlay").toggleClass("d-none");
     });
 </script>
 {% endblock %}

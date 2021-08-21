@@ -107,4 +107,22 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto;
   pointer-events: all; }
 
+.btn-tomato {
+  color: #F3E0C5;
+  font-weight: bold;
+  background-color: #c6543c; }
+  .btn-tomato:hover {
+    color: #F3E0C5;
+    background-color: #bc4a32; }
+
+.btn-potato {
+  color: #c6543c;
+  background-color: #f3e3c5; }
+  .btn-potato:hover {
+    color: #c6543c;
+    background-color: #e9d9bb; }
+
+.btn-rounded {
+  border-radius: 10rem; }
+
 /*# sourceMappingURL=common.css.map */
