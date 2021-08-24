@@ -5,5 +5,5 @@
 		"../sass/edit.sass"
 	],
 	"names": [],
-	"mappings": "AAAA,AACI,WADO,CACP,aAAa,CAAC;EACV,WAAW,EAAE,IAAI,GAAG"
+	"mappings": "AAAA,AAAA,aAAa,CAAC;EACV,WAAW,EAAE,IAAI,GAAG"
 }

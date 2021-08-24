@@ -1,4 +1,8 @@
-import flask, json, hashlib, string, random
+import flask
+import json
+import hashlib
+import string
+import random
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
@@ -7,21 +11,23 @@ from sassutils.wsgi import SassMiddleware
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
-#app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
+# app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.jinja_env.globals['GLOBAL_TITLE'] = "坪林尋怪地圖"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
 
+
 demo_monster_data = {
-    "image": ["demo_A.png","demo_B.png","demo_C.png"],
+    "thumb": "demo_A.png",
+    "image": ["demo_A.png", "demo_B.png", "demo_C.png"],
     "founder_id": 1,
     "founder": "黃玟霖",
     "name": "垃圾怪",
-    "tag": ["北勢溪","漂流垃圾","人就是共犯"],
-    "category": "水域", #人文、過度、水域、山野
-    "element": "water", #water, ground, wind, fire
-    "date": ["2011","05","10"],
+    "tag": ["北勢溪", "漂流垃圾", "人就是共犯"],
+    "category": "水域",  # 人文、過度、水域、山野
+    "element": "water",  # water, ground, wind, fire
+    "date": ["2011", "05", "10"],
     "local": "北勢溪親水吊橋下方",
     "disc": "出現在河流中堆積很多垃圾的地方，像是垃圾袋、寶特瓶，那散發出很臭的味道，因為長期堆滿惡臭的垃圾，人經過的時候都會久留。",
     "strong": "收集垃圾一口吐出",
@@ -37,10 +43,13 @@ app.wsgi_app = SassMiddleware(app.wsgi_app, {
         'strip_extension': True,
     }
 })
+
+
 def get_random_string(length):
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
+
 
 def gethashed(data):
     data = data+app.config['SECRET_KEY']
@@ -49,33 +58,55 @@ def gethashed(data):
     h = s.hexdigest()
     return h
 
-def alert(message, redir): #alert then redirect
-	return f'''<script type="text/javascript">
+
+def alert(message, redir):  # alert then redirect
+    return f'''<script type="text/javascript">
 						alert("{message}");
 						window.location.href = "{redir}";
 						</script>'''
 
-def send_mail(recevier_array, subject, html_content):
-	msg = Message(subject=app.jinja_env.globals['GLOBAL_TITLE']+" - "+subject, recipients=recevier_array, html=html_content)
-	mail.send(msg)
 
-#------------------------------------------------------------------------------------------------------------------
+def send_mail(recevier_array, subject, html_content):
+    msg = Message(subject=app.jinja_env.globals['GLOBAL_TITLE'] +
+                  " - "+subject, recipients=recevier_array, html=html_content)
+    mail.send(msg)
+
+# ------------------------------------------------------------------------------------------------------------------
+
 
 @app.route('/')
 def index():
     login_data = flask.session.get('login_data', None)
     if login_data is not None:
         login_data = json.loads(login_data)
-    return flask.render_template('index.html', login_data = login_data)
+    return flask.render_template('index.html', login_data=login_data)
+
 
 @app.route('/map')
 def map():
+    geojson = {"type": "FeatureCollection", "features": []}
+    
+    cb = db.session.execute(f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters")
+    for row in cb:
+        d = {"type": "Feature", "geometry": {
+            "type": "Point", "coordinates": []}, "properties": {}}
+        if row['st_asgeojson'] is not None:
+            d['geometry'] = json.loads(row['st_asgeojson'])
+        if row['data'] is not None:
+            d['properties'] = row['data']
+        else:
+            continue
+        d['properties']['monster_id'] = row['id']
+        geojson['features'].append(d)
+    
     login_data = flask.session.get('login_data', None)
     if login_data is not None:
         login_data = json.loads(login_data)
-    return flask.render_template('map.html', login_data = login_data)
 
-@app.route('/portal', methods = ['GET', 'POST'])
+    return flask.render_template('map.html', login_data=login_data, geojson=geojson)
+
+
+@app.route('/portal', methods=['GET', 'POST'])
 def portal():
     login_data = flask.session.get('login_data', None)
     if login_data is None:
@@ -88,29 +119,32 @@ def portal():
             return "error"
         else:
             db.session.begin()
-            if len(_data['password'])>=8 and len(_data['password'])<=20:
-                db.session.execute(f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{_data['email']}'")
-            if len(_data['username'])>0 and len(_data['username'])<=12:
-                db.session.execute(f"UPDATE public.users SET username='{_data['username']}' WHERE email='{_data['email']}'")
+            if len(_data['password']) >= 8 and len(_data['password']) <= 20:
+                db.session.execute(
+                    f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{_data['email']}'")
+            if len(_data['username']) > 0 and len(_data['username']) <= 12:
+                db.session.execute(
+                    f"UPDATE public.users SET username='{_data['username']}' WHERE email='{_data['email']}'")
                 login_data['username'] = _data['username']
                 flask.session['login_data'] = json.dumps(login_data)
             db.session.commit()
             return "ok"
-    else:        
+    else:
         login_data['data'] = [
             {
                 "name": "醉猴1",
                 "slug": "1"
             }
         ]
-        return flask.render_template('portal.html', login_data = login_data)
+        return flask.render_template('portal.html', login_data=login_data)
 
 
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'POST':
         _data = flask.request.form
-        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}' AND password='{gethashed(_data['password'])}'").first()
+        cb = db.session.execute(
+            f"SELECT * FROM public.users WHERE email='{_data['email']}' AND password='{gethashed(_data['password'])}'").first()
         if cb is not None:
             cb_data = dict(cb)
             session_data = {
@@ -127,39 +161,47 @@ def login():
     else:
         return flask.render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     flask.session.clear()
     return alert("您已登出！", "/map")
 
-@app.route('/reset', methods = ['GET', 'POST'])
+
+@app.route('/reset', methods=['GET', 'POST'])
 def reset():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
-        cb = db.session.execute(f"SELECT * FROM token_table WHERE token='{_data['token']}'").first()
+        cb = db.session.execute(
+            f"SELECT * FROM token_table WHERE token='{_data['token']}'").first()
         if cb is not None:
             cb_data = dict(cb)
             exp_t = cb_data['token_expire']
-            if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password'])>=8 and len(_data['password'])<=20:
-                db.session.execute(f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{cb_data['email']}'")
-                db.session.execute(f"DELETE FROM public.token_table WHERE email='{cb_data['email']}'")
+            if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password']) >= 8 and len(_data['password']) <= 20:
+                db.session.execute(
+                    f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{cb_data['email']}'")
+                db.session.execute(
+                    f"DELETE FROM public.token_table WHERE email='{cb_data['email']}'")
                 db.session.commit()
                 return "ok"
         return "error"
     else:
         return flask.render_template('reset.html')
 
-@app.route('/forget', methods = ['GET', 'POST'])
+
+@app.route('/forget', methods=['GET', 'POST'])
 def forget():
     if flask.request.method == 'POST':
         _data = flask.request.form
         token = gethashed(str(datetime.now().timestamp())+_data['email'])
-        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
-        if len(cb.all())==0:
+        cb = db.session.execute(
+            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+        if len(cb.all()) == 0:
             return alert("此信箱尚未註冊！", flask.url_for('forget'))
-        db.session.execute(f"INSERT INTO public.token_table (email,token,token_expire) VALUES('{_data['email']}','{token}',(NOW() + interval '1 hour'))")
+        db.session.execute(
+            f"INSERT INTO public.token_table (email,token,token_expire) VALUES('{_data['email']}','{token}',(NOW() + interval '1 hour'))")
         db.session.commit()
-        send_mail([_data['email']],"忘記密碼", f'''
+        send_mail([_data['email']], "忘記密碼", f'''
 				<div style="font-size: 1.5em; text-align: center;">
 				<p>您好，</p>
 				<p>坪林巡怪地圖收到<b>重設密碼</b>請求<p>
@@ -172,17 +214,20 @@ def forget():
     else:
         return flask.render_template('forget.html')
 
-@app.route('/register', methods = ['GET', 'POST'])
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if flask.request.method == 'POST':
         if flask.session.get('email_verify', None) is None:
             return "請先輸入並驗證Email"
         _data = flask.request.get_json()
-        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
-        if len(cb.all())>0:
+        cb = db.session.execute(
+            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+        if len(cb.all()) > 0:
             return "此信箱已被註冊！"
-        elif _data['email']==flask.session['email_verify']['email'] and _data['code']==flask.session['email_verify']['code'] and len(_data['username'])>0 and len(_data['username'])<=12 and len(_data['password'])>=8 and len(_data['password'])<=20:
-            cb = db.session.execute(f"INSERT INTO public.users (username,email,password) VALUES('{_data['username']}','{_data['email']}','{gethashed(_data['password'])}')")
+        elif _data['email'] == flask.session['email_verify']['email'] and _data['code'] == flask.session['email_verify']['code'] and len(_data['username']) > 0 and len(_data['username']) <= 12 and len(_data['password']) >= 8 and len(_data['password']) <= 20:
+            cb = db.session.execute(
+                f"INSERT INTO public.users (username,email,password) VALUES('{_data['username']}','{_data['email']}','{gethashed(_data['password'])}')")
             db.session.commit()
             return "ok"
         else:
@@ -190,16 +235,18 @@ def register():
     else:
         return flask.render_template('register.html')
 
-@app.route('/register/verify', methods = ['GET', 'POST'])
+
+@app.route('/register/verify', methods=['GET', 'POST'])
 def register_verify():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
-        cb = db.session.execute(f"SELECT * FROM public.users WHERE email='{_data['email']}'")
-        if len(cb.all())>0:
+        cb = db.session.execute(
+            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+        if len(cb.all()) > 0:
             return "此信箱已被註冊！"
         else:
             code = get_random_string(10)
-            send_mail([_data['email']],"信箱認證", f'''
+            send_mail([_data['email']], "信箱認證", f'''
                     <div style="font-size: 1.5em;">
                     <p>您好，</p>
                     <p>您的信箱認證碼為<a style="padding-left: 1em; color: red; border-radius: 5px;">{code}</a></p>
@@ -221,7 +268,8 @@ def register_verify():
         else:
             return "ok"
 
-@app.route('/edit/<monster_id>', methods=['GET','POST'])
+
+@app.route('/edit/<monster_id>', methods=['GET', 'POST'])
 def edit(monster_id):
     login_data = flask.session.get('login_data', None)
     if login_data is None:
@@ -238,17 +286,21 @@ def edit(monster_id):
         print(_data)
         return "ok"
     else:
-        cb = db.session.execute(f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
+        cb = db.session.execute(
+            f"SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id={monster_id}").first()
         if cb is None:
             return flask.abort(404)
         if login_data['id'] != cb['founder']:
-            return flask.abort(403)    
+            return flask.abort(403)
+
         flask.session['current_editing'] = monster_id
-        return flask.render_template('monster_edit.html', login_data = login_data, monster_data = cb['data'])
+        return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']))
+
 
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
-    cb = db.session.execute(f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
+    cb = db.session.execute(
+        f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
     if cb is None:
         return flask.abort(404)
     else:
@@ -260,15 +312,17 @@ def monster(monster_id):
                 can_edit = True
         monster_data = cb['data']
         monster_data['id'] = monster_id
-        founder = db.session.execute(f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
+        founder = db.session.execute(
+            f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
         monster_data['founder'] = founder['username']
-        return flask.render_template('monster.html', login_data = login_data, monster_data = monster_data, can_edit = can_edit)
+        return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit)
+
 
 @app.route('/test', methods=['GET'])
 def test():
     if app.debug is not True:
         return flask.abort(403)
-    msg_to = ['rrtw0627@gmail.com','haca00193@gmail.com']
+    msg_to = ['rrtw0627@gmail.com', 'haca00193@gmail.com']
     msg_subject = 'TEST'
     msg_content = f'''
         <h1>test</h1>
@@ -276,7 +330,8 @@ def test():
     '''
     send_mail(msg_to, msg_subject, msg_content)
     return "TEST"
-    #return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
+    # return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
+
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000, debug=True)

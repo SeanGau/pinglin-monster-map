@@ -2,6 +2,7 @@ $("#monster-data-form").on('submit', function(e) {
     e.preventDefault();
     $("#loading").fadeIn(100);
     let _data = {
+        "point": [$("#monster-lng").val(), $("#monster-lat").val()],
         "name": $("#monster-name").val(),
         "tag": $("#monster-tag").val().split(","),
         "category": $("#monster-category").val(),

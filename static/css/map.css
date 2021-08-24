@@ -34,6 +34,9 @@
 .color-water {
   color: #5B9E98; }
 
+.leaflet-container {
+  font-family: 'Noto Serif TC', sans-serif; }
+
 .leaflet-control a[href="#"] {
   background-color: #f3e3c5; }
   .leaflet-control a[href="#"].leaflet-disabled {
@@ -124,7 +127,7 @@
 .cloud-popup {
   pointer-events: none; }
   .cloud-popup .leaflet-popup-content-wrapper {
-    padding: 4rem 4rem 8rem 4rem;
+    padding: 2rem 2rem 4rem 2rem;
     background: 0;
     color: black;
     box-shadow: none;
@@ -132,10 +135,30 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    text-align: center; }
-    .cloud-popup .leaflet-popup-content-wrapper .link {
+    text-align: center;
+    position: relative; }
+    .cloud-popup .leaflet-popup-content-wrapper .title {
       color: black;
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      padding-right: 3rem;
+      font-size: 1rem;
+      text-decoration: none;
+      writing-mode: vertical-rl; }
+    .cloud-popup .leaflet-popup-content-wrapper .link {
+      position: absolute;
+      top: 30%;
+      right: 10%;
+      font-size: 3rem;
+      color: #C6543C;
       pointer-events: all; }
+    .cloud-popup .leaflet-popup-content-wrapper .image {
+      height: 150px;
+      width: 150px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center; }
   .cloud-popup .leaflet-popup-tip-container {
     display: none; }
   .cloud-popup .leaflet-popup-content h1 {

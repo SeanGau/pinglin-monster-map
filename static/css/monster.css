@@ -178,6 +178,8 @@
     font-size: 1.25rem; } }
 
 @media (max-width: 991px) {
+  #monster-box {
+    padding-bottom: 3rem; }
   #data-element {
     position: absolute;
     right: 1rem;

@@ -24,7 +24,7 @@ function icon_style(color) {
 	top: -9px;
 	position: relative;
 	border-radius: 9px;
-	border: 1px solid rgba(50,50,50,0.5);`
+	border: 2px solid rgba(50,50,50,0.8);`
 };
 
 let mymap = L.map('map', {
@@ -78,27 +78,34 @@ mymap.on('geosearch/showlocation', function (e) {
 });
 
 
-var popup = `
-<h1>醉猴</h1>
-<p>哇哈哈</p>
-<a href="/monster/1" class="btn btn-warning link">詳細資訊</a>
-`;
-var customPopupOptions = {
-    'className': 'cloud-popup'
-}
-let test_marker = L.marker([24.937602, 121.712626], {
-    icon: L.divIcon({
-        className: "custom-marker",
-        iconAnchor: [0, 0],
-        labelAnchor: [0, 0],
-        popupAnchor: [60, 8],
-        html: `<span style="${icon_style(colors.wind)}" />`
-    }),
-    closeButton: false,
-}).addTo(mymap);
-
-test_marker.bindPopup(popup, customPopupOptions).openPopup();
-
 mymap.on('click', function (e) {
     popupAddNew(e.latlng);
 });
+
+L.geoJSON(geojson, {
+    onEachFeature: function (feature, layer) {
+    },
+    pointToLayer: function (feature, latlng) {
+        let marker = L.marker(latlng, {
+            icon: L.divIcon({
+                className: "custom-marker",
+                iconAnchor: [0, 0],
+                labelAnchor: [0, 0],
+                popupAnchor: [60, 8],
+                html: `<span style="${icon_style(colors[feature['properties']['element']])}" />`
+            }),
+            closeButton: false,
+        });
+        let monster_id = feature['properties']['monster_id'];
+        let popup = `
+        <a class="title">${feature['properties']['name']}</a>
+        <div class="image" style="background-image: url('/static/img/monsters/${monster_id}/${feature['properties']['thumb']}')"></div>
+        <a href="/monster/${monster_id}" class="link"><i class="fas fa-angle-double-right"></i></a>
+        `;
+        let customPopupOptions = {
+            'className': 'cloud-popup'
+        }
+        marker.bindPopup(popup, customPopupOptions);
+        return marker;
+    },
+}).addTo(mymap);

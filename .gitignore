@@ -26,3 +26,8 @@ htmlcov/
 *,cover
 
 config.py
+
+# pyre
+.pyre/
+.pyre_configuration
+.watchmanconfig

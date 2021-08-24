@@ -1,4 +1,6 @@
 @import 'var'
+.leaflet-container
+    font-family: 'Noto Serif TC', sans-serif
 
 .leaflet-control a[href="#"]
     background-color: rgb(243,227,197)
@@ -89,7 +91,7 @@
 .cloud-popup
     pointer-events: none
     .leaflet-popup-content-wrapper
-        padding: 4rem 4rem 8rem 4rem
+        padding: 2rem 2rem 4rem 2rem
         background: 0
         color: black
         box-shadow: none
@@ -98,9 +100,30 @@
         background-repeat: no-repeat
         background-position: center
         text-align: center
-        .link
+        position: relative
+        .title
             color: black
+            position: absolute
+            top: 10%
+            right: 10%
+            padding-right: 3rem
+            font-size: 1rem
+            text-decoration: none
+            writing-mode: vertical-rl
+
+        .link
+            position: absolute
+            top: 30%
+            right: 10%
+            font-size: 3rem
+            color: #C6543C
             pointer-events: all
+        .image
+            height: 150px
+            width: 150px
+            background-size: contain
+            background-repeat: no-repeat
+            background-position: center
 
     .leaflet-popup-tip-container
         display: none

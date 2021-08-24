@@ -17,11 +17,11 @@
         {% if login_data is defined %}
         {% if login_data is none %}
         <a href="/login" role="button" class="btn btn-potato btn-rounded mb-1">登入</a>
-        <br/>
+        <br />
         <a href="/register" role="button" class="btn btn-potato btn-rounded">註冊</a>
         {% else %}
         <a href="/logout" role="button" class="btn btn-tomato btn-rounded mb-1">登出</a>
-        <br/>
+        <br />
         <a href="/portal" role="button" class="btn btn-tomato btn-rounded">管理</a>
         {% endif %}
         {% endif %}
@@ -47,7 +47,6 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
     charset="utf-8"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
-<script src="{{url_for('static', filename='js/map.js', version=GLOBAL_VERSION)}}"></script>
 <script>
     $(".elements-help").on("click", function (e) {
         $("#elements-help-overlay").toggleClass("d-none");
@@ -55,5 +54,7 @@
     $("#elements-help-overlay").on("click", function (e) {
         $("#elements-help-overlay").toggleClass("d-none");
     });
+    let geojson = {{ geojson| tojson | safe }};
 </script>
+<script src="{{url_for('static', filename='js/map.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}
