@@ -1,20 +1,24 @@
 let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://www.mapbox.com/">mapbox</a> ',
 MymbUrl = 'https://api.mapbox.com/styles/v1/js00193/{id}/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoianMwMDE5MyIsImEiOiJjazN0dnN2aDkwNmwxM21vM2lvNDB4ZzJkIn0.48gtpsBsdD2vLWDVe1dOlQ';
+
 let streets = L.tileLayer(MymbUrl, {
-maxNativeZoom: 18,
-id: 'cksldzvyx9x3617pd62xaxskn',
-attribution: mbAttr
+    maxZoom: 20,
+    maxNativeZoom: 20,
+    id: 'cksldzvyx9x3617pd62xaxskn',
+    attribution: mbAttr
 });
+
 let orig_latlng = [$("#monster-lat").val(), $("#monster-lng").val()];
+
 let map = L.map('map', {
-center: orig_latlng,
-zoom: 18,
-maxZoom: 18,
-minZoom: 10,
-zoomDelta: 0.25,
-zoomSnap: 0,
-layers: [streets],
-zoomControl: false
+    center: orig_latlng,
+    zoom: 18,
+    maxZoom: 20,
+    minZoom: 10,
+    zoomDelta: 0.25,
+    zoomSnap: 0,
+    layers: [streets],
+    zoomControl: false
 });
 
 let marker = L.marker(orig_latlng, {
