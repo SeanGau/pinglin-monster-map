@@ -83,10 +83,11 @@ def index():
 
 
 @app.route('/map')
-def map():
+def monstermap():
     geojson = {"type": "FeatureCollection", "features": []}
-    
-    cb = db.session.execute(f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters")
+
+    cb = db.session.execute(
+        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters")
     for row in cb:
         d = {"type": "Feature", "geometry": {
             "type": "Point", "coordinates": []}, "properties": {}}
@@ -98,7 +99,7 @@ def map():
             continue
         d['properties']['monster_id'] = row['id']
         geojson['features'].append(d)
-    
+
     login_data = flask.session.get('login_data', None)
     if login_data is not None:
         login_data = json.loads(login_data)
@@ -269,11 +270,21 @@ def register_verify():
             return "ok"
 
 
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    login_data = flask.session.get('login_data', None)
+    if login_data is None:
+        return flask.redirect("login", code=303)
+    else:
+        login_data = json.loads(login_data)
+    return flask.render_template('monster_add.html')
+
+
 @app.route('/edit/<monster_id>', methods=['GET', 'POST'])
 def edit(monster_id):
     login_data = flask.session.get('login_data', None)
     if login_data is None:
-        return flask.abort(403)
+        return flask.redirect("login", code=303)
     else:
         login_data = json.loads(login_data)
 
@@ -290,8 +301,10 @@ def edit(monster_id):
             f"SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id={monster_id}").first()
         if cb is None:
             return flask.abort(404)
-        if login_data['id'] != cb['founder']:
+        if login_data['id'] != cb['founder'] and login_data['id'] != 1:
             return flask.abort(403)
+
+        cb['data']['date'] = list(map(lambda x: str(x).zfill(2), cb['data']['date']))
 
         flask.session['current_editing'] = monster_id
         return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']))
@@ -310,6 +323,8 @@ def monster(monster_id):
             login_data = json.loads(login_data)
             if login_data['id'] == cb['founder']:
                 can_edit = True
+                
+        cb['data']['date'] = list(map(lambda x: str(x).zfill(2), cb['data']['date']))
         monster_data = cb['data']
         monster_data['id'] = monster_id
         founder = db.session.execute(

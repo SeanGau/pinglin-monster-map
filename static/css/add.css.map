@@ -1,8 +1,8 @@
 {
 	"version": 3,
-	"file": "edit.css",
+	"file": "add.css",
 	"sources": [
-		"../sass/edit.sass"
+		"../sass/add.sass"
 	],
 	"names": [],
 	"mappings": "AAAA,AAAA,IAAI,CAAC;EACD,MAAM,EAAE,KAAK,GAAG;;AACpB,AAAA,aAAa,CAAC;EACV,WAAW,EAAE,IAAI,GAAG"

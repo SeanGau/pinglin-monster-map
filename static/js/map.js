@@ -60,10 +60,14 @@ L.control.locate({
 function popupAddNew(latlng) {
     let popLocation = latlng;
     let popup = L.popup({
-        'className': 'cloud-popup',
+        'className': 'cloud-popup add-popup',
+        'offset': L.point(90,10)
     })
         .setLatLng(popLocation)
-        .setContent('開始標記你發現的坪林妖怪!<br>把雲霧移動到發現的地點增加妖怪資料。')
+        .setContent(`
+            <a class="disc">開始標記你發現的<br>坪林妖怪！<br>把雲霧移動到發現的地點增加妖怪資料。</a>
+            <a class="link" href="/add?latlng=${latlng.lat},${latlng.lng}">點擊 <i class="fas fa-plus"></i></a>
+        `)
         .openOn(mymap);
 }
 
@@ -97,7 +101,7 @@ L.geoJSON(geojson, {
                 className: "monster-marker",
                 iconAnchor: [0, 0],
                 labelAnchor: [0, 0],
-                popupAnchor: [60, 8],
+                popupAnchor: [70, 10],
                 html: `<span style="${icon_style(colors[feature['properties']['element']])}" />`
             }),
             closeButton: false,
@@ -108,20 +112,22 @@ L.geoJSON(geojson, {
         <a href="/monster/${monster_id}" class="link"><i class="fas fa-angle-double-right"></i></a>
         `;
         let customPopupOptions = {
-            'className': 'cloud-popup'
+            'className': 'cloud-popup monster-popup'
         }
-        let mid = CryptoJS.SHA1(`${latlng}_monster${monster_id}`).toString();
         marker.bindPopup(popup, customPopupOptions);
         marker.on('click', function(e) {
             const url = new URL(window.location);
-            url.searchParams.set("mid", mid);
+            url.searchParams.set("mid", monster_id);
             window.history.replaceState({}, '', url);
+            this.openPopup();
         })
-        if(url_mid === mid) {
+        if(url_mid == monster_id) {
             current_marker = marker;
         }
         return marker;
     },
 }).addTo(mymap);
-current_marker.openPopup();
-mymap.fitBounds(L.latLngBounds([current_marker.getLatLng()]));
+if(current_marker) {
+    current_marker.openPopup();
+    mymap.fitBounds(L.latLngBounds([current_marker.getLatLng()]));
+}

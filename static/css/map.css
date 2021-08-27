@@ -137,33 +137,53 @@
     background-position: center;
     text-align: center;
     position: relative; }
-    .cloud-popup .leaflet-popup-content-wrapper .title {
-      color: black;
-      position: absolute;
-      top: 10%;
-      right: 10%;
-      padding-right: 3rem;
-      font-size: 1rem;
-      text-decoration: none;
-      writing-mode: vertical-rl; }
-    .cloud-popup .leaflet-popup-content-wrapper .link {
-      position: absolute;
-      top: 30%;
-      right: 10%;
-      font-size: 3rem;
-      color: #C6543C;
-      pointer-events: all; }
-    .cloud-popup .leaflet-popup-content-wrapper .image {
-      height: 150px;
-      width: 150px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center; }
   .cloud-popup .leaflet-popup-tip-container {
     display: none; }
-  .cloud-popup .leaflet-popup-content h1 {
-    font-weight: bold;
-    text-align: center; }
+
+.monster-popup .title {
+  color: black;
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  padding-right: 3rem;
+  font-size: 1rem;
+  text-decoration: none;
+  writing-mode: vertical-rl; }
+
+.monster-popup .link {
+  position: absolute;
+  top: 30%;
+  right: 10%;
+  font-size: 3rem;
+  color: #C6543C;
+  pointer-events: all; }
+
+.monster-popup .image {
+  height: 150px;
+  width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+.add-popup .disc {
+  display: block;
+  max-height: 12rem;
+  padding: 1rem 4rem 1rem 4rem;
+  text-align: left;
+  color: black;
+  font-size: 1rem;
+  text-decoration: none;
+  writing-mode: vertical-rl; }
+
+.add-popup .link {
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  font-size: 2rem;
+  color: #C6543C;
+  pointer-events: all;
+  writing-mode: vertical-rl;
+  text-decoration: none; }
 
 @media (max-width: 991px) {
   #panel {
