@@ -47,11 +47,9 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
     charset="utf-8"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
 <script>
-    $(".elements-help").on("click", function (e) {
-        $("#elements-help-overlay").toggleClass("d-none");
-    });
-    $("#elements-help-overlay").on("click", function (e) {
+    $(".elements-help,#elements-help-overlay").on("click", function (e) {
         $("#elements-help-overlay").toggleClass("d-none");
     });
     let geojson = {{ geojson| tojson | safe }};

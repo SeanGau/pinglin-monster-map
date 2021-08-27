@@ -27,6 +27,11 @@ function icon_style(color) {
 	border: 2px solid rgba(50,50,50,0.8);`
 };
 
+
+let params = new URLSearchParams(document.location.search.substring(1));
+let url_mid = params.get("mid", undefined);
+let current_marker = undefined;
+
 let mymap = L.map('map', {
     center: [24.937602, 121.712626],
     zoom: 18,
@@ -86,9 +91,10 @@ L.geoJSON(geojson, {
     onEachFeature: function (feature, layer) {
     },
     pointToLayer: function (feature, latlng) {
+        let monster_id = feature['properties']['monster_id'];
         let marker = L.marker(latlng, {
             icon: L.divIcon({
-                className: "custom-marker",
+                className: "monster-marker",
                 iconAnchor: [0, 0],
                 labelAnchor: [0, 0],
                 popupAnchor: [60, 8],
@@ -96,7 +102,6 @@ L.geoJSON(geojson, {
             }),
             closeButton: false,
         });
-        let monster_id = feature['properties']['monster_id'];
         let popup = `
         <a class="title">${feature['properties']['name']}</a>
         <div class="image" style="background-image: url('/static/img/monsters/${monster_id}/${feature['properties']['thumb']}')"></div>
@@ -105,7 +110,18 @@ L.geoJSON(geojson, {
         let customPopupOptions = {
             'className': 'cloud-popup'
         }
+        let mid = CryptoJS.SHA1(`${latlng}_monster${monster_id}`).toString();
         marker.bindPopup(popup, customPopupOptions);
+        marker.on('click', function(e) {
+            const url = new URL(window.location);
+            url.searchParams.set("mid", mid);
+            window.history.replaceState({}, '', url);
+        })
+        if(url_mid === mid) {
+            current_marker = marker;
+        }
         return marker;
     },
 }).addTo(mymap);
+current_marker.openPopup();
+mymap.fitBounds(L.latLngBounds([current_marker.getLatLng()]));

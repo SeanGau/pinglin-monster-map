@@ -117,10 +117,7 @@
     $("#edit-button").on('click', function (e) {
         window.location.href = window.location.href.replace("monster", "edit");
     });
-    $("#elements-help").on("click", function (e) {
-        $("#elements-help-overlay").toggleClass("d-none");
-    });
-    $("#elements-help-overlay").on("click", function (e) {
+    $("#elements-help,#elements-help-overlay").on("click", function (e) {
         $("#elements-help-overlay").toggleClass("d-none");
     });
 </script>
