@@ -3,11 +3,14 @@ import json
 import hashlib
 import string
 import random
+import os
+import shutil
 from datetime import datetime
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sassutils.wsgi import SassMiddleware
-#import pypugjs
+from PIL import Image
+# import pypugjs
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
@@ -17,6 +20,7 @@ app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 demo_monster_data = {
     "thumb": "demo_A.png",
@@ -117,7 +121,7 @@ def portal():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         if _data['email'] != login_data['email']:
-            return "error"
+            return flask.abort(406)
         else:
             db.session.begin()
             if len(_data['password']) >= 8 and len(_data['password']) <= 20:
@@ -155,7 +159,7 @@ def login():
             }
             flask.session.permanent = False
             flask.session['login_data'] = json.dumps(session_data)
-            #send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
+            # send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
             return alert("登入成功", "/map")
         else:
             return alert("帳號或密碼錯誤！", flask.url_for('login'))
@@ -185,7 +189,7 @@ def reset():
                     f"DELETE FROM public.token_table WHERE email='{cb_data['email']}'")
                 db.session.commit()
                 return "ok"
-        return "error"
+        return flask.abort(406)
     else:
         return flask.render_template('reset.html')
 
@@ -265,9 +269,33 @@ def register_verify():
             "code": flask.request.args.get("code")
         }
         if _data != flask.session['email_verify']:
-            return "ERROR"
+            return flask.abort(406)
         else:
             return "ok"
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/uploadfile', methods=['POST'])
+def uploadfile():
+    if 'file' not in flask.request.files:
+        return flask.abort(406)
+    file = flask.request.files['file']
+    if file.filename == '':
+        return flask.abort(406)
+    if file and allowed_file(file.filename):
+        filename = "m" + str(datetime.now().timestamp()) + \
+                             "." + file.filename.rsplit('.', 1)[1].lower()
+        im = Image.open(file)
+        im.thumbnail((800, 800))
+        if flask.request.form.get("current_path", None) is not None:
+            im.save(os.path.join(app.config['UPLOAD_FOLDER'], flask.session.get('current_editing','tmp'), filename))
+        else:
+            im.save(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", filename))
+        return filename
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -277,7 +305,29 @@ def add():
         return flask.redirect("login", code=303)
     else:
         login_data = json.loads(login_data)
-    return flask.render_template('monster_add.html')
+    if flask.request.method == 'POST':
+        _data = flask.request.get_json()
+        _data["image"] = _data["image"][:3]
+        _data["image"].insert(0, _data["thumb"])
+        print(_data)
+        _data['founder'] = login_data['username']
+        _data['founder_id'] = login_data['id']
+        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES({login_data['id']},'{json.dumps(_data,ensure_ascii=True)}',ST_MakePoint({_data['point'][0]},{_data['point'][1]})) RETURNING id"
+        print(sql)
+        try:
+            cb = db.session.execute(sql)
+            current_monster_id = str(cb.first()['id'])
+            if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
+                os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id))
+            shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", _data["thumb"]), os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id, _data["thumb"]))
+            for image in _data["image"]:
+                shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id, image))
+            db.session.commit()
+            return current_monster_id
+        except:
+            return flask.abort(406)
+    else:
+        return flask.render_template('monster_add.html')
 
 
 @app.route('/edit/<monster_id>', methods=['GET', 'POST'])
@@ -287,14 +337,16 @@ def edit(monster_id):
         return flask.redirect("login", code=303)
     else:
         login_data = json.loads(login_data)
+        print(login_data)
 
     if flask.request.method == 'POST':
         if monster_id != flask.session.get('current_editing', None):
-            return "error"
+            return flask.abort(406)
         _data = flask.request.get_json()
-        _data['founder_id'] = flask.session.get('id')
-        _data['founder'] = flask.session.get('username')
         print(_data)
+        sql = f"UPDATE public.monsters SET data = '{json.dumps(_data,ensure_ascii=True)}', geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = {monster_id}"
+        db.session.execute(sql)
+        db.session.commit()
         return "ok"
     else:
         cb = db.session.execute(
@@ -304,7 +356,8 @@ def edit(monster_id):
         if login_data['id'] != cb['founder'] and login_data['id'] != 1:
             return flask.abort(403)
 
-        cb['data']['date'] = list(map(lambda x: str(x).zfill(2), cb['data']['date']))
+        cb['data']['date'] = list(
+            map(lambda x: str(x).zfill(2), cb['data']['date']))
 
         flask.session['current_editing'] = monster_id
         return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']))
@@ -323,8 +376,9 @@ def monster(monster_id):
             login_data = json.loads(login_data)
             if login_data['id'] == cb['founder']:
                 can_edit = True
-                
-        cb['data']['date'] = list(map(lambda x: str(x).zfill(2), cb['data']['date']))
+
+        cb['data']['date'] = list(
+            map(lambda x: str(x).zfill(2), cb['data']['date']))
         monster_data = cb['data']
         monster_data['id'] = monster_id
         founder = db.session.execute(

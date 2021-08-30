@@ -32,9 +32,88 @@ let marker = L.marker(url_latlng, {
     draggable: true,
 }).addTo(map);
 
-marker.on('drag', function(e) {
+marker.on('drag', function (e) {
     let latlng = e.target.getLatLng();
     console.log(latlng);
     $("#monster-lat").val(latlng.lat);
     $("#monster-lng").val(latlng.lng);
+});
+
+$("#upload-thumb, #upload-image").on("click", function (e) {
+    e.preventDefault();
+    let formData = new FormData();
+    let current_work = $(this).attr("name");
+    let file = $(`#${current_work}-thumb`)[0].files[0];
+    console.log(file);
+    formData.append("file", file);
+    if (window.location.pathname != "/add") {
+        formData.append("current_path", window.location.pathname);
+    }
+    console.log(formData);
+    $.ajax({
+        url: '/uploadfile',
+        type: "POST",
+        data: formData,
+        success: function (cb) {
+            let _dom = `
+            <p>
+            <a href="#" class="image-title" data-image="${cb}">${cb}</a>
+            <a href="#" class="btn btn-danger remove-image" data-image="${cb}"><i class="fas fa-trash-alt"></i></a>
+            </p>`;
+            if (current_work == "thumb")
+                $("#monster-thumb-block .image-list").html(_dom);
+            else
+                $("#monster-image-block .image-list").append(_dom);
+            $(`#${current_work}-thumb`).val("");
+        },
+        error: function (cb) {
+            alert('發生錯誤！請聯絡管理員！');
+        },
+    })
+});
+
+
+$(".image-list").on('click', '.remove-image', function (e) {
+    $(this).parents("p").remove();
+});
+
+$("#monster-data-form").on('submit', function (e) {
+    e.preventDefault();
+    $("#loading").fadeIn(100);
+    let _data = {};
+    _data["point"] = [$("#monster-lng").val(), $("#monster-lat").val()];
+    _data["name"] = $("#monster-name").val();
+    _data["tag"] = $("#monster-tag").val().split(",");
+    _data["category"] = $("#monster-category").val();
+    _data["element"] = $("#monster-element").val();
+    _data["date"] = $("#monster-date").val().split("-");
+    _data["local"] = $("#monster-local").val();
+    _data["disc"] = $("#monster-disc").val();
+    _data["strong"] = $("#monster-strong").val();
+    _data["weak"] = $("#monster-weak").val();
+    _data["title"] = $("#monster-title").val();
+    _data["story"] = $("#monster-story").val();
+    _data["thumb"] = $("#monster-thumb-block .image-list p .image-title").data("image");
+    _data["image"] = [];
+    $("#monster-image-block .image-list p .image-title").each(function () {
+        _data["image"].push($(this).data("image"));
+    });
+
+    $.ajax({
+        type: "POST",
+        url: window.location.href,
+        data: JSON.stringify(_data),
+        success: function (cb) {
+            $("#loading").fadeOut(300);
+            if (cb != "error") {
+                $("#monster-data-form input").val("");
+                alert("新增成功！");
+                window.location.href = "/monster/" + cb;
+            }
+            else {
+                alert(cb);
+            }
+        },
+        contentType: "application/json"
+    });
 });

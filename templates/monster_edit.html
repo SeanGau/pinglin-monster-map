@@ -24,16 +24,32 @@
         <div class="mb-3">
             <div id="map"></div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 row" id="monster-thumb-block">
             <label for="monster-thumb" class="form-label">縮圖</label>
-            <p><a href="#">{{monster_data['thumb']}}</a><a href="#" class="btn btn-danger remove-image"
-                    data-image="{{monster_data['thumb']}}"><i class="fas fa-trash-alt"></i></a></p>
+            <div class="col-8">
+                <input type="file" name="monster-thumb" id="monster-thumb" class="form-control "
+                    accept=".jpg, .jpeg, .png">
+            </div>
+            <div class="col-4">
+                <button id="upload-thumb" class="btn btn-tomato" name="thumb">上傳圖片</button>
+            </div>
+            <div class="image-list mt-2">
+                <p><a href="#" class="image-title" data-image="{{monster_data['thumb']}}">{{monster_data['thumb']}}</a><a href="#" class="btn btn-danger remove-image"
+                        data-image="{{monster_data['thumb']}}"><i class="fas fa-trash-alt"></i></a></p>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="monster-name" class="form-label">圖片</label>
-            <div id="image-list">
+        <div class="mb-3 row" id="monster-image-block">
+            <label for="monster-image" class="form-label">圖片（最多3張）</label>
+            <div class="col-8">
+                <input type="file" name="monster-image" id="monster-image" class="form-control"
+                    accept=".jpg, .jpeg, .png">
+            </div>
+            <div class="col-4">
+                <button id="upload-image" class="btn btn-tomato" name="image">上傳圖片</button>
+            </div>
+            <div class="image-list mt-2">
                 {% for image in monster_data['image'] %}
-                <p><a href="#">{{image}}</a><a href="#" class="btn btn-danger remove-image" data-image="{{image}}"><i
+                <p><a href="#" class="image-title" data-image="{{image}}">{{image}}</a><a href="#" class="btn btn-danger remove-image" data-image="{{image}}"><i
                             class="fas fa-trash-alt"></i></a></p>
                 {% endfor %}
             </div>
@@ -43,7 +59,7 @@
             <input type="text" class="form-control" id="monster-name" value="{{monster_data['name']}}" required>
         </div>
         <div class="mb-3">
-            <label for="monster-tag" class="form-label">妖怪標籤</label>
+            <label for="monster-tag" class="form-label">妖怪標籤（以","分隔）</label>
             <input type="text" class="form-control" id="monster-tag" value="{{','.join(monster_data['tag'])}}" required>
         </div>
         <div class="mb-3">
@@ -111,5 +127,8 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
+<script>
+    let orig_data = {{ monster_data| tojson | safe }};
+</script>
 <script src="{{url_for('static', filename='js/edit.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}

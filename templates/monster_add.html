@@ -22,12 +22,26 @@
         <div class="mb-3">
             <div id="map"></div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 row" id="monster-thumb-block">
             <label for="monster-thumb" class="form-label">縮圖</label>
+            <div class="col-8">
+                <input type="file" name="monster-thumb" id="monster-thumb" class="form-control " accept=".jpg, .jpeg, .png">
+            </div>
+            <div class="col-4">
+                <button id="upload-thumb" class="btn btn-tomato">上傳圖片</button>
+            </div>
+            <div class="image-list mt-2">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="monster-name" class="form-label">圖片</label>
-            <div id="image-list">
+        <div class="mb-3 row" id="monster-image-block">
+            <label for="monster-image" class="form-label">圖片（最多3張）</label>
+            <div class="col-8">
+                <input type="file" name="monster-image" id="monster-image" class="form-control" accept=".jpg, .jpeg, .png">
+            </div>
+            <div class="col-4">
+                <button id="upload-image" class="btn btn-tomato">上傳圖片</button>
+            </div>
+            <div class="image-list mt-2">
             </div>
         </div>
         <div class="mb-3">
@@ -35,7 +49,7 @@
             <input type="text" class="form-control" id="monster-name" value="" required>
         </div>
         <div class="mb-3">
-            <label for="monster-tag" class="form-label">妖怪標籤</label>
+            <label for="monster-tag" class="form-label">妖怪標籤（以","分隔）</label>
             <input type="text" class="form-control" id="monster-tag" value="" required>
         </div>
         <div class="mb-3">
