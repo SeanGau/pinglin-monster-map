@@ -360,7 +360,7 @@ def edit(monster_id):
             map(lambda x: str(x).zfill(2), cb['data']['date']))
 
         flask.session['current_editing'] = monster_id
-        return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']))
+        return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']), monster_id=monster_id)
 
 
 @app.route('/monster/<monster_id>')
@@ -384,7 +384,7 @@ def monster(monster_id):
         founder = db.session.execute(
             f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
         monster_data['founder'] = founder['username']
-        return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit)
+        return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id)
 
 
 @app.route('/test', methods=['GET'])

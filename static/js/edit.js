@@ -52,6 +52,7 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
         success: function (cb) {
             let _dom = `
             <p>
+            <span style="background-image: url('/static/img/monsters/tmp/${cb}')"></span>
             <a href="#" class="image-title" data-image="${cb}">${cb}</a>
             <a href="#" class="btn btn-danger remove-image" data-image="${cb}"><i class="fas fa-trash-alt"></i></a>
             </p>`;

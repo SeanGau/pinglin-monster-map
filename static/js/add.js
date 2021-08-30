@@ -39,11 +39,13 @@ marker.on('drag', function (e) {
     $("#monster-lng").val(latlng.lng);
 });
 
+
 $("#upload-thumb, #upload-image").on("click", function (e) {
     e.preventDefault();
     let formData = new FormData();
     let current_work = $(this).attr("name");
-    let file = $(`#${current_work}-thumb`)[0].files[0];
+    console.log(current_work);
+    let file = $(`#monster-${current_work}`)[0].files[0];
     console.log(file);
     formData.append("file", file);
     if (window.location.pathname != "/add") {
@@ -57,6 +59,7 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
         success: function (cb) {
             let _dom = `
             <p>
+            <span style="background-image: url('/static/img/monsters/tmp/${cb}')"></span>
             <a href="#" class="image-title" data-image="${cb}">${cb}</a>
             <a href="#" class="btn btn-danger remove-image" data-image="${cb}"><i class="fas fa-trash-alt"></i></a>
             </p>`;
@@ -64,11 +67,14 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
                 $("#monster-thumb-block .image-list").html(_dom);
             else
                 $("#monster-image-block .image-list").append(_dom);
-            $(`#${current_work}-thumb`).val("");
+            $(`#monster-${current_work}`).val("");
         },
         error: function (cb) {
             alert('發生錯誤！請聯絡管理員！');
         },
+        cache: false,
+        contentType: false,
+        processData: false
     })
 });
 
