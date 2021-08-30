@@ -135,12 +135,14 @@ def portal():
             db.session.commit()
             return "ok"
     else:
-        login_data['data'] = [
-            {
-                "name": "醉猴1",
-                "slug": "1"
-            }
-        ]
+        cb = db.session.execute(
+            f"SELECT * FROM public.monsters WHERE founder={login_data['id']}").all()
+        login_data['data'] = []
+        for row in cb:
+            login_data['data'].append({
+                "name": row["data"]["name"],
+                "slug": row["id"]
+            })
         return flask.render_template('portal.html', login_data=login_data)
 
 
@@ -309,17 +311,15 @@ def add():
         _data = flask.request.get_json()
         _data["image"] = _data["image"][:3]
         _data["image"].insert(0, _data["thumb"])
-        print(_data)
+        
         _data['founder'] = login_data['username']
         _data['founder_id'] = login_data['id']
         sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES({login_data['id']},'{json.dumps(_data,ensure_ascii=True)}',ST_MakePoint({_data['point'][0]},{_data['point'][1]})) RETURNING id"
-        print(sql)
         try:
             cb = db.session.execute(sql)
             current_monster_id = str(cb.first()['id'])
             if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
                 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id))
-            shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", _data["thumb"]), os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id, _data["thumb"]))
             for image in _data["image"]:
                 shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id, image))
             db.session.commit()

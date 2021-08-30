@@ -48,9 +48,6 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
     let file = $(`#monster-${current_work}`)[0].files[0];
     console.log(file);
     formData.append("file", file);
-    if (window.location.pathname != "/add") {
-        formData.append("current_path", window.location.pathname);
-    }
     console.log(formData);
     $.ajax({
         url: '/uploadfile',
