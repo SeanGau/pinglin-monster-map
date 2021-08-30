@@ -31,3 +31,5 @@ config.py
 .pyre/
 .pyre_configuration
 .watchmanconfig
+
+static/img/monsters/tmp/*
