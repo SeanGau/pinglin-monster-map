@@ -126,10 +126,10 @@ def portal():
             db.session.begin()
             if len(_data['password']) >= 8 and len(_data['password']) <= 20:
                 db.session.execute(
-                    f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{_data['email']}'")
+                    "UPDATE public.users SET password=:password WHERE email=:email", {"password": gethashed(_data['password']), "email": _data['email']})
             if len(_data['username']) > 0 and len(_data['username']) <= 12:
                 db.session.execute(
-                    f"UPDATE public.users SET username='{_data['username']}' WHERE email='{_data['email']}'")
+                    "UPDATE public.users SET username=:username WHERE email=:email", {"username": _data['username'], "email": _data['email']})
                 login_data['username'] = _data['username']
                 flask.session['login_data'] = json.dumps(login_data)
             db.session.commit()
@@ -151,7 +151,7 @@ def login():
     if flask.request.method == 'POST':
         _data = flask.request.form
         cb = db.session.execute(
-            f"SELECT * FROM public.users WHERE email='{_data['email']}' AND password='{gethashed(_data['password'])}'").first()
+            "SELECT * FROM public.users WHERE email=:email AND password=:password", {"email": _data['email'], "password": gethashed(_data['password'])}).first()
         if cb is not None:
             cb_data = dict(cb)
             session_data = {
@@ -180,15 +180,15 @@ def reset():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         cb = db.session.execute(
-            f"SELECT * FROM token_table WHERE token='{_data['token']}'").first()
+            "SELECT * FROM token_table WHERE token=:token", {"token": _data['token']}).first()
         if cb is not None:
             cb_data = dict(cb)
             exp_t = cb_data['token_expire']
             if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password']) >= 8 and len(_data['password']) <= 20:
                 db.session.execute(
-                    f"UPDATE public.users SET password='{gethashed(_data['password'])}' WHERE email='{cb_data['email']}'")
+                    "UPDATE public.users SET password=:password WHERE email=:email", {"password": gethashed(_data['password']), "email": cb_data['email']})
                 db.session.execute(
-                    f"DELETE FROM public.token_table WHERE email='{cb_data['email']}'")
+                    "DELETE FROM public.token_table WHERE email=:email", {"email": cb_data['email']})
                 db.session.commit()
                 return "ok"
         return flask.abort(406)
@@ -202,11 +202,11 @@ def forget():
         _data = flask.request.form
         token = gethashed(str(datetime.now().timestamp())+_data['email'])
         cb = db.session.execute(
-            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+            "SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
         if len(cb.all()) == 0:
             return alert("此信箱尚未註冊！", flask.url_for('forget'))
         db.session.execute(
-            f"INSERT INTO public.token_table (email,token,token_expire) VALUES('{_data['email']}','{token}',(NOW() + interval '1 hour'))")
+            "INSERT INTO public.token_table (email,token,token_expire) VALUES(:email,:token,(NOW() + interval '1 hour'))", {"email": _data['email'], "token": token})
         db.session.commit()
         send_mail([_data['email']], "忘記密碼", f'''
 				<div style="font-size: 1.5em; text-align: center;">
@@ -229,12 +229,16 @@ def register():
             return "請先輸入並驗證Email"
         _data = flask.request.get_json()
         cb = db.session.execute(
-            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+            "SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
         if len(cb.all()) > 0:
             return "此信箱已被註冊！"
         elif _data['email'] == flask.session['email_verify']['email'] and _data['code'] == flask.session['email_verify']['code'] and len(_data['username']) > 0 and len(_data['username']) <= 12 and len(_data['password']) >= 8 and len(_data['password']) <= 20:
             cb = db.session.execute(
-                f"INSERT INTO public.users (username,email,password) VALUES('{_data['username']}','{_data['email']}','{gethashed(_data['password'])}')")
+                f"INSERT INTO public.users (username,email,password) VALUES(:username,:email,:password)", {
+                    "username": _data['username'],
+                    "email": _data['email'],
+                    "password": gethashed(_data['password'])
+                })
             db.session.commit()
             return "ok"
         else:
@@ -248,7 +252,7 @@ def register_verify():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         cb = db.session.execute(
-            f"SELECT * FROM public.users WHERE email='{_data['email']}'")
+            f"SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
         if len(cb.all()) > 0:
             return "此信箱已被註冊！"
         else:
@@ -290,11 +294,12 @@ def uploadfile():
         return flask.abort(406)
     if file and allowed_file(file.filename):
         filename = "m" + str(datetime.now().timestamp()) + \
-                             "." + file.filename.rsplit('.', 1)[1].lower()
+            "." + file.filename.rsplit('.', 1)[1].lower()
         im = Image.open(file)
         im.thumbnail((800, 800))
         if flask.request.form.get("current_path", None) is not None:
-            im.save(os.path.join(app.config['UPLOAD_FOLDER'], flask.session.get('current_editing','tmp'), filename))
+            im.save(os.path.join(app.config['UPLOAD_FOLDER'], flask.session.get(
+                'current_editing', 'tmp'), filename))
         else:
             im.save(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", filename))
         return filename
@@ -311,17 +316,22 @@ def add():
         _data = flask.request.get_json()
         _data["image"] = _data["image"][:3]
         _data["image"].insert(0, _data["thumb"])
-        
+
         _data['founder'] = login_data['username']
         _data['founder_id'] = login_data['id']
-        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES({login_data['id']},'{json.dumps(_data,ensure_ascii=True)}',ST_MakePoint({_data['point'][0]},{_data['point'][1]})) RETURNING id"
+        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][0]},{_data['point'][1]})) RETURNING id"
         try:
-            cb = db.session.execute(sql)
+            cb = db.session.execute(sql, {
+                "founder": login_data['id'],
+                "data": json.dumps(_data, ensure_ascii=True)
+            })
             current_monster_id = str(cb.first()['id'])
             if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
-                os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id))
+                os.makedirs(os.path.join(
+                    app.config['UPLOAD_FOLDER'], current_monster_id))
             for image in _data["image"]:
-                shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id, image))
+                shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(
+                    app.config['UPLOAD_FOLDER'], current_monster_id, image))
             db.session.commit()
             return current_monster_id
         except:
@@ -344,13 +354,16 @@ def edit(monster_id):
             return flask.abort(406)
         _data = flask.request.get_json()
         print(_data)
-        sql = f"UPDATE public.monsters SET data = '{json.dumps(_data,ensure_ascii=True)}', geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = {monster_id}"
-        db.session.execute(sql)
+        sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = :id"
+        db.session.execute(sql, {
+            "data": json.dumps(_data, ensure_ascii=True),
+            "id": monster_id
+        })
         db.session.commit()
         return "ok"
     else:
         cb = db.session.execute(
-            f"SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id={monster_id}").first()
+            "SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id=:id",{"id": monster_id}).first()
         if cb is None:
             return flask.abort(404)
         if login_data['id'] != cb['founder'] and login_data['id'] != 1:
@@ -366,7 +379,7 @@ def edit(monster_id):
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
     cb = db.session.execute(
-        f"SELECT * FROM public.monsters WHERE id={monster_id}").first()
+        f"SELECT * FROM public.monsters WHERE id=:id",{"id": monster_id}).first()
     if cb is None:
         return flask.abort(404)
     else:
@@ -382,7 +395,7 @@ def monster(monster_id):
         monster_data = cb['data']
         monster_data['id'] = monster_id
         founder = db.session.execute(
-            f"SELECT username FROM public.users WHERE id={cb['founder']}").first()
+            f"SELECT username FROM public.users WHERE id=:id",{"id": cb['founder']}).first()
         monster_data['founder'] = founder['username']
         return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id)
 
