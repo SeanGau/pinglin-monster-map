@@ -22,7 +22,7 @@
                         <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
                             style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
                             {% if ".mp4" == image[-4:] %}
-                            <video autoplay controls>
+                            <video autoplay controls controlsList="nodownload">
                                 <source
                                     src="{{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}}"
                                     type="video/mp4">

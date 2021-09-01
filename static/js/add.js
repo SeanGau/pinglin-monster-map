@@ -46,9 +46,8 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
     let current_work = $(this).attr("name");
     console.log(current_work);
     let file = $(`#monster-${current_work}`)[0].files[0];
-    console.log(file);
     formData.append("file", file);
-    console.log(formData);
+    $(this).text("上傳中...");
     $.ajax({
         url: '/uploadfile',
         type: "POST",
@@ -68,6 +67,9 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
         },
         error: function (cb) {
             alert('發生錯誤！請聯絡管理員！');
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+            $("#upload-thumb, #upload-image").text("上傳圖片");
         },
         cache: false,
         contentType: false,

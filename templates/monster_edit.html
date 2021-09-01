@@ -33,6 +33,7 @@
             <div class="col-4">
                 <button id="upload-thumb" class="btn btn-tomato" name="thumb">上傳圖片</button>
             </div>
+            <span>檔案大小限制（20MB）</span>
             <div class="image-list mt-2">
                 <p><span style="background-image: url({{url_for('static', filename='img/monsters/'+monster_id+'/'+monster_data['thumb'], version=GLOBAL_VERSION)}});"></span><a href="#" class="image-title" data-image="{{monster_data['thumb']}}">{{monster_data['thumb']}}</a><a href="#" class="btn btn-danger remove-image"
                         data-image="{{monster_data['thumb']}}"><i class="fas fa-trash-alt"></i></a></p>
@@ -47,6 +48,7 @@
             <div class="col-4">
                 <button id="upload-image" class="btn btn-tomato" name="image">上傳圖片</button>
             </div>
+            <span>檔案大小限制（20MB）</span>
             <div class="image-list mt-2">
                 {% for image in monster_data['image'] %}
                 <p><span style="background-image: url({{url_for('static', filename='img/monsters/'+monster_id+'/'+image, version=GLOBAL_VERSION)}});"></span><a href="#" class="image-title" data-image="{{image}}">{{image}}</a><a href="#" class="btn btn-danger remove-image" data-image="{{image}}"><i
