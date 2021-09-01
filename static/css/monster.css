@@ -14,7 +14,7 @@
   background-color: #DBB853; }
 
 .bg-color-water {
-  background-color: #5B9E98; }
+  background-color: #5b8e9e; }
 
 .color-bg {
   color: #F3DFC3; }
@@ -32,14 +32,14 @@
   color: #DBB853; }
 
 .color-water {
-  color: #5B9E98; }
+  color: #5b8e9e; }
 
 #monster-box.monster-water {
-  background: linear-gradient(90deg, #5B9E98, #F3DFC3); }
+  background: linear-gradient(90deg, #5b8e9e, #F3DFC3); }
 
 @media (max-width: 991px) {
   #monster-box.monster-water #data-right {
-    background: linear-gradient(90deg, #5B9E98 -3%, #F3DFC3 103%); } }
+    background: linear-gradient(90deg, #5b8e9e -3%, #F3DFC3 103%); } }
 
 #monster-box.monster-ground {
   background: linear-gradient(90deg, #DBB853, #F3DFC3); }
@@ -86,6 +86,8 @@
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat; }
+    #carousel .carousel-item video {
+      width: 100%; }
   #carousel .carousel-indicators {
     margin-bottom: -4rem; }
     #carousel .carousel-indicators [data-bs-target] {

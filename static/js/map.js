@@ -2,7 +2,7 @@ let colors = {
     "wind": "#7CAD82",
     "fire": "#EE7839",
     "ground": "#DBB853",
-    "water": "#5B9E98"
+    "water": "#5b8e9e"
 }
 
 let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://www.mapbox.com/">mapbox</a> ',

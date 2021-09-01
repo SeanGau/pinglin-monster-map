@@ -21,6 +21,13 @@
                         {% for image in monster_data['image'] %}
                         <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
                             style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
+                            {% if ".mp4" == image[-4:] %}
+                            <video autoplay controls>
+                                <source
+                                    src="{{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}}"
+                                    type="video/mp4">
+                            </video>
+                            {% endif %}
                         </div>
                         {% endfor %}
                     </div>
@@ -109,7 +116,8 @@
 <div class="d-none align-self-center d-flex justify-content-center" id="elements-help-overlay">
     <div class="inner align-self-center"></div>
 </div>
-<a href="/map" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i class="fas fa-angle-double-left"></i></a>
+<a href="/map" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i
+        class="fas fa-angle-double-left"></i></a>
 {% endblock %}
 
 {% block script %}
@@ -120,5 +128,9 @@
     $("#elements-help,#elements-help-overlay").on("click", function (e) {
         $("#elements-help-overlay").toggleClass("d-none");
     });
+    $(window).resize(function (e) {
+        $("#carousel .carousel-item video").height($("#carousel .carousel-item video").width());
+    });
+    $(window).resize();
 </script>
 {% endblock %}

@@ -32,4 +32,4 @@ config.py
 .pyre_configuration
 .watchmanconfig
 
-static/img/monsters/tmp/*
+static/img/monsters/*

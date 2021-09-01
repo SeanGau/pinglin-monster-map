@@ -363,7 +363,7 @@ def edit(monster_id):
         return "ok"
     else:
         cb = db.session.execute(
-            "SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id=:id",{"id": monster_id}).first()
+            "SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
         if cb is None:
             return flask.abort(404)
         if login_data['id'] != cb['founder'] and login_data['id'] != 1:
@@ -379,7 +379,7 @@ def edit(monster_id):
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
     cb = db.session.execute(
-        f"SELECT * FROM public.monsters WHERE id=:id",{"id": monster_id}).first()
+        f"SELECT * FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
     if cb is None:
         return flask.abort(404)
     else:
@@ -395,7 +395,7 @@ def monster(monster_id):
         monster_data = cb['data']
         monster_data['id'] = monster_id
         founder = db.session.execute(
-            f"SELECT username FROM public.users WHERE id=:id",{"id": cb['founder']}).first()
+            f"SELECT username FROM public.users WHERE id=:id", {"id": cb['founder']}).first()
         monster_data['founder'] = founder['username']
         return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id)
 
