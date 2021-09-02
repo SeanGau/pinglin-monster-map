@@ -42,13 +42,20 @@
     <div class="row justify-content-center">
         <h2 class="text-center">我的妖怪</h2>
         <div id="monster-list" class="bg-light col-lg-6">
-            {% for monster in login_data["data"] %}
-            <p><a href="/monster/{{monster['slug']}}">{{monster['name']}}</a></p>
-            {% endfor %}
+            <table>
+                {% for monster in login_data["data"] %}
+                <tr>
+                    <td>{{monster['slug']}}</td>
+                    <td><a href="/monster/{{monster['slug']}}">{{monster['name']}}</a></td>
+                    <td>{{monster['create_at']}}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 </div>
-<a href="/map" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i class="fas fa-angle-double-left"></i></a>
+<a href="/map" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i
+        class="fas fa-angle-double-left"></i></a>
 {% endblock %}
 
 {% block script %}

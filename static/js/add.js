@@ -39,6 +39,10 @@ marker.on('drag', function (e) {
     $("#monster-lng").val(latlng.lng);
 });
 
+$("#elements-help,#elements-help-overlay").on("click", function (e) {
+    e.preventDefault();
+    $("#elements-help-overlay").toggleClass("d-none");
+});
 
 $("#upload-thumb, #upload-image").on("click", function (e) {
     e.preventDefault();

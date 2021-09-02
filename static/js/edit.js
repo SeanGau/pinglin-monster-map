@@ -32,6 +32,10 @@ marker.on('drag', function (e) {
     $("#monster-lng").val(Number(latlng.lng));
 });
 
+$("#elements-help,#elements-help-overlay").on("click", function (e) {
+    e.preventDefault();
+    $("#elements-help-overlay").toggleClass("d-none");
+});
 
 $("#upload-thumb, #upload-image").on("click", function (e) {
     e.preventDefault();
@@ -76,6 +80,26 @@ $(".image-list").on('click', '.remove-image', function (e) {
     $(this).parents("p").remove();
 });
 
+
+$("#toggle-hidden").on('click', function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: window.location.href,
+        data: JSON.stringify({"toggleHidden": "toggleHidden"}),
+        success: function (cb) {
+            $("#loading").fadeOut(300);
+            if (cb == "ok") {
+                alert("修改成功！");
+                window.location.reload();
+            }
+            else {
+                alert(cb);
+            }
+        },
+        contentType: "application/json"
+    });
+});
 
 $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();

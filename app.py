@@ -5,7 +5,7 @@ import string
 import random
 import os
 import shutil
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sassutils.wsgi import SassMiddleware
@@ -19,6 +19,8 @@ app.jinja_env.globals['GLOBAL_TITLE'] = "坪林尋怪地圖"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
+
+ADMIN_ID = {1, 3, 47}
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -91,7 +93,7 @@ def monstermap():
     geojson = {"type": "FeatureCollection", "features": []}
 
     cb = db.session.execute(
-        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters")
+        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters WHERE hidden=False")
     for row in cb:
         d = {"type": "Feature", "geometry": {
             "type": "Point", "coordinates": []}, "properties": {}}
@@ -136,12 +138,17 @@ def portal():
             return "ok"
     else:
         cb = db.session.execute(
-            f"SELECT * FROM public.monsters WHERE founder={login_data['id']}").all()
+            f"SELECT * FROM public.monsters WHERE founder={login_data['id']} ORDER BY id").all()
+        if login_data['id'] in ADMIN_ID:
+            cb = db.session.execute(
+                f"SELECT * FROM public.monsters ORDER BY id DESC").all()
         login_data['data'] = []
+        tz = timezone(timedelta(hours=8), "Asia/Taipei")
         for row in cb:
             login_data['data'].append({
                 "name": row["data"]["name"],
-                "slug": row["id"]
+                "slug": row["id"],
+                "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S")
             })
         return flask.render_template('portal.html', login_data=login_data)
 
@@ -354,7 +361,11 @@ def edit(monster_id):
             return flask.abort(406)
         _data = flask.request.get_json()
         print(_data)
-        sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = :id"
+        sql = ""
+        if "toggleHidden" in _data:
+            sql = f"UPDATE public.monsters SET hidden = NOT hidden WHERE id = :id"
+        elif "name" in _data and "point" in _data:
+            sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = :id"
         db.session.execute(sql, {
             "data": json.dumps(_data, ensure_ascii=True),
             "id": monster_id
@@ -363,17 +374,17 @@ def edit(monster_id):
         return "ok"
     else:
         cb = db.session.execute(
-            "SELECT ST_AsGeoJSON(geom),data,founder FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
+            "SELECT ST_AsGeoJSON(geom),data,founder,hidden FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
         if cb is None:
             return flask.abort(404)
-        if login_data['id'] != cb['founder'] and login_data['id'] != 1:
+        if login_data['id'] != cb['founder'] and login_data['id'] not in ADMIN_ID:
             return flask.abort(403)
 
         cb['data']['date'] = list(
             map(lambda x: str(x).zfill(2), cb['data']['date']))
 
         flask.session['current_editing'] = monster_id
-        return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']), monster_id=monster_id)
+        return flask.render_template('monster_edit.html', login_data=login_data, monster_data=cb['data'], monster_pos=json.loads(cb['st_asgeojson']), monster_id=monster_id, hidden=cb['hidden'])
 
 
 @app.route('/monster/<monster_id>')
@@ -387,8 +398,10 @@ def monster(monster_id):
         can_edit = False
         if login_data is not None:
             login_data = json.loads(login_data)
-            if login_data['id'] == cb['founder']:
+            if login_data['id'] == cb['founder'] or login_data['id'] in ADMIN_ID:
                 can_edit = True
+        if cb['hidden'] == True and not can_edit:
+            return flask.abort(403)
 
         cb['data']['date'] = list(
             map(lambda x: str(x).zfill(2), cb['data']['date']))
