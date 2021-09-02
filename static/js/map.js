@@ -45,9 +45,6 @@ let mymap = L.map('map', {
 });
 
 let pathDalin = L.geoJSON(path_dalin, {
-    style: function (feature) {
-        return {color: "#FAF"};
-    }
 }).bindPopup(function (layer) {
     return layer.feature.properties.name;
 });
