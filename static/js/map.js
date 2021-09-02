@@ -108,7 +108,9 @@ let markersClusterGroup = L.markerClusterGroup({
 });
 
 mymap.on('click', function (e) {
-    popupAddNew(e.latlng);
+    if($(".leaflet-pane.leaflet-popup-pane").html() == '') {
+        popupAddNew(e.latlng);
+    }
 });
 
 L.geoJSON(geojson, {

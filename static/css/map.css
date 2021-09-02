@@ -42,9 +42,12 @@
   .leaflet-control a[href="#"].leaflet-disabled {
     background-color: #e9d9bb; }
 
+#body-box {
+  height: 100%;
+  width: 100%; }
+
 #map {
-  display: flex;
-  flex: 1;
+  height: 100%;
   width: 100%; }
   #map .leaflet-control-container {
     width: 100%; }
@@ -127,7 +130,7 @@
 .cloud-popup {
   pointer-events: none; }
   .cloud-popup .leaflet-popup-content-wrapper {
-    padding: 2rem 2rem 4rem 2rem;
+    padding: 2.5rem 2.5rem 4.5rem 2.5rem;
     background: 0;
     color: black;
     box-shadow: none;
