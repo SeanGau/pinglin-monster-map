@@ -8,7 +8,24 @@ let streets = L.tileLayer(MymbUrl, {
     attribution: mbAttr
 });
 
-let orig_latlng = [$("#monster-lat").val(), $("#monster-lng").val()];
+function checkbounds(point) {
+    bounds = [[24.892665194900072, 121.6339581263308],[24.990418330535274, 121.82327270507814]];
+    let new_lat = Math.min(bounds[1][0],Math.max(bounds[0][0],point['lat']));
+    let new_lng = Math.min(bounds[1][1],Math.max(bounds[0][1],point['lng']));
+    return {
+        lat: new_lat,
+        lng: new_lng
+    };
+}
+
+let orig_latlng = {
+    lat: $("#monster-lat").val(), 
+    lng: $("#monster-lng").val()
+};
+
+orig_latlng = checkbounds(orig_latlng);
+$("#monster-lat").val(Number(orig_latlng.lat));
+$("#monster-lng").val(Number(orig_latlng.lng));
 
 let map = L.map('map', {
     center: orig_latlng,
@@ -26,10 +43,10 @@ let marker = L.marker(orig_latlng, {
 }).addTo(map);
 
 marker.on('drag', function (e) {
-    let latlng = e.target.getLatLng();
-    console.log(latlng);
+    let latlng = checkbounds(e.target.getLatLng());
     $("#monster-lat").val(Number(latlng.lat));
     $("#monster-lng").val(Number(latlng.lng));
+    marker.setLatLng([$("#monster-lat").val(), $("#monster-lng").val()]);
 });
 
 $("#elements-help,#elements-help-overlay").on("click", function (e) {
@@ -104,8 +121,9 @@ $("#toggle-hidden").on('click', function (e) {
 $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();
     $("#loading").fadeIn(100);
-    let _data = orig_data;
-    _data["point"] = [$("#monster-lng").val(), $("#monster-lat").val()];
+    let _data = {};
+    let latlng = checkbounds(marker.getLatLng());
+    _data["point"] = [latlng['lat'], latlng['lng']];
     _data["name"] = $("#monster-name").val();
     _data["tag"] = $("#monster-tag").val().split(",");
     _data["category"] = $("#monster-category").val();
@@ -122,7 +140,7 @@ $("#monster-data-form").on('submit', function (e) {
     $("#monster-image-block .image-list p .image-title").each(function () {
         _data["image"].push($(this).data("image"));
     });
-
+    
     $.ajax({
         type: "POST",
         url: window.location.href,

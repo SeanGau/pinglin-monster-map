@@ -1,11 +1,26 @@
 let params = new URLSearchParams(document.location.search.substring(1));
+
+function checkbounds(point) {
+    bounds = [[24.892665194900072, 121.6339581263308],[24.990418330535274, 121.82327270507814]];
+    let new_lat = Math.min(bounds[1][0],Math.max(bounds[0][0],point['lat']));
+    let new_lng = Math.min(bounds[1][1],Math.max(bounds[0][1],point['lng']));
+    return {
+        lat: new_lat,
+        lng: new_lng
+    };
+}
+
 let url_latlng = params.get("latlng", undefined);
 if (url_latlng) {
     url_latlng = url_latlng.split(",");
-    $("#monster-lat").val(url_latlng[0]);
-    $("#monster-lng").val(url_latlng[1]);
+    url_latlng = checkbounds({
+        lat: url_latlng[0],
+        lng: url_latlng[1],
+    });
+    $("#monster-lat").val(url_latlng['lat']);
+    $("#monster-lng").val(url_latlng['lng']);
 } else {
-    url_latlng = [24.937602, 121.712626];
+    url_latlng = {lat: 24.937602, lng: 121.712626};
 }
 
 let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://www.mapbox.com/">mapbox</a> ',
@@ -33,10 +48,10 @@ let marker = L.marker(url_latlng, {
 }).addTo(map);
 
 marker.on('drag', function (e) {
-    let latlng = e.target.getLatLng();
-    console.log(latlng);
-    $("#monster-lat").val(latlng.lat);
-    $("#monster-lng").val(latlng.lng);
+    let latlng = checkbounds(e.target.getLatLng());
+    $("#monster-lat").val(Number(latlng.lat));
+    $("#monster-lng").val(Number(latlng.lng));
+    marker.setLatLng([$("#monster-lat").val(), $("#monster-lng").val()]);
 });
 
 $("#elements-help,#elements-help-overlay").on("click", function (e) {
@@ -90,7 +105,8 @@ $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();
     $("#loading").fadeIn(100);
     let _data = {};
-    _data["point"] = [$("#monster-lng").val(), $("#monster-lat").val()];
+    let latlng = checkbounds(marker.getLatLng());
+    _data["point"] = [latlng['lat'], latlng['lng']];
     _data["name"] = $("#monster-name").val();
     _data["tag"] = $("#monster-tag").val().split(",");
     _data["category"] = $("#monster-category").val();

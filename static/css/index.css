@@ -16,8 +16,7 @@
     width: 100%;
     background-image: url("../img/index/index_1_back.png");
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed; }
+    background-position: center; }
   #index-block-1 .p-fixed {
     position: fixed; }
   #index-block-1 .inner-anchor {
@@ -152,6 +151,8 @@
         position: relative;
         overflow-x: scroll;
         overflow-y: hidden; }
+      #index-block-1 .inner-3 .inner-3-text-block small {
+        font-size: 0.9em; }
   #index-block-1 .inner-3-v {
     position: relative;
     min-height: 100vh;
@@ -292,7 +293,7 @@
   #index-block-2 {
     height: 100%; }
     #index-block-2 .inner {
-      background-image: url("../img/index/index_4_banner_v.png"); }
+      background-image: url("../img/index/index_4_banner_v.jpg"); }
     #index-block-2 #block-2-anchor {
       margin-top: 0; } }
 

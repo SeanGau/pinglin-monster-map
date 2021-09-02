@@ -44,6 +44,18 @@ let mymap = L.map('map', {
     zoomControl: false
 });
 
+let pathDalin = L.geoJSON(path_dalin, {
+    style: function (feature) {
+        return {color: "#FAF"};
+    }
+}).bindPopup(function (layer) {
+    return layer.feature.properties.name;
+});
+let pathPinglin = L.geoJSON(path_pinglin, {
+}).bindPopup(function (layer) {
+    return layer.feature.properties.name;
+});
+
 L.control.zoom({
     position: 'topright'
 }).addTo(mymap);
@@ -53,7 +65,12 @@ let baseMaps = {
     "街道圖": streets,
 };
 
-L.control.layers(baseMaps, null, { position: 'bottomright' }).addTo(mymap);
+let overlayMaps = {
+    "坪林尾路線": pathPinglin,
+    "大林路線": pathDalin
+}
+
+L.control.layers(baseMaps, overlayMaps, { position: 'bottomright' }).addTo(mymap);
 L.control.locate({
     position: 'topright'
 }).addTo(mymap);
@@ -62,6 +79,7 @@ function popupAddNew(latlng) {
     let popLocation = latlng;
     let popup = L.popup({
         'className': 'cloud-popup add-popup',
+        'closeButton': false,
         'offset': L.point(90, 10)
     })
         .setLatLng(popLocation)
@@ -117,7 +135,8 @@ L.geoJSON(geojson, {
         <a href="/monster/${monster_id}" class="link"><i class="fas fa-angle-double-right"></i></a>
         `;
         let customPopupOptions = {
-            'className': 'cloud-popup monster-popup'
+            'className': 'cloud-popup monster-popup',
+            'closeButton': false
         }
         marker.bindPopup(popup, customPopupOptions);
         marker.on('click', function (e) {
@@ -134,7 +153,6 @@ L.geoJSON(geojson, {
     },
 }).addTo(mymap);
 
-//mymap.addLayer(markersClusterGroup);
 
 if (current_marker) {
     current_marker.openPopup();

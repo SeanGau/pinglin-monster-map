@@ -56,5 +56,6 @@
     });
     let geojson = {{ geojson| tojson | safe }};
 </script>
+<script src="{{url_for('static', filename='js/path_mark.js', version=GLOBAL_VERSION)}}"></script>
 <script src="{{url_for('static', filename='js/map.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}

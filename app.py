@@ -148,7 +148,8 @@ def portal():
             login_data['data'].append({
                 "name": row["data"]["name"],
                 "slug": row["id"],
-                "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S")
+                "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S"),
+                "hidden": "隱藏中" if row["hidden"] else "顯示中"
             })
         return flask.render_template('portal.html', login_data=login_data)
 
@@ -218,7 +219,7 @@ def forget():
         send_mail([_data['email']], "忘記密碼", f'''
 				<div style="font-size: 1.5em; text-align: center;">
 				<p>您好，</p>
-				<p>坪林巡怪地圖收到<b>重設密碼</b>請求<p>
+				<p>坪林尋怪地圖收到<b>重設密碼</b>請求<p>
 				<p>請點擊以下連結進行重設</p>
 				<p><a href="https://strangepinglin.collective.tw/reset?token={token}" style="padding: 1em; background-color: #666;color: white; border-radius: 5px;">https://strangepinglin.collective.tw/reset?token={token}</a></p>
 				<p>若無法點擊，請複製連結貼到​​​您的​​​瀏覽器</p>
