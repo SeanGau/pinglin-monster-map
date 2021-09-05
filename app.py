@@ -93,7 +93,7 @@ def monstermap():
     geojson = {"type": "FeatureCollection", "features": []}
 
     cb = db.session.execute(
-        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters WHERE hidden=False")
+        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters WHERE hidden=False ORDER BY id")
     for row in cb:
         d = {"type": "Feature", "geometry": {
             "type": "Point", "coordinates": []}, "properties": {}}
@@ -327,7 +327,7 @@ def add():
 
         _data['founder'] = login_data['username']
         _data['founder_id'] = login_data['id']
-        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][0]},{_data['point'][1]})) RETURNING id"
+        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][1]},{_data['point'][0]})) RETURNING id"
         try:
             cb = db.session.execute(sql, {
                 "founder": login_data['id'],
@@ -366,7 +366,7 @@ def edit(monster_id):
         if "toggleHidden" in _data:
             sql = f"UPDATE public.monsters SET hidden = NOT hidden WHERE id = :id"
         elif "name" in _data and "point" in _data:
-            sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][0]},{_data['point'][1]}) WHERE id = :id"
+            sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][1]},{_data['point'][0]}) WHERE id = :id"
         db.session.execute(sql, {
             "data": json.dumps(_data, ensure_ascii=True),
             "id": monster_id

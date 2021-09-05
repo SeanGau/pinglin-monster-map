@@ -34,6 +34,7 @@ let url_mid = params.get("mid", undefined);
 let current_marker = undefined;
 
 let mymap = L.map('map', {
+    maxBounds: [[24.882665194900072, 121.6139581263308],[24.992518330535274, 121.81129270507814]],
     center: [24.937602, 121.712626],
     zoom: 18,
     maxZoom: 20,
