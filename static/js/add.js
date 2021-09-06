@@ -103,6 +103,13 @@ $(".image-list").on('click', '.remove-image', function (e) {
 
 $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();
+
+    if($("#monster-thumb-block .image-list p .image-title").data("image") === undefined) {
+        alert("請上傳圖片！");
+        $("#monster-thumb").focus();
+        return;
+    }
+
     $("#loading").fadeIn(100);
     let _data = {};
     let latlng = checkbounds(marker.getLatLng());

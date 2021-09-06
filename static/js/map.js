@@ -42,7 +42,8 @@ let mymap = L.map('map', {
     zoomDelta: 0.25,
     zoomSnap: 0,
     layers: [streets],
-    zoomControl: false
+    zoomControl: false,
+    tap: false
 });
 
 let pathDalin = L.geoJSON(path_dalin, {
@@ -144,6 +145,7 @@ L.geoJSON(geojson, {
             url.searchParams.set("mid", monster_id);
             window.history.replaceState({}, '', url);
             this.openPopup();
+            mymap.setView(e.latlng,20)
         })
         if (url_mid == monster_id) {
             current_marker = marker;
