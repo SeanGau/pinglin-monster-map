@@ -63,8 +63,11 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
     e.preventDefault();
     let formData = new FormData();
     let current_work = $(this).attr("name");
-    console.log(current_work);
     let file = $(`#monster-${current_work}`)[0].files[0];
+    if(file === undefined) {
+        alert('請先選擇檔案！');
+        return;
+    }
     formData.append("file", file);
     $(this).text("上傳中...");
     $.ajax({

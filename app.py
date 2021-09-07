@@ -295,6 +295,11 @@ def allowed_file(filename):
 
 @app.route('/uploadfile', methods=['POST'])
 def uploadfile():
+    login_data = flask.session.get('login_data', None)
+    if login_data is None:
+        return flask.redirect("login", code=303)
+    else:
+        login_data = json.loads(login_data)
     if 'file' not in flask.request.files:
         return flask.abort(406)
     file = flask.request.files['file']
