@@ -120,7 +120,6 @@ $("#toggle-hidden").on('click', function (e) {
 
 $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();
-    $("#loading").fadeIn(100);
     let _data = {};
     let latlng = checkbounds(marker.getLatLng());
     _data["point"] = [latlng['lat'], latlng['lng']];
@@ -140,7 +139,8 @@ $("#monster-data-form").on('submit', function (e) {
     $("#monster-image-block .image-list p .image-title").each(function () {
         _data["image"].push($(this).data("image"));
     });
-    
+
+    $("#loading").fadeIn(100);    
     $.ajax({
         type: "POST",
         url: window.location.href,

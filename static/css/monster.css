@@ -137,9 +137,6 @@
 #data-mid-top, #data-mid-bottom {
   height: 38vh;
   width: 100%;
-  width: -moz-available;
-  width: -webkit-fill-available;
-  width: fill-available;
   outline: 2px solid rgba(0, 0, 0, 0.25); }
   #data-mid-top div, #data-mid-top td, #data-mid-bottom div, #data-mid-bottom td {
     outline: 1px solid rgba(0, 0, 0, 0.25); }

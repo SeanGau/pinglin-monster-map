@@ -109,8 +109,6 @@ $("#monster-data-form").on('submit', function (e) {
         $("#monster-thumb").focus();
         return;
     }
-
-    $("#loading").fadeIn(100);
     let _data = {};
     let latlng = checkbounds(marker.getLatLng());
     _data["point"] = [latlng['lat'], latlng['lng']];
@@ -131,6 +129,7 @@ $("#monster-data-form").on('submit', function (e) {
         _data["image"].push($(this).data("image"));
     });
 
+    $("#loading").fadeIn(100);
     $.ajax({
         type: "POST",
         url: window.location.href,
