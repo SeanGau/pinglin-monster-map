@@ -328,22 +328,21 @@ def add():
         _data['founder'] = login_data['username']
         _data['founder_id'] = login_data['id']
         sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][1]},{_data['point'][0]})) RETURNING id"
-        try:
-            cb = db.session.execute(sql, {
-                "founder": login_data['id'],
-                "data": json.dumps(_data, ensure_ascii=True)
-            })
-            current_monster_id = str(cb.first()['id'])
-            if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
-                os.makedirs(os.path.join(
-                    app.config['UPLOAD_FOLDER'], current_monster_id))
-            for image in _data["image"]:
-                shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(
-                    app.config['UPLOAD_FOLDER'], current_monster_id, image))
-            db.session.commit()
-            return current_monster_id
-        except:
-            return flask.abort(406)
+        
+        cb = db.session.execute(sql, {
+            "founder": login_data['id'],
+            "data": json.dumps(_data, ensure_ascii=True)
+        })
+        current_monster_id = str(cb.first()['id'])
+        if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
+            os.makedirs(os.path.join(
+                app.config['UPLOAD_FOLDER'], current_monster_id))
+        for image in _data["image"]:
+            shutil.move(os.path.join(app.config['UPLOAD_FOLDER'], "tmp", image), os.path.join(
+                app.config['UPLOAD_FOLDER'], current_monster_id, image))
+        db.session.commit()
+        return current_monster_id
+        
     else:
         return flask.render_template('monster_add.html')
 

@@ -146,7 +146,6 @@ $("#monster-data-form").on('submit', function (e) {
         url: window.location.href,
         data: JSON.stringify(_data),
         success: function (cb) {
-            $("#loading").fadeOut(300);
             if (cb == "ok") {
                 alert("修改成功！");
                 window.location.href = window.location.href.replace("edit", "monster");
@@ -154,6 +153,12 @@ $("#monster-data-form").on('submit', function (e) {
             else {
                 alert(cb);
             }
+        },
+        error: function (cb) {
+            alert('發生錯誤！請聯絡管理員！');
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+            $("#loading").fadeOut(300);
         },
         contentType: "application/json"
     });

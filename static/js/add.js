@@ -1,9 +1,9 @@
 let params = new URLSearchParams(document.location.search.substring(1));
 
 function checkbounds(point) {
-    bounds = [[24.892665194900072, 121.6339581263308],[24.990418330535274, 121.82327270507814]];
-    let new_lat = Math.min(bounds[1][0],Math.max(bounds[0][0],point['lat']));
-    let new_lng = Math.min(bounds[1][1],Math.max(bounds[0][1],point['lng']));
+    bounds = [[24.892665194900072, 121.6339581263308], [24.990418330535274, 121.82327270507814]];
+    let new_lat = Math.min(bounds[1][0], Math.max(bounds[0][0], point['lat']));
+    let new_lng = Math.min(bounds[1][1], Math.max(bounds[0][1], point['lng']));
     return {
         lat: new_lat,
         lng: new_lng
@@ -20,7 +20,7 @@ if (url_latlng) {
     $("#monster-lat").val(url_latlng['lat']);
     $("#monster-lng").val(url_latlng['lng']);
 } else {
-    url_latlng = {lat: 24.937602, lng: 121.712626};
+    url_latlng = { lat: 24.937602, lng: 121.712626 };
 }
 
 let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://www.mapbox.com/">mapbox</a> ',
@@ -104,7 +104,7 @@ $(".image-list").on('click', '.remove-image', function (e) {
 $("#monster-data-form").on('submit', function (e) {
     e.preventDefault();
 
-    if($("#monster-thumb-block .image-list p .image-title").data("image") === undefined) {
+    if ($("#monster-thumb-block .image-list p .image-title").data("image") === undefined) {
         alert("請上傳圖片！");
         $("#monster-thumb").focus();
         return;
@@ -135,7 +135,6 @@ $("#monster-data-form").on('submit', function (e) {
         url: window.location.href,
         data: JSON.stringify(_data),
         success: function (cb) {
-            $("#loading").fadeOut(300);
             if (cb != "error") {
                 $("#monster-data-form input").val("");
                 alert("新增成功！");
@@ -144,6 +143,12 @@ $("#monster-data-form").on('submit', function (e) {
             else {
                 alert(cb);
             }
+        },
+        error: function (cb) {
+            alert('發生錯誤！請聯絡管理員！');
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+            $("#loading").fadeOut(300);
         },
         contentType: "application/json"
     });
