@@ -84,26 +84,28 @@
 
 #data-mid-top, #data-mid-bottom
     height: 38vh
-    width: 100%
-    outline: 2px solid $color-border
-    div, td
-        outline: 1px solid $color-border
-    td
-        padding: 0.5rem
-    tr
-        width: min-content
-    tr.ex-row
-        width: auto
-        .ex-col
-            vertical-align: baseline
-    p
-        margin: 0
-    .row-title
-        background-color: $color-border
-        color: white
-        width: fit-content
-        h5
+    outline: 2px solid rgba(0,0,0,0.4)
+    overflow-x: auto
+    table
+        width: 100%
+        td
+            outline: 1px solid $color-border
+            padding: 0.5rem
+        tr
+            width: min-content
+        tr.ex-row
+            width: auto
+            .ex-col
+                vertical-align: baseline
+        p
             margin: 0
+        .row-title
+            background-color: $color-border
+            color: white
+            width: fit-content
+            h5
+                margin: 0
+
 
 #elements-help-overlay
     position: fixed
@@ -125,7 +127,7 @@
 @media (min-width: 1400px)
     #data-mid-top, #data-mid-bottom
         td
-            font-size: 1.25rem
+            font-size: 1.1rem
     
 @media (max-width: 991px)
     #monster-box

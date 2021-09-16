@@ -34,48 +34,52 @@
                 </div>
             </div>
             <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
-                <table class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
-                    <tr class="row-title">
-                        <td colspan="2">
-                            <h5>{{monster_data['title']}}</h5>
-                        </td>
-                    </tr>
-                    <tr class="ex-row">
-                        <td class="ex-col">
-                            <p>{{monster_data['story']}}</p>
-                        </td>
-                    </tr>
-                </table>
-                <table class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
-                    <tr class="row-title">
-                        <td colspan="2">
-                            <h5>妖怪棲地</h5>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>地點</td>
-                        <td>{{monster_data['local']}}</td>
-                    </tr>
-                    <tr class="ex-row">
-                        <td>描述</td>
-                        <td class="ex-col">
-                            <p>{{monster_data['disc']}}</p>
-                        </td>
-                    </tr>
-                    <tr class="row-title">
-                        <td colspan="2">
-                            <h5>特殊技能</h5>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>強項</td>
-                        <td>{{monster_data['strong']}}</td>
-                    </tr>
-                    <tr>
-                        <td>弱點</td>
-                        <td>{{monster_data['weak']}}</td>
-                    </tr>
-                </table>
+                <div class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
+                    <table>
+                        <tr class="row-title">
+                            <td>
+                                <h5>{{monster_data['title']}}</h5>
+                            </td>
+                        </tr>
+                        <tr class="ex-row">
+                            <td class="ex-col">
+                                <p>{{monster_data['story']}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
+                    <table>
+                        <tr class="row-title">
+                            <td colspan="2">
+                                <h5>妖怪棲地</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>地點</td>
+                            <td>{{monster_data['local']}}</td>
+                        </tr>
+                        <tr class="ex-row">
+                            <td>描述</td>
+                            <td class="ex-col">
+                                <p>{{monster_data['disc']}}</p>
+                            </td>
+                        </tr>
+                        <tr class="row-title">
+                            <td colspan="2">
+                                <h5>特殊技能</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>強項</td>
+                            <td>{{monster_data['strong']}}</td>
+                        </tr>
+                        <tr>
+                            <td>弱點</td>
+                            <td>{{monster_data['weak']}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="col-lg-auto order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
                 <div class="row h-100">
@@ -116,8 +120,8 @@
 <div class="d-none align-self-center d-flex justify-content-center" id="elements-help-overlay">
     <div class="inner align-self-center"></div>
 </div>
-<a href="/map?mid={{monster_id}}" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i
-        class="fas fa-angle-double-left"></i></a>
+<a href="/map?mid={{monster_id}}" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem"
+    title="回到地圖"><i class="fas fa-angle-double-left"></i></a>
 {% endblock %}
 
 {% block script %}

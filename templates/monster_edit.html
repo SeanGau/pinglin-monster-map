@@ -58,7 +58,7 @@
         </div>
         <div class="mb-3">
             <label for="monster-name" class="form-label">妖怪名稱</label>
-            <input type="text" class="form-control" id="monster-name" value="{{monster_data['name']}}" required>
+            <input type="text" class="form-control" id="monster-name" value="{{monster_data['name']}}" maxlength="15" required>
         </div>
         <div class="mb-3">
             <label for="monster-tag" class="form-label">妖怪標籤（以","分隔）</label>
@@ -94,7 +94,7 @@
         </div>
         <div class="mb-3">
             <label for="monster-disc" class="form-label">棲地環境介紹</label>
-            <textarea class="form-control" id="monster-disc" rows="3">{{monster_data['disc']}}</textarea>
+            <textarea class="form-control" id="monster-disc" rows="3" maxlength="150">{{monster_data['disc']}}</textarea>
         </div>
         <div class="mb-3">
             <label for="monster-strong" class="form-label">妖怪強項</label>
@@ -110,7 +110,7 @@
         </div>
         <div class="mb-3">
             <label for="monster-story" class="form-label">故事內容</label>
-            <textarea class="form-control" id="monster-story" rows="6">{{monster_data['story']}}</textarea>
+            <textarea class="form-control" id="monster-story" rows="6" maxlength="300">{{monster_data['story']}}</textarea>
         </div>
         <hr>
         <div class="d-grid mb-3">

@@ -65,8 +65,8 @@ let baseMaps = {
 };
 
 let overlayMaps = {
-    "坪林尾路線": pathPinglin,
-    "大林路線": pathDalin
+    "坪林奇旅－那些濕黑的小路": pathPinglin,
+    "坪林奇旅 — 村民不敢提的山莊": pathDalin
 }
 
 L.control.layers(baseMaps, overlayMaps, { position: 'bottomright' }).addTo(mymap);
