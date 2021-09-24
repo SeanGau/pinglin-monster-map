@@ -9,7 +9,7 @@ from datetime import datetime, timezone, timedelta
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sassutils.wsgi import SassMiddleware
-from PIL import Image
+from PIL import Image, ExifTags
 # import pypugjs
 
 app = flask.Flask(__name__)
@@ -309,6 +309,20 @@ def uploadfile():
         filename = "m" + str(datetime.now().timestamp()) + \
             "." + file.filename.rsplit('.', 1)[1].lower()
         im = Image.open(file)
+
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation]=='Orientation':
+                break
+        
+        exif = im._getexif()
+
+        if exif[orientation] == 3:
+            im=im.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            im=im.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            im=im.rotate(90, expand=True)
+
         im.thumbnail((800, 800))
         if flask.request.form.get("current_path", None) is not None:
             im.save(os.path.join(app.config['UPLOAD_FOLDER'], flask.session.get(
