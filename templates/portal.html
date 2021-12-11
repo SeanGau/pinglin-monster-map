@@ -41,13 +41,14 @@
     <hr>
     <div class="row justify-content-center">
         <h2 class="text-center">我的妖怪</h2>
-        <div id="monster-list" class="bg-light col-lg-6">
+        <div id="monster-list" class="bg-light col-lg-8">
             <table>
                 {% for monster in login_data["data"] %}
                 <tr>
                     <td>{{monster['slug']}}</td>
                     <td><a href="/monster/{{monster['slug']}}">{{monster['name']}}</a></td>
                     <td>{{monster['create_at']}}</td>
+                    <td>{{monster['founder']}}</td>
                     <td>{{monster['hidden']}}</td>
                 </tr>
                 {% endfor %}

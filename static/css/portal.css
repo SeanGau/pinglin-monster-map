@@ -1,8 +1,6 @@
 #form-box {
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%); }
+  padding-top: 2rem;
+  padding-bottom: 2rem; }
 
 #monster-list {
   padding: 1em;

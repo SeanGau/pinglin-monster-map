@@ -145,9 +145,12 @@ def portal():
         login_data['data'] = []
         tz = timezone(timedelta(hours=8), "Asia/Taipei")
         for row in cb:
+            founder_name = db.session.execute(
+                f"SELECT username FROM public.users WHERE id=:id", {"id": row['founder']}).first()
             login_data['data'].append({
                 "name": row["data"]["name"],
                 "slug": row["id"],
+                "founder": founder_name["username"],
                 "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S"),
                 "hidden": "隱藏中" if row["hidden"] else "顯示中"
             })

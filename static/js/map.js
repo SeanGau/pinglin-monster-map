@@ -145,7 +145,7 @@ L.geoJSON(geojson, {
             url.searchParams.set("mid", monster_id);
             window.history.replaceState({}, '', url);
             this.openPopup();
-            mymap.setView(e.latlng,20)
+            //mymap.setView(e.latlng,20)
         })
         if (url_mid == monster_id) {
             current_marker = marker;
