@@ -40,7 +40,8 @@
     </div>
     <hr>
     <div class="row justify-content-center">
-        <h2 class="text-center">我的妖怪</h2>
+        {% if isAdmin %}<h2 class="text-center" style="color: red;">管理所有妖怪(管理員)</h2>
+        {% else %}<h2 class="text-center">我的妖怪</h2>{% endif %}
         <div id="monster-list" class="bg-light col-lg-8">
             <table>
                 {% for monster in login_data["data"] %}

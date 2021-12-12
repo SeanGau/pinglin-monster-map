@@ -137,9 +137,10 @@ def portal():
             db.session.commit()
             return "ok"
     else:
+        isAdmin = login_data['id'] in ADMIN_ID
         cb = db.session.execute(
             f"SELECT * FROM public.monsters WHERE founder={login_data['id']} ORDER BY id").all()
-        if login_data['id'] in ADMIN_ID:
+        if isAdmin:
             cb = db.session.execute(
                 f"SELECT * FROM public.monsters ORDER BY id DESC").all()
         login_data['data'] = []
@@ -154,7 +155,7 @@ def portal():
                 "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S"),
                 "hidden": "隱藏中" if row["hidden"] else "顯示中"
             })
-        return flask.render_template('portal.html', login_data=login_data)
+        return flask.render_template('portal.html', login_data=login_data, isAdmin=isAdmin)
 
 
 @app.route('/login', methods=['GET', 'POST'])
