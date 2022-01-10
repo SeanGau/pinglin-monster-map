@@ -70,9 +70,14 @@ let overlayMaps = {
 }
 
 L.control.layers(baseMaps, overlayMaps, { position: 'bottomright' }).addTo(mymap);
-L.control.locate({
+let lc = L.control.locate({
+    locateOptions: {
+            enableHighAccuracy: true
+    },
     position: 'topright'
 }).addTo(mymap);
+
+lc.start();
 
 function popupAddNew(latlng) {
     let popLocation = latlng;
@@ -92,6 +97,7 @@ function popupAddNew(latlng) {
 const search = new GeoSearch.GeoSearchControl({
     style: 'bar',
     searchLabel: '搜尋地點',
+    keepResult: true,
     autoClose: true,
     provider: new GeoSearch.OpenStreetMapProvider({
         params: {
@@ -99,7 +105,9 @@ const search = new GeoSearch.GeoSearchControl({
         }
     }),
 });
+
 mymap.addControl(search);
+
 mymap.on('geosearch/showlocation', function (e) {
     popupAddNew(e.marker.getLatLng());
 });

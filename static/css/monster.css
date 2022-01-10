@@ -139,6 +139,7 @@
   outline: 2px solid rgba(0, 0, 0, 0.4);
   overflow-x: auto; }
   #data-mid-top table, #data-mid-bottom table {
+    height: inherit;
     width: 100%; }
     #data-mid-top table td, #data-mid-bottom table td {
       outline: 1px solid rgba(0, 0, 0, 0.25);
@@ -150,6 +151,7 @@
       #data-mid-top table tr.ex-row .ex-col, #data-mid-bottom table tr.ex-row .ex-col {
         vertical-align: baseline; }
     #data-mid-top table p, #data-mid-bottom table p {
+      white-space: pre-wrap;
       margin: 0; }
     #data-mid-top table .row-title, #data-mid-bottom table .row-title {
       background-color: rgba(0, 0, 0, 0.25);
