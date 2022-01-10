@@ -2,7 +2,7 @@
 
 上線版本及計畫詳細內容： https://strangepinglin.collective.tw/
 
-程式碼基底為 SeanGau 的 [大河小溪全民齊督工](https://strangepinglin.collective.tw/)
+程式碼基底為 SeanGau 的 [大河小溪全民齊督工](https://github.com/SeanGau/river-watcher)
 
 - database: postgreSQL + postgis
 - Backend: Flask(python)
