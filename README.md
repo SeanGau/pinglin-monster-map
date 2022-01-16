@@ -16,6 +16,7 @@
 1. python3.6^
 2. postgreSQL + postgis
 ## start
+2. create tables (please check example.sql)
 3. install ```python-venv``` first
 4. create venv
 5. 
