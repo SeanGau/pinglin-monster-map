@@ -72,8 +72,12 @@ let overlayMaps = {
 L.control.layers(baseMaps, overlayMaps, { position: 'bottomright' }).addTo(mymap);
 let lc = L.control.locate({
     locateOptions: {
-            enableHighAccuracy: true
+        enableHighAccuracy: true
     },
+    flyTo: true,
+    onLocationOutsideMapBounds: function(e) {
+    },
+    showPopup: false,
     position: 'topright'
 }).addTo(mymap);
 
