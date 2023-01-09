@@ -34,7 +34,7 @@ let url_mid = params.get("mid", undefined);
 let current_marker = undefined;
 
 let mymap = L.map('map', {
-    maxBounds: [[24.882665194900072, 121.6139581263308],[24.992518330535274, 121.81129270507814]],
+    maxBounds: [[24.882665194900072, 121.6139581263308], [24.992518330535274, 121.81129270507814]],
     center: [24.937602, 121.712626],
     zoom: 18,
     maxZoom: 20,
@@ -75,7 +75,7 @@ let lc = L.control.locate({
         enableHighAccuracy: true
     },
     flyTo: true,
-    onLocationOutsideMapBounds: function(e) {
+    onLocationOutsideMapBounds: function (e) {
     },
     showPopup: false,
     position: 'topright'
@@ -110,7 +110,56 @@ const search = new GeoSearch.GeoSearchControl({
     }),
 });
 
+let translateElement = function (string) {
+    switch (string) {
+        case "fire":
+            return "火"
+        case "wind":
+            return "風"
+        case "ground":
+            return "地"
+        case "water":
+            return "水"
+        default:
+            return string
+    }
+}
+
 mymap.addControl(search);
+$(".leaflet-geosearch-bar form").append(`<div class="monster-results results"></div>`);
+
+let searchTimeout;
+let searchMonster = function (string) {
+    Object.values(monsterData).every(feature => {
+        let id = feature['properties']["monster_id"];
+        let name = `${feature['properties']['name']}, ${feature['properties']['category']}, ${feature['properties']['element']}`;
+        if (name.includes(string)) {
+            $(".leaflet-geosearch-bar .monster-results").append(`
+            <div class="monster-result" data-monster-id="${id}">${name}</div>
+            `)
+        }
+        if ($(".leaflet-geosearch-bar .monster-result").length > 5) return false;
+        else return true;
+    });
+}
+$(".leaflet-geosearch-bar input[type=text]").on("input", function (e) {
+    $(".leaflet-geosearch-bar .monster-results").html("");
+    if ($(this).val().length < 2) return;
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(searchMonster, 500, $(this).val());
+});
+
+$(".leaflet-geosearch-bar .monster-results").on("click", ".monster-result", function (e) {
+    $(".leaflet-geosearch-bar .reset")[0].click();
+    $(".leaflet-geosearch-bar input").val($(this).text());
+    $(".leaflet-geosearch-bar .monster-results").html("");
+    current_marker = monsterData[$(this).data("monster-id")]["marker"];
+    const url = new URL(window.location);
+    url.searchParams.set("mid", $(this).data("monster-id"));
+    window.history.replaceState({}, '', url);
+    current_marker.openPopup();
+    mymap.fitBounds(L.latLngBounds([current_marker.getLatLng()]));
+});
 
 mymap.on('geosearch/showlocation', function (e) {
     popupAddNew(e.marker.getLatLng());
@@ -122,11 +171,12 @@ let markersClusterGroup = L.markerClusterGroup({
 });
 
 mymap.on('click', function (e) {
-    if($(".leaflet-pane.leaflet-popup-pane").html() == '') {
+    if ($(".leaflet-pane.leaflet-popup-pane").html() == '') {
         popupAddNew(e.latlng);
     }
 });
 
+monsterData = {}
 L.geoJSON(geojson, {
     onEachFeature: function (feature, layer) {
     },
@@ -142,6 +192,9 @@ L.geoJSON(geojson, {
             }),
             closeButton: false,
         });
+        feature['marker'] = marker;
+        feature['properties']['element'] = translateElement(feature['properties']['element']);
+        monsterData[monster_id] = feature;
         let popup = `
         <a class="title">${feature['properties']['name']}</a>
         <div class="image" style="background-image: url('/static/img/monsters/${monster_id}/${feature['properties']['thumb']}')"></div>
