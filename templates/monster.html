@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="monster-{{monster_data['element']}} container-fluid d-flex flex-grow-1" id="monster-box">
+<div class="monster-{{monster_data['element']}} container-fluid d-flex flex-grow-1 min-vh-100" id="monster-box">
     <div class="container d-flex flex-grow-1 justify-content-center align-items-center">
         <div class="row flex-grow-1">
             <div class="col-lg d-flex align-items-center p-4 order-2 order-lg-1">
@@ -114,6 +114,54 @@
         </div>
     </div>
 </div>
+<div class="container d-none" id="comment-box">
+    <h1 class="py-4">回應</h1>
+    <div id="comment-list">
+        <div class="comment-row" id="comment-1">
+            <p class="comment-author">seangau</p>
+            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
+
+                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
+                
+                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
+        </div>
+        <div class="comment-row" id="comment-2">
+            <p class="comment-author">seangau</p>
+            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
+
+                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
+                
+                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
+        </div>
+        <div class="comment-row" id="comment-3">
+            <p class="comment-author">seangau</p>
+            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
+
+                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
+                
+                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
+        </div>
+    </div>
+    <hr>
+    {% if login_data is defined %}
+    {% if login_data is not none %}
+    <form id="comment-add">
+        <p class="fw-bold">{{login_data["username"]}}</p>
+        <textarea class="form-control" rows="5" maxlength="250"></textarea>
+        <small>回應限250字</small>
+        <div class="d-grid my-2">
+            <button type="submit" class="btn btn-warning">送出</button>
+        </div>
+    </form>
+    {% else %}
+    <p>
+        發表回應請先 <a href="/login">登入</a>
+    </p>
+    {% endif %}
+    {% endif %}
+</div>
+
+
 {% if can_edit == True %}
 <a href="#" class="btn btn-tomato" style="position: fixed; bottom:1rem; right: 1rem" id="edit-button">編輯</a>
 {% endif %}
@@ -125,16 +173,5 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    $("#edit-button").on('click', function (e) {
-        window.location.href = window.location.href.replace("monster", "edit");
-    });
-    $("#elements-help,#elements-help-overlay").on("click", function (e) {
-        $("#elements-help-overlay").toggleClass("d-none");
-    });
-    $(window).resize(function (e) {
-        $("#carousel .carousel-item video").height($("#carousel .carousel-item video").width());
-    });
-    $(window).resize();
-</script>
+<script src="{{url_for('static', filename='js/monster.js', version=GLOBAL_VERSION)}}"></script>
 {% endblock %}

@@ -177,6 +177,17 @@
     background-repeat: no-repeat;
     background-position: center; }
 
+#comment-box {
+  min-height: 50vh;
+  padding-bottom: 4rem; }
+  #comment-box .comment-row {
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 1rem;
+    margin-bottom: 1rem; }
+    #comment-box .comment-row .comment-author {
+      font-weight: bold; }
+
 @media (min-width: 1400px) {
   #data-mid-top td, #data-mid-bottom td {
     font-size: 1.1rem; } }

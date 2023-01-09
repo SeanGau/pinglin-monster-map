@@ -10,19 +10,19 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sassutils.wsgi import SassMiddleware
 from PIL import Image, ExifTags
-# import pypugjs
+from pillow_heif import register_heif_opener
 
 app = flask.Flask(__name__)
 app.config.from_object('config')
-# app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.jinja_env.globals['GLOBAL_TITLE'] = "坪林尋怪地圖"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 mail = Mail(app)
+register_heif_opener()
 
 ADMIN_ID = {1, 3, 47}
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'heic'}
 
 demo_monster_data = {
     "thumb": "demo_A.png",
@@ -174,7 +174,7 @@ def login():
             flask.session.permanent = False
             flask.session['login_data'] = json.dumps(session_data)
             # send_mail([_data['email']], "login", "<h1>有人登入你的帳號！</h1>")
-            return alert("登入成功", "/map")
+            return flask.redirect(flask.url_for('monstermap'))
         else:
             return alert("帳號或密碼錯誤！", flask.url_for('login'))
     else:
@@ -307,27 +307,30 @@ def uploadfile():
     if 'file' not in flask.request.files:
         return flask.abort(406)
     file = flask.request.files['file']
-    if file.filename == '':
+    if file.filename == '' or not allowed_file(file.filename):
         return flask.abort(406)
     if file and allowed_file(file.filename):
         filename = "m" + str(datetime.now().timestamp()) + \
             "." + file.filename.rsplit('.', 1)[1].lower()
         im = Image.open(file)
 
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation]=='Orientation':
-                break
-        
-        exif = im._getexif()
-
-        if exif[orientation] == 3:
-            im=im.rotate(180, expand=True)
-        elif exif[orientation] == 6:
-            im=im.rotate(270, expand=True)
-        elif exif[orientation] == 8:
-            im=im.rotate(90, expand=True)
+        if hasattr(im, "_getexif"):
+            orientation = 0x0112
+            exif = im._getexif()
+            if not exif:
+                None
+            elif orientation not in exif:
+                None
+            elif exif[orientation] == 3:
+                im=im.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                im=im.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                im=im.rotate(90, expand=True)
 
         im.thumbnail((800, 800))
+        if im.format != 'PNG':
+            filename += '.jpg'
         if flask.request.form.get("current_path", None) is not None:
             im.save(os.path.join(app.config['UPLOAD_FOLDER'], flask.session.get(
                 'current_editing', 'tmp'), filename))
@@ -452,4 +455,4 @@ def test():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000, debug=True)
+    app.run(threaded=True, port=5000, debug=True, host='0.0.0.0')

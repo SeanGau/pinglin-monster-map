@@ -1,5 +1,6 @@
 ENV/
-
+.venv/
+__pycache__/
 .DS_Store
 .env
 .flaskenv
@@ -33,3 +34,5 @@ config.py
 .watchmanconfig
 
 static/img/monsters/*
+
+*.sock
