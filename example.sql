@@ -25,7 +25,20 @@ CREATE TABLE IF NOT EXISTS public.users
     CONSTRAINT users_pkey PRIMARY KEY (id)
 )
 
+CREATE TABLE IF NOT EXISTS public.comments
+(
+    id integer NOT NULL DEFAULT nextval('comments_id_seq'::regclass),
+    author integer NOT NULL,
+    data jsonb NOT NULL,
+    create_at timestamp with time zone NOT NULL DEFAULT now(),
+    monster_id integer NOT NULL,
+    CONSTRAINT comments_pkey PRIMARY KEY (id)
+)
+
 TABLESPACE pg_default;
+
+ALTER TABLE public.comments
+    OWNER to postgres;
 
 ALTER TABLE public.monsters
     OWNER to postgres;

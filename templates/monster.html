@@ -114,42 +114,25 @@
         </div>
     </div>
 </div>
-<div class="container d-none" id="comment-box">
+<div class="container mt-4" id="comment-box">
     <h1 class="py-4">回應</h1>
     <div id="comment-list">
-        <div class="comment-row" id="comment-1">
-            <p class="comment-author">seangau</p>
-            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
-
-                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
-                
-                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
+        {% for comment in monster_data['comments'] %}
+        <div class="comment-row">
+            <p class="comment-author">{{comment['author_name']}}</p>
+            <p class="comment-content">{{comment['data']['content']}}</p>
         </div>
-        <div class="comment-row" id="comment-2">
-            <p class="comment-author">seangau</p>
-            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
-
-                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
-                
-                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
-        </div>
-        <div class="comment-row" id="comment-3">
-            <p class="comment-author">seangau</p>
-            <p class="comment-content">在裡上看到鏡的我也：接近是超難過，們後可以數，面那而且來好議的特的下。越來全都被慣如的是哪慢該不，場的在的訊息⋯沒事真的是輩要要我書可能還被，也是一概是，就是我們大家不，你的傍晚可以不的顏辛，那個宜有可還好足，現在後就我都會不下留話代說不點？
-
-                有那個得太該要一起的。這是討了一其夫都有一⋯啊真的會只會，留好不過我的很所有的，是想想跟：望能回歸不再先生們兩個，是太反而的。
-                
-                他沒有看看以看，只現在只搞，但其實畫畫人愛喔，要再我看不不是我來就怎麼開心了：我也想自己，因為新居搬作。</p>
-        </div>
+        {% endfor %}
     </div>
     <hr>
     {% if login_data is defined %}
     {% if login_data is not none %}
     <form id="comment-add">
+        <input type="number" name="monster_id" class="d-none" value="{{monster_id}}">
         <p class="fw-bold">{{login_data["username"]}}</p>
-        <textarea class="form-control" rows="5" maxlength="250"></textarea>
-        <small>回應限250字</small>
-        <div class="d-grid my-2">
+        <textarea class="form-control" name="content" rows="5" maxlength="250"></textarea>
+        <div class="mt-2">
+            <small>回應限250字</small>
             <button type="submit" class="btn btn-warning">送出</button>
         </div>
     </form>

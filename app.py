@@ -8,6 +8,7 @@ import shutil
 from datetime import datetime, timezone, timedelta
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from sassutils.wsgi import SassMiddleware
 from PIL import Image, ExifTags
 from pillow_heif import register_heif_opener
@@ -93,7 +94,7 @@ def monstermap():
     geojson = {"type": "FeatureCollection", "features": []}
 
     cb = db.session.execute(
-        f"SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters WHERE hidden=False ORDER BY id")
+        text("SELECT ST_AsGeoJSON(geom),data,id FROM public.monsters WHERE hidden=False ORDER BY id")).mappings().all()
     for row in cb:
         d = {"type": "Feature", "geometry": {
             "type": "Point", "coordinates": []}, "properties": {}}
@@ -128,10 +129,10 @@ def portal():
             db.session.begin()
             if len(_data['password']) >= 8 and len(_data['password']) <= 20:
                 db.session.execute(
-                    "UPDATE public.users SET password=:password WHERE email=:email", {"password": gethashed(_data['password']), "email": _data['email']})
+                    text("UPDATE public.users SET password=:password WHERE email=:email"), {"password": gethashed(_data['password']), "email": _data['email']})
             if len(_data['username']) > 0 and len(_data['username']) <= 12:
                 db.session.execute(
-                    "UPDATE public.users SET username=:username WHERE email=:email", {"username": _data['username'], "email": _data['email']})
+                    text("UPDATE public.users SET username=:username WHERE email=:email"), {"username": _data['username'], "email": _data['email']})
                 login_data['username'] = _data['username']
                 flask.session['login_data'] = json.dumps(login_data)
             db.session.commit()
@@ -139,15 +140,15 @@ def portal():
     else:
         isAdmin = login_data['id'] in ADMIN_ID
         cb = db.session.execute(
-            f"SELECT * FROM public.monsters WHERE founder={login_data['id']} ORDER BY id").all()
+            text("SELECT * FROM public.monsters WHERE founder=:founder ORDER BY id"), {"founder": login_data['id']}).mappings().all()
         if isAdmin:
             cb = db.session.execute(
-                f"SELECT * FROM public.monsters ORDER BY id DESC").all()
+                text("SELECT * FROM public.monsters ORDER BY id DESC")).mappings().all()
         login_data['data'] = []
         tz = timezone(timedelta(hours=8), "Asia/Taipei")
         for row in cb:
             founder_name = db.session.execute(
-                f"SELECT username FROM public.users WHERE id=:id", {"id": row['founder']}).first()
+                text("SELECT username FROM public.users WHERE id=:id"), {"id": row['founder']}).mappings().first()
             login_data['data'].append({
                 "name": row["data"]["name"],
                 "slug": row["id"],
@@ -163,7 +164,7 @@ def login():
     if flask.request.method == 'POST':
         _data = flask.request.form
         cb = db.session.execute(
-            "SELECT * FROM public.users WHERE email=:email AND password=:password", {"email": _data['email'], "password": gethashed(_data['password'])}).first()
+            text("SELECT * FROM public.users WHERE email=:email AND password=:password"), {"email": _data['email'], "password": gethashed(_data['password'])}).mappings().first()
         if cb is not None:
             cb_data = dict(cb)
             session_data = {
@@ -192,15 +193,15 @@ def reset():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         cb = db.session.execute(
-            "SELECT * FROM token_table WHERE token=:token", {"token": _data['token']}).first()
+            text("SELECT * FROM token_table WHERE token=:token"), {"token": _data['token']}).mappings().first()
         if cb is not None:
             cb_data = dict(cb)
             exp_t = cb_data['token_expire']
             if exp_t.timestamp() > datetime.now().timestamp() and len(_data['password']) >= 8 and len(_data['password']) <= 20:
                 db.session.execute(
-                    "UPDATE public.users SET password=:password WHERE email=:email", {"password": gethashed(_data['password']), "email": cb_data['email']})
+                    text("UPDATE public.users SET password=:password WHERE email=:email"), {"password": gethashed(_data['password']), "email": cb_data['email']})
                 db.session.execute(
-                    "DELETE FROM public.token_table WHERE email=:email", {"email": cb_data['email']})
+                    text("DELETE FROM public.token_table WHERE email=:email"), {"email": cb_data['email']})
                 db.session.commit()
                 return "ok"
         return flask.abort(406)
@@ -214,11 +215,11 @@ def forget():
         _data = flask.request.form
         token = gethashed(str(datetime.now().timestamp())+_data['email'])
         cb = db.session.execute(
-            "SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
-        if len(cb.all()) == 0:
+            text("SELECT * FROM public.users WHERE email=:email"), {"email": _data['email']})
+        if len(cb.mappings().all()) == 0:
             return alert("此信箱尚未註冊！", flask.url_for('forget'))
         db.session.execute(
-            "INSERT INTO public.token_table (email,token,token_expire) VALUES(:email,:token,(NOW() + interval '1 hour'))", {"email": _data['email'], "token": token})
+            text("INSERT INTO public.token_table (email,token,token_expire) VALUES(:email,:token,(NOW() + interval '1 hour'))"), {"email": _data['email'], "token": token})
         db.session.commit()
         send_mail([_data['email']], "忘記密碼", f'''
 				<div style="font-size: 1.5em; text-align: center;">
@@ -241,12 +242,12 @@ def register():
             return "請先輸入並驗證Email"
         _data = flask.request.get_json()
         cb = db.session.execute(
-            "SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
-        if len(cb.all()) > 0:
+            text("SELECT * FROM public.users WHERE email=:email"), {"email": _data['email']})
+        if len(cb.mappings().all()) > 0:
             return "此信箱已被註冊！"
         elif _data['email'] == flask.session['email_verify']['email'] and _data['code'] == flask.session['email_verify']['code'] and len(_data['username']) > 0 and len(_data['username']) <= 12 and len(_data['password']) >= 8 and len(_data['password']) <= 20:
             cb = db.session.execute(
-                f"INSERT INTO public.users (username,email,password) VALUES(:username,:email,:password)", {
+                text("INSERT INTO public.users (username,email,password) VALUES(:username,:email,:password)"), {
                     "username": _data['username'],
                     "email": _data['email'],
                     "password": gethashed(_data['password'])
@@ -264,8 +265,8 @@ def register_verify():
     if flask.request.method == 'POST':
         _data = flask.request.get_json()
         cb = db.session.execute(
-            f"SELECT * FROM public.users WHERE email=:email", {"email": _data['email']})
-        if len(cb.all()) > 0:
+            text("SELECT * FROM public.users WHERE email=:email"), {"email": _data['email']})
+        if len(cb.mappings().all()) > 0:
             return "此信箱已被註冊！"
         else:
             code = get_random_string(10)
@@ -353,13 +354,13 @@ def add():
 
         _data['founder'] = login_data['username']
         _data['founder_id'] = login_data['id']
-        sql = f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][1]},{_data['point'][0]})) RETURNING id"
+        sql = text(f"INSERT INTO public.monsters (founder,data,geom) VALUES(:founder,:data,ST_MakePoint({_data['point'][1]},{_data['point'][0]})) RETURNING id")
         
         cb = db.session.execute(sql, {
             "founder": login_data['id'],
             "data": json.dumps(_data, ensure_ascii=True)
         })
-        current_monster_id = str(cb.first()['id'])
+        current_monster_id = str(cb.mappings().first()['id'])
         if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], current_monster_id)):
             os.makedirs(os.path.join(
                 app.config['UPLOAD_FOLDER'], current_monster_id))
@@ -389,9 +390,9 @@ def edit(monster_id):
         print(_data)
         sql = ""
         if "toggleHidden" in _data:
-            sql = f"UPDATE public.monsters SET hidden = NOT hidden WHERE id = :id"
+            sql = text("UPDATE public.monsters SET hidden = NOT hidden WHERE id = :id")
         elif "name" in _data and "point" in _data:
-            sql = f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][1]},{_data['point'][0]}) WHERE id = :id"
+            sql = text(f"UPDATE public.monsters SET data = :data, geom = ST_MakePoint({_data['point'][1]},{_data['point'][0]}) WHERE id = :id")
         db.session.execute(sql, {
             "data": json.dumps(_data, ensure_ascii=True),
             "id": monster_id
@@ -400,7 +401,7 @@ def edit(monster_id):
         return "ok"
     else:
         cb = db.session.execute(
-            "SELECT ST_AsGeoJSON(geom),data,founder,hidden FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
+            text("SELECT ST_AsGeoJSON(geom),data,founder,hidden FROM public.monsters WHERE id=:id"), {"id": monster_id}).mappings().first()
         if cb is None:
             return flask.abort(404)
         if login_data['id'] != cb['founder'] and login_data['id'] not in ADMIN_ID:
@@ -416,7 +417,7 @@ def edit(monster_id):
 @app.route('/monster/<monster_id>')
 def monster(monster_id):
     cb = db.session.execute(
-        f"SELECT * FROM public.monsters WHERE id=:id", {"id": monster_id}).first()
+        text("SELECT * FROM public.monsters WHERE id=:id"), {"id": monster_id}).mappings().first()
     if cb is None:
         return flask.abort(404)
     else:
@@ -434,23 +435,46 @@ def monster(monster_id):
         monster_data = cb['data']
         monster_data['id'] = monster_id
         founder = db.session.execute(
-            f"SELECT username FROM public.users WHERE id=:id", {"id": cb['founder']}).first()
+            text("SELECT username FROM public.users WHERE id=:id"), {"id": cb['founder']}).mappings().first()
+        comments = db.session.execute(
+            text("SELECT author, data, (SELECT username AS author_name FROM public.users WHERE id=author) FROM public.comments WHERE monster_id=:id AND hidden=false"), {"id": monster_id}).mappings().all()
         monster_data['founder'] = founder['username']
+        monster_data['comments'] = comments
+        print(monster_data)
         return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id)
 
+@app.route('/addcomment', methods=['POST'])
+def addcomment():
+    login_data = flask.session.get('login_data', None)
+    if login_data is not None:
+        login_data = json.loads(login_data)
+    else:
+        return flask.jsonify({"success": False}), 403, {'contentType': 'application/json'}
+    
+    form = flask.request.form
+    print(dict(form), login_data)
+    cb = db.session.execute(
+        text("INSERT INTO public.comments (author,monster_id,data) VALUES(:author,:monster_id,:data)"), {
+            "author": login_data['id'],
+            "monster_id": form['monster_id'],
+            "data": json.dumps(form, ensure_ascii=True)
+        })
+    db.session.commit()
+    
+    return flask.jsonify({"success": True}), 200, {'contentType': 'application/json'}
 
 @app.route('/test', methods=['GET'])
 def test():
     if app.debug is not True:
         return flask.abort(403)
     msg_to = ['rrtw0627@gmail.com', 'haca00193@gmail.com']
-    msg_subject = 'TEST'
+    msg_subject = 'strangepinglin text mail'
     msg_content = f'''
-        <h1>test</h1>
-        <p>yoyoyo</p>
+        <h1>test!!!!</h1>
+        <p>yoyoyo sooo strangeee</p>
     '''
     send_mail(msg_to, msg_subject, msg_content)
-    return "TEST"
+    return "test mail send"
     # return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
 
 
