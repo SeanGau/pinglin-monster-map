@@ -2,7 +2,7 @@
   padding-top: 2rem;
   padding-bottom: 2rem; }
 
-#monster-list {
+#monster-list, #comment-list {
   padding: 0;
   max-height: 20em;
   border-radius: 5px;

@@ -65,6 +65,32 @@
             </table>
         </div>
     </div>
+    {% if isAdmin %}
+    <hr>
+    <div class="row justify-content-center">
+        <h2 class="text-center" style="color: red;">所有留言(管理員)</h2>
+        <div id="comment-list" class="bg-light col-lg-8">
+            <table class="table table-striped">
+                <tr>
+                    <th>編號</th>
+                    <th>留言者</th>
+                    <th>妖怪編號</th>
+                    <th>內容</th>
+                    <th>狀態</th>
+                </tr>
+                {% for comment in comments %}
+                <tr>
+                    <td>{{comment['id']}}</td>
+                    <td>{{comment['author_name']}}</td>
+                    <td>{{comment['data']['monster_id']}}</td>
+                    <td>{{comment['data']['content']}}</td>
+                    <td>{{'顯示中' if not comment['hidden'] else '隱藏'}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% endif %}
 </div>
 <a href="/map" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem" title="回到地圖"><i
         class="fas fa-angle-double-left"></i></a>

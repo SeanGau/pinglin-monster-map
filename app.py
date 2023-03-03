@@ -136,7 +136,7 @@ def portal():
         for row in cb:
             founder_name = db.session.execute(
                 text("SELECT username FROM public.users WHERE id=:id"), {"id": row['founder']}).mappings().first()
-            comments = db.session.execute(
+            commentCount = db.session.execute(
                 text("SELECT COUNT(*) FROM public.comments WHERE monster_id=:id AND hidden=false"), {"id": row['id']}).mappings().first()['count']
             login_data['data'].append({
                 "name": row["data"]["name"],
@@ -144,9 +144,13 @@ def portal():
                 "founder": founder_name["username"],
                 "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S"),
                 "hidden": "隱藏中" if row["hidden"] else "顯示中",
-                "comments": comments
+                "comments": commentCount
             })
-        return flask.render_template('portal.html', login_data=login_data, isAdmin=isAdmin)
+        comments = None
+        if isAdmin:
+            comments = db.session.execute(
+            text("SELECT id, author, data, create_at, monster_id, hidden, (SELECT username AS author_name FROM public.users WHERE id=author) FROM public.comments ORDER BY id DESC")).mappings().all()
+        return flask.render_template('portal.html', login_data=login_data, isAdmin=isAdmin, comments = comments)
 
 
 @app.route('/login', methods=['GET', 'POST'])
