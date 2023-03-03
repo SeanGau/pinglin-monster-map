@@ -1,10 +1,4 @@
-import flask
-import json
-import hashlib
-import string
-import random
-import os
-import shutil
+import flask, json, hashlib, string, random, os, shutil, requests
 from datetime import datetime, timezone, timedelta
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
@@ -22,9 +16,9 @@ mail = Mail(app)
 register_heif_opener()
 
 ADMIN_ID = {1, 3, 47}
-
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'heic'}
 
+elements = {"water": "水", "ground": "地", "wind": "風", "fire": "火"}
 demo_monster_data = {
     "thumb": "demo_A.png",
     "image": ["demo_A.png", "demo_B.png", "demo_C.png"],
@@ -51,12 +45,10 @@ app.wsgi_app = SassMiddleware(app.wsgi_app, {
     }
 })
 
-
 def get_random_string(length):
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
-
 
 def gethashed(data):
     data = data+app.config['SECRET_KEY']
@@ -65,13 +57,11 @@ def gethashed(data):
     h = s.hexdigest()
     return h
 
-
 def alert(message, redir):  # alert then redirect
     return f'''<script type="text/javascript">
 						alert("{message}");
 						window.location.href = "{redir}";
 						</script>'''
-
 
 def send_mail(recevier_array, subject, html_content):
     msg = Message(subject=app.jinja_env.globals['GLOBAL_TITLE'] +
@@ -79,7 +69,6 @@ def send_mail(recevier_array, subject, html_content):
     mail.send(msg)
 
 # ------------------------------------------------------------------------------------------------------------------
-
 
 @app.route('/')
 def index():
@@ -139,22 +128,23 @@ def portal():
             return "ok"
     else:
         isAdmin = login_data['id'] in ADMIN_ID
-        cb = db.session.execute(
-            text("SELECT * FROM public.monsters WHERE founder=:founder ORDER BY id"), {"founder": login_data['id']}).mappings().all()
+        cb = db.session.execute(text("SELECT * FROM public.monsters WHERE founder=:founder ORDER BY id"), {"founder": login_data['id']}).mappings().all()
         if isAdmin:
-            cb = db.session.execute(
-                text("SELECT * FROM public.monsters ORDER BY id DESC")).mappings().all()
+            cb = db.session.execute(text("SELECT * FROM public.monsters ORDER BY id DESC")).mappings().all()
         login_data['data'] = []
         tz = timezone(timedelta(hours=8), "Asia/Taipei")
         for row in cb:
             founder_name = db.session.execute(
                 text("SELECT username FROM public.users WHERE id=:id"), {"id": row['founder']}).mappings().first()
+            comments = db.session.execute(
+                text("SELECT COUNT(*) FROM public.comments WHERE monster_id=:id AND hidden=false"), {"id": row['id']}).mappings().first()['count']
             login_data['data'].append({
                 "name": row["data"]["name"],
                 "slug": row["id"],
                 "founder": founder_name["username"],
                 "create_at": row["create_at"].astimezone(tz).strftime("%Y/%m/%d %H:%M:%S"),
-                "hidden": "隱藏中" if row["hidden"] else "顯示中"
+                "hidden": "隱藏中" if row["hidden"] else "顯示中",
+                "comments": comments
             })
         return flask.render_template('portal.html', login_data=login_data, isAdmin=isAdmin)
 
@@ -477,6 +467,73 @@ def test():
     return "test mail send"
     # return flask.render_template('test.pug', data={"A": "AA","B": "BB"})
 
+@app.route('/igpost/<monster_id>', methods=['GET'])
+def igpost(monster_id):
+    if app.debug is not True:
+        return flask.abort(403)
+    cb = db.session.execute(
+        text("SELECT * FROM public.monsters WHERE id=:id"), {"id": monster_id}).mappings().first()
+    if cb is None:
+        return flask.abort(404)
+    cb['data']['date'] = list(
+        map(lambda x: str(x).zfill(2), cb['data']['date']))
+    monster_data = cb['data']
+    monster_data['id'] = monster_id
+    founder = db.session.execute(text("SELECT username FROM public.users WHERE id=:id"), {"id": cb['founder']}).mappings().first()
+    monster_data['founder'] = founder['username']
+    user_id = app.config['IG_USER_ID']
+    access_token = app.config['IG_API_KEY']
+    caption = f'''
+    👹{monster_data['name']}👹
+    棲地聚落：{monster_data['category']}
+    元素屬性：{elements[monster_data['element']]}
+    
+    目擊者：{monster_data['founder']}
+    目擊日期：{"/".join(monster_data['date'])}
+
+    #{monster_data['title']}
+    {monster_data['story']}
+    #{" #".join(monster_data['tag'])}
+
+    #坪林尋怪 #StrangePinglin #{monster_data['category']} #{elements[monster_data['element']]}
+    #坪林故事採集 #Pinglinstory #採集人共作室 #Collectors
+    '''
+    #return f"<pre>{caption}</pre>"
+
+    url = f"https://graph.facebook.com/v16.0/{user_id}/media"
+    data = {
+    "access_token": access_token,
+    "image_url": f"https://strangepinglin.collective.tw/static/img/monsters/{monster_id}/{monster_data['image'][-2]}",
+    "is_carousel_item": "true"
+    }
+    r = requests.post(url = url, data = data)
+    print("media 1: ", r.json())
+    media_id_1 = r.json().get("id")
+    data = {
+    "access_token": access_token,
+    "image_url": f"https://strangepinglin.collective.tw/static/img/monsters/{monster_id}/{monster_data['image'][-1]}",
+    "is_carousel_item": "true"
+    }
+    r = requests.post(url = url, data = data)
+    print("media 2: ", r.json())
+    media_id_2 = r.json().get("id")
+    data = {
+    "access_token": access_token,
+    "media_type": "CAROUSEL",
+    "children": f"{media_id_1},{media_id_2}",
+    "caption": caption
+    }
+    r = requests.post(url = url, data = data)
+    print("creation id: ", r.json())
+    creation_id = r.json().get("id")
+    url = f"https://graph.facebook.com/v16.0/{user_id}/media_publish"
+    data = {
+    "access_token": access_token,
+    "creation_id": creation_id
+    }
+    r = requests.post(url = url, data = data)
+    print(r.text)
+    return(r.text)
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000, debug=True, host='0.0.0.0')
+    app.run(threaded=True, port=5005, debug=True, host='0.0.0.0')

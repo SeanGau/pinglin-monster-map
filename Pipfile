@@ -12,6 +12,7 @@ pillow-heif = "*"
 libsass = "*"
 psycopg2-binary = "*"
 gunicorn = "*"
+requests = "*"
 
 [dev-packages]
 

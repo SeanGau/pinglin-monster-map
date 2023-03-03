@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.comments
     data jsonb NOT NULL,
     create_at timestamp with time zone NOT NULL DEFAULT now(),
     monster_id integer NOT NULL,
+    hidden boolean NOT NULL DEFAULT false,
     CONSTRAINT comments_pkey PRIMARY KEY (id)
 )
 

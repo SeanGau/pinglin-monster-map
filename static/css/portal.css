@@ -3,11 +3,9 @@
   padding-bottom: 2rem; }
 
 #monster-list {
-  padding: 1em;
-  max-height: 15em;
+  padding: 0;
+  max-height: 20em;
   border-radius: 5px;
   overflow-y: scroll; }
-  #monster-list td {
-    padding: 0 1rem; }
 
 /*# sourceMappingURL=portal.css.map */

@@ -43,7 +43,15 @@
         {% if isAdmin %}<h2 class="text-center" style="color: red;">管理所有妖怪(管理員)</h2>
         {% else %}<h2 class="text-center">我的妖怪</h2>{% endif %}
         <div id="monster-list" class="bg-light col-lg-8">
-            <table>
+            <table class="table table-striped">
+                <tr>
+                    <th>編號</th>
+                    <th>名稱</th>
+                    <th>建立時間</th>
+                    <th>目擊者</th>
+                    <th>狀態</th>
+                    <th>留言數</th>
+                </tr>
                 {% for monster in login_data["data"] %}
                 <tr>
                     <td>{{monster['slug']}}</td>
@@ -51,6 +59,7 @@
                     <td>{{monster['create_at']}}</td>
                     <td>{{monster['founder']}}</td>
                     <td>{{monster['hidden']}}</td>
+                    <td>{{monster['comments']}}</td>
                 </tr>
                 {% endfor %}
             </table>
