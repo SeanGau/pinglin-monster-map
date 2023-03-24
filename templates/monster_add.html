@@ -11,7 +11,7 @@
 {% block body %}
 <div class="container">
     <form class="p-5 mx-lg-5" id="monster-data-form">
-        <div class="mb-3 row">
+        <div class="mb-3 row g-2">
             <div class="col-6">
                 <input type="number" step="any" class="form-control" id="monster-lng" required disabled>
             </div>
@@ -22,56 +22,51 @@
         <div class="mb-3">
             <div id="map"></div>
         </div>
-        <div class="mb-3 row" id="monster-thumb-block">
+        <div class="mb-3" id="monster-thumb-block">
             <label for="monster-thumb" class="form-label">封面圖片</label>
-            <div class="col-8">
-                <input type="file" name="monster-thumb" id="monster-thumb" class="form-control " accept=".jpg, .jpeg, .png">
-            </div>
-            <div class="col-4">
-                <button id="upload-thumb" class="btn btn-tomato" name="thumb">上傳圖片</button>
-            </div>
-            <span>檔案大小限制（20MB）</span>
+            <input type="file" name="monster-thumb" id="monster-thumb" class="form-control" accept=".jpg, .jpeg, .png">
+            <span class="form-text">檔案大小限制（20MB）</span>
             <div class="image-list mt-2">
             </div>
         </div>
-        <div class="mb-3 row" id="monster-image-block">
-            <label for="monster-image" class="form-label">圖片（最多3張）</label>
-            <div class="col-8">
-                <input type="file" name="monster-image" id="monster-image" class="form-control" accept=".jpg, .jpeg, .png">
-            </div>
-            <div class="col-4">
-                <button id="upload-image" class="btn btn-tomato" name="image">上傳圖片</button>
-            </div>
-            <span>檔案大小限制（20MB）</span>
+        <div class="mb-3" id="monster-image-block">
+            <label for="monster-image" class="form-label">圖片</label>
+            <input type="file" name="monster-image" id="monster-image" class="form-control" accept=".jpg, .jpeg, .png">
+            <span class="form-text">檔案大小限制（20MB）／最多3張</span>
             <div class="image-list mt-2">
             </div>
         </div>
         <div class="mb-3">
             <label for="monster-name" class="form-label">妖怪名稱</label>
             <input type="text" class="form-control" id="monster-name" value="" maxlength="15" required>
+            <span class="form-text">上限 15 個字</span>
         </div>
         <div class="mb-3">
             <label for="monster-tag" class="form-label">妖怪標籤（以 , 分隔）</label>
             <input type="text" class="form-control" id="monster-tag" value="" required>
         </div>
         <div class="mb-3">
-            <label for="monster-category" class="form-label">妖怪分類</label>
-            <a href="#" id="elements-help" role="button" class="btn btn-tomato elements-help align-self-center mb-2 ms-4">分類、屬性說明</a>
-            <select id="monster-category" class="form-select" required>
-                <option value="山野">山野</option>
-                <option value="水域">水域</option>
-                <option value="過渡">過渡</option>
-                <option value="人文">人文</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="monster-element" class="form-label">妖怪屬性</label>
-            <select id="monster-element" class="form-select" required>
-                <option value="ground">地</option>
-                <option value="water">水</option>
-                <option value="fire">火</option>
-                <option value="wind">風</option>
-            </select>
+            <label for="monster-category" class="form-label">妖怪分類／屬性</label>
+            <a href="#" id="elements-help" role="button"
+                class="btn btn-tomato elements-help align-self-center mb-2 ms-4">分類、屬性說明</a>
+            <div class="row g-2">
+                <div class="col">
+                    <select id="monster-category" class="form-select" required>
+                        <option value="山野">山野</option>
+                        <option value="水域">水域</option>
+                        <option value="過渡">過渡</option>
+                        <option value="人文">人文</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select id="monster-element" class="form-select" required>
+                        <option value="ground">地</option>
+                        <option value="water">水</option>
+                        <option value="fire">火</option>
+                        <option value="wind">風</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="mb-3">
             <label for="monster-date" class="form-label">發現日期</label>
@@ -84,6 +79,7 @@
         <div class="mb-3">
             <label for="monster-disc" class="form-label">棲地環境介紹</label>
             <textarea class="form-control" id="monster-disc" rows="3" maxlength="150"></textarea>
+            <span class="form-text">上限 150 個字</span>
         </div>
         <div class="mb-3">
             <label for="monster-strong" class="form-label">妖怪強項</label>
@@ -100,6 +96,7 @@
         <div class="mb-3">
             <label for="monster-story" class="form-label">故事內容</label>
             <textarea class="form-control" id="monster-story" rows="6" maxlength="300"></textarea>
+            <span class="form-text">上限 300 個字</span>
         </div>
         <hr>
         <div class="d-grid">

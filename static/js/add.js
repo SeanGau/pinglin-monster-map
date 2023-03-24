@@ -59,11 +59,12 @@ $("#elements-help,#elements-help-overlay").on("click", function (e) {
     $("#elements-help-overlay").toggleClass("d-none");
 });
 
-$("#upload-thumb, #upload-image").on("click", function (e) {
+$("#monster-thumb, #monster-image").on("change", function (e) {
     e.preventDefault();
     let formData = new FormData();
-    let current_work = $(this).attr("name");
-    let file = $(`#monster-${current_work}`)[0].files[0];
+    let current_work = $(this).attr("name").split("-")[1];
+    //let file = $(`#monster-${current_work}`)[0].files[0];
+    let file = e.target.files[0];
     if(file === undefined) {
         alert('請先選擇檔案！');
         return;
@@ -101,6 +102,7 @@ $("#upload-thumb, #upload-image").on("click", function (e) {
 
 
 $(".image-list").on('click', '.remove-image', function (e) {
+    e.preventDefault();
     $(this).parents("p").remove();
 });
 
@@ -115,17 +117,17 @@ $("#monster-data-form").on('submit', function (e) {
     let _data = {};
     let latlng = checkbounds(marker.getLatLng());
     _data["point"] = [latlng['lat'], latlng['lng']];
-    _data["name"] = $("#monster-name").val();
+    _data["name"] = $("#monster-name").val().substring(0, 16);
     _data["tag"] = $("#monster-tag").val().split(",");
     _data["category"] = $("#monster-category").val();
     _data["element"] = $("#monster-element").val();
     _data["date"] = $("#monster-date").val().split("-");
     _data["local"] = $("#monster-local").val();
-    _data["disc"] = $("#monster-disc").val();
+    _data["disc"] = $("#monster-disc").val().substring(0, 151);
     _data["strong"] = $("#monster-strong").val();
     _data["weak"] = $("#monster-weak").val();
     _data["title"] = $("#monster-title").val();
-    _data["story"] = $("#monster-story").val();
+    _data["story"] = $("#monster-story").val().substring(0, 301);
     _data["thumb"] = $("#monster-thumb-block .image-list p .image-title").data("image");
     _data["image"] = [];
     $("#monster-image-block .image-list p .image-title").each(function () {

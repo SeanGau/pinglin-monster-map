@@ -12,12 +12,22 @@
             <div class="col-lg d-flex align-items-center p-4 order-2 order-lg-1">
                 <div id="carousel" class="carousel slide" data-bs-interval="false">
                     <div class="carousel-indicators">
+                        {% if not monster_data['image'] %}
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
+                            aria-current="true"></button>
+                        {% endif %}
                         {% for image in monster_data['image'] %}
                         <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{loop.index - 1}}"
                             class="{% if loop.index == 1 %}active{% endif %}" aria-current="true"></button>
                         {% endfor %}
                     </div>
                     <div class="carousel-inner">
+                        {% if not monster_data['image'] %}
+                        <div class="carousel-item active"
+                            style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+monster_data['thumb'], version=GLOBAL_VERSION)}});">
+
+                        </div>
+                        {% endif %}
                         {% for image in monster_data['image'] %}
                         <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
                             style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
@@ -35,18 +45,20 @@
             </div>
             <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
                 <div class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
-                    <table>
-                        <tr class="row-title">
-                            <td>
-                                <h5>{{monster_data['title']}}</h5>
-                            </td>
-                        </tr>
-                        <tr class="ex-row">
-                            <td class="ex-col">
-                                <p>{{monster_data['story']}}</p>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="container-fluid p-0 m-0">
+                        <table>
+                            <tr class="row-title">
+                                <td>
+                                    <h5>{{monster_data['title']}}</h5>
+                                </td>
+                            </tr>
+                            <tr class="ex-row">
+                                <td class="ex-col">
+                                    <p>{{monster_data['story']}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
                     <table>
@@ -131,8 +143,8 @@
         <input type="number" name="monster_id" class="d-none" value="{{monster_id}}">
         <p class="fw-bold">{{login_data["username"]}}</p>
         <textarea class="form-control" name="content" rows="5" maxlength="250"></textarea>
+        <span class="form-text">回應限250字</span>
         <div class="mt-2">
-            <small>回應限250字</small>
             <button type="submit" class="btn btn-warning">送出</button>
         </div>
     </form>
