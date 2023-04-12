@@ -45,8 +45,8 @@
             </div>
             <div class="col-lg-6 d-flex flex-column order-3 order-lg-2" id="data-mid">
                 <div class="write-verticle-rl mb-4 mb-lg-0" id="data-mid-bottom">
-                    <div class="container-fluid p-0 m-0">
-                        <table>
+                    <div class="container-fluid p-0 m-0 d-flex flex-column">
+                        <!--table>
                             <tr class="row-title">
                                 <td>
                                     <h5>{{monster_data['title']}}</h5>
@@ -54,10 +54,12 @@
                             </tr>
                             <tr class="ex-row">
                                 <td class="ex-col">
-                                    <p>{{monster_data['story']}}</p>
+                                    <div><p>{{monster_data['story']}}</p></div>
                                 </td>
                             </tr>
-                        </table>
+                        </!--table-->
+                        <div class="row-title"><h5 class="p-2">{{monster_data['title']}}</h5></div>
+                        <div class="story-box"><p class="p-2">{{monster_data['story']}}</p></div>
                     </div>
                 </div>
                 <div class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
@@ -74,7 +76,7 @@
                         <tr class="ex-row">
                             <td>描述</td>
                             <td class="ex-col">
-                                <p>{{monster_data['disc']}}</p>
+                                <div><p>{{monster_data['disc']}}</p></div>
                             </td>
                         </tr>
                         <tr class="row-title">
@@ -88,7 +90,7 @@
                         </tr>
                         <tr>
                             <td>弱點</td>
-                            <td>{{monster_data['weak']}}</td>
+                            <div><td>{{monster_data['weak']}}</td></div>
                         </tr>
                     </table>
                 </div>

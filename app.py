@@ -502,38 +502,38 @@ def igpost(monster_id):
     #坪林尋怪 #StrangePinglin #{monster_data['category']} #{elements[monster_data['element']]}
     #坪林故事採集 #Pinglinstory #採集人共作室 #Collectors
     '''
-    #return f"<pre>{caption}</pre>"
-
+    
     url = f"https://graph.facebook.com/v16.0/{user_id}/media"
+        
     data = {
-    "access_token": access_token,
-    "image_url": f"https://strangepinglin.collective.tw/static/img/monsters/{monster_id}/{monster_data['image'][-2]}",
-    "is_carousel_item": "true"
+        "access_token": access_token,
+        "image_url": f"https://strangepinglin.collective.tw/static//img/妖怪圖錄切割/妖怪圖錄-33.png",
+        "is_carousel_item": "true"
     }
     r = requests.post(url = url, data = data)
     print("media 1: ", r.json())
     media_id_1 = r.json().get("id")
     data = {
-    "access_token": access_token,
-    "image_url": f"https://strangepinglin.collective.tw/static/img/monsters/{monster_id}/{monster_data['image'][-1]}",
-    "is_carousel_item": "true"
+        "access_token": access_token,
+        "image_url": f"https://strangepinglin.collective.tw/static/img/monsters/{monster_id}/{monster_data['image'][-1]}",
+        "is_carousel_item": "true"
     }
     r = requests.post(url = url, data = data)
     print("media 2: ", r.json())
     media_id_2 = r.json().get("id")
     data = {
-    "access_token": access_token,
-    "media_type": "CAROUSEL",
-    "children": f"{media_id_1},{media_id_2}",
-    "caption": caption
+        "access_token": access_token,
+        "media_type": "CAROUSEL",
+        "children": f"{media_id_1},{media_id_2}",
+        "caption": caption
     }
     r = requests.post(url = url, data = data)
     print("creation id: ", r.json())
     creation_id = r.json().get("id")
     url = f"https://graph.facebook.com/v16.0/{user_id}/media_publish"
     data = {
-    "access_token": access_token,
-    "creation_id": creation_id
+        "access_token": access_token,
+        "creation_id": creation_id
     }
     r = requests.post(url = url, data = data)
     print(r.text)

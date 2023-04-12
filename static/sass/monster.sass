@@ -87,7 +87,8 @@
     outline: 2px solid rgba(0,0,0,0.4)
     overflow-x: auto
     table
-        height: inherit
+        position: relative
+        height: initial
         width: 100%
         td
             outline: 1px solid $color-border
@@ -98,15 +99,20 @@
             width: auto
             .ex-col
                 vertical-align: baseline
-        p
-            white-space: pre-wrap
+    p
+        white-space: pre-wrap
+        margin: 0
+    .story-box
+        outline: 1px solid $color-border
+        vertical-align: baseline
+        width: 100%
+        overflow: auto
+    .row-title
+        background-color: $color-border
+        color: white
+        width: fit-content
+        h5
             margin: 0
-        .row-title
-            background-color: $color-border
-            color: white
-            width: fit-content
-            h5
-                margin: 0
 
 
 #elements-help-overlay
@@ -173,6 +179,9 @@
         .row-title
             text-align: center
             height: fit-content
+    #data-mid-bottom
+        .row-title, .story-box 
+            width: 100%
     .write-verticle-lr, .write-verticle-rl
         writing-mode: initial
         h1, h2, h3, h4, h5
