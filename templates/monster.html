@@ -169,6 +169,20 @@
     {% endif %}
     {% endif %}
 </div>
+<footer class="py-5">
+    <div class="container d-flex justify-content-center align-items-center">
+        <a href="https://www.facebook.com/pinglinstory" target="_blank">
+            <img src="{{url_for('static', filename='img/Facebook_icon.svg', version=GLOBAL_VERSION)}}" alt="">
+        </a>
+        <a href="https://www.instagram.com/strange_pinglin/" target="_blank">
+            <img src="{{url_for('static', filename='img/Instagram_icon.svg', version=GLOBAL_VERSION)}}" alt="">
+        </a>
+        <a href="mailto:pinglinstory@apps.ntpc.edu.tw" target="_blank">
+            <img src="{{url_for('static', filename='img/Mail_icon.svg', version=GLOBAL_VERSION)}}" alt="">
+        </a>
+        <div class="ms-2 ps-4 border-start border-dark">© 採集人共作室 All rights reserved</div>
+    </div>
+</footer>
 
 {% if not capture %}
 {% if can_edit == True %}

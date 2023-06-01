@@ -49,8 +49,8 @@
             transform: translateY(5px)
     .elements-help
         margin: 1rem 0
-        width: 3rem
-        height: 3rem
+        width: 3.5rem
+        height: 3.5rem
         background-image: url("../img/element_icon.png")
         background-position: center
         background-size: contain
@@ -58,8 +58,21 @@
         animation: elements-help-keyframe 1s ease-in-out infinite alternate
         &:hover
             opacity: .8
+    .monster-news
+        margin: 1rem 0
+        width: 3.5rem
+        height: 3.5rem
+        background-image: url("../img/news_icon.png")
+        background-position: center
+        background-size: contain
+        background-repeat: no-repeat
+        animation: elements-help-keyframe 1s .2s ease-in-out infinite alternate
+        &:hover
+            opacity: .8
     .index-links
+        position: relative
         margin-top: 100%
+        text-align: center
         a, span
             color: $tomato
             font-weight: bold
@@ -71,6 +84,8 @@
             margin: 5px 0 
             display: block
             border-bottom: 2px solid
+        img
+            width: 1.8rem
 
 #elements-help-overlay
     position: fixed
