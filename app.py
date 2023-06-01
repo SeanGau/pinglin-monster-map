@@ -434,8 +434,14 @@ def monster(monster_id):
             text("SELECT author, data, (SELECT username AS author_name FROM public.users WHERE id=author) FROM public.comments WHERE monster_id=:id AND hidden=false"), {"id": monster_id}).mappings().all()
         monster_data['founder'] = founder['username']
         monster_data['comments'] = comments
+        if monster_data['thumb'] not in monster_data['image']:
+            if ".mp4" == monster_data['image'][0][-4:]:
+                monster_data['image'].insert(1, monster_data['thumb'])
+            else:
+                monster_data['image'].insert(0, monster_data['thumb'])
+                
         print(monster_data)
-        return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id)
+        return flask.render_template('monster.html', login_data=login_data, monster_data=monster_data, can_edit=can_edit, monster_id=monster_id, capture=flask.request.args.get('capture', False))
 
 @app.route('/addcomment', methods=['POST'])
 def addcomment():
@@ -507,7 +513,7 @@ def igpost(monster_id):
         
     data = {
         "access_token": access_token,
-        "image_url": f"https://strangepinglin.collective.tw/static//img/妖怪圖錄切割/妖怪圖錄-33.png",
+        "image_url": f"https://strangepinglin.collective.tw/static//img/妖怪圖錄切割/妖怪圖錄-43.png",
         "is_carousel_item": "true"
     }
     r = requests.post(url = url, data = data)

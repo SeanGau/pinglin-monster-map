@@ -21,9 +21,12 @@
 </head>
 
 <body>
+    
+    {% if not capture %}
     <div id="loading">
         <img src="{{url_for( 'static' ,filename='loading.svg' )}}" alt="">
     </div>
+    {% endif %}
     <div id="body-box">
         {% block body %}{% endblock %}
     </div>

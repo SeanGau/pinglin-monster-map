@@ -8,7 +8,7 @@
 {% block body %}
 <div class="monster-{{monster_data['element']}} container-fluid d-flex flex-grow-1 min-vh-100" id="monster-box">
     <div class="container d-flex flex-grow-1 justify-content-center align-items-center">
-        <div class="row flex-grow-1">
+        <div class="row flex-grow-1 m-0">
             <div class="col-lg d-flex align-items-center p-4 order-2 order-lg-1">
                 <div id="carousel" class="carousel slide" data-bs-interval="false">
                     <div class="carousel-indicators">
@@ -29,7 +29,7 @@
                         </div>
                         {% endif %}
                         {% for image in monster_data['image'] %}
-                        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}"
+                        <div class="carousel-item {% if (loop.index == 1 and not capture) or (loop.index == monster_data['image']|length and capture != False) %}active{% endif %}"
                             style="background-image: url({{url_for('static', filename='img/monsters/'+monster_data['id']+'/'+image, version=GLOBAL_VERSION)}});">
                             {% if ".mp4" == image[-4:] %}
                             <video autoplay controls controlsList="nodownload">
@@ -58,8 +58,12 @@
                                 </td>
                             </tr>
                         </!--table-->
-                        <div class="row-title"><h5 class="p-2">{{monster_data['title']}}</h5></div>
-                        <div class="story-box"><p class="p-2">{{monster_data['story']}}</p></div>
+                        <div class="row-title">
+                            <h5 class="p-2">{{monster_data['title']}}</h5>
+                        </div>
+                        <div class="story-box">
+                            <p class="p-2">{{monster_data['story']}}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="write-verticle-rl mb-4 order-lg-first" id="data-mid-top">
@@ -76,7 +80,9 @@
                         <tr class="ex-row">
                             <td>描述</td>
                             <td class="ex-col">
-                                <div><p>{{monster_data['disc']}}</p></div>
+                                <div>
+                                    <p>{{monster_data['disc']}}</p>
+                                </div>
                             </td>
                         </tr>
                         <tr class="row-title">
@@ -90,13 +96,15 @@
                         </tr>
                         <tr>
                             <td>弱點</td>
-                            <div><td>{{monster_data['weak']}}</td></div>
+                            <div>
+                                <td>{{monster_data['weak']}}</td>
+                            </div>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="col-lg-auto order-1 order-lg-3 sticky-top py-4 py-lg-0" id="data-right">
-                <div class="row h-100">
+                <div class="row h-100 m-0">
                     <div class="col-lg order-lg-last px-4 px-lg-0 write-verticle-rl flex-grow-0">
                         <a href="#" id="elements-help">
                             <img id="data-element"
@@ -115,11 +123,15 @@
                         </div>
                         <div class="write-verticle-rl" id="data-found-box">
                             <div class="m-2">
-                                目擊者<span class="data-seperator"></span><a
-                                    id="data-founder">{{monster_data['founder']}}</a>
-                                <span class="d-lg-block m-1"></span>
-                                日期<span class="data-seperator"></span><a
-                                    id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
+                                <div>
+                                    目擊者<span class="data-seperator"></span><a
+                                        id="data-founder">{{monster_data['founder']}}</a><span
+                                        class="d-lg-block m-1"></span>
+                                </div>
+                                <div>
+                                    日期<span class="data-seperator"></span><a
+                                        id="data-date"><span>{{monster_data['date'][0]}}</span>.<span>{{monster_data['date'][1]}}</span>.<span>{{monster_data['date'][2]}}</span></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -158,7 +170,7 @@
     {% endif %}
 </div>
 
-
+{% if not capture %}
 {% if can_edit == True %}
 <a href="#" class="btn btn-tomato" style="position: fixed; bottom:1rem; right: 1rem" id="edit-button">編輯</a>
 {% endif %}
@@ -167,8 +179,19 @@
 </div>
 <a href="/map?mid={{monster_id}}" class="btn btn-tomato" style="position: fixed; bottom:1rem; left: 1rem"
     title="回到地圖"><i class="fas fa-angle-double-left"></i></a>
+{% endif %}
 {% endblock %}
 
 {% block script %}
 <script src="{{url_for('static', filename='js/monster.js', version=GLOBAL_VERSION)}}"></script>
+{% if capture != False %}
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+    let capture = function () {
+        html2canvas(document.querySelector("#monster-box")).then(canvas => {
+            document.body.appendChild(canvas)
+        });
+    }
+</script>
+{% endif %}
 {% endblock %}

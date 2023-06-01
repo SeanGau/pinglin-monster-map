@@ -75,6 +75,9 @@
 .write-initial {
   writing-mode: initial; }
 
+.row {
+  max-width: 100%; }
+
 #carousel {
   flex: 1;
   margin-bottom: 4rem;

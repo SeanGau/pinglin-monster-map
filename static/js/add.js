@@ -117,17 +117,17 @@ $("#monster-data-form").on('submit', function (e) {
     let _data = {};
     let latlng = checkbounds(marker.getLatLng());
     _data["point"] = [latlng['lat'], latlng['lng']];
-    _data["name"] = $("#monster-name").val().substring(0, 16);
-    _data["tag"] = $("#monster-tag").val().split(",");
+    _data["name"] = $("#monster-name").val();
+    _data["tag"] = $("#monster-tag").val().split(/[,，、]/);
     _data["category"] = $("#monster-category").val();
     _data["element"] = $("#monster-element").val();
     _data["date"] = $("#monster-date").val().split("-");
     _data["local"] = $("#monster-local").val();
-    _data["disc"] = $("#monster-disc").val().substring(0, 151);
+    _data["disc"] = $("#monster-disc").val();
     _data["strong"] = $("#monster-strong").val();
     _data["weak"] = $("#monster-weak").val();
     _data["title"] = $("#monster-title").val();
-    _data["story"] = $("#monster-story").val().substring(0, 301);
+    _data["story"] = $("#monster-story").val();
     _data["thumb"] = $("#monster-thumb-block .image-list p .image-title").data("image");
     _data["image"] = [];
     $("#monster-image-block .image-list p .image-title").each(function () {
