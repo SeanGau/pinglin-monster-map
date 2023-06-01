@@ -129,6 +129,7 @@
         margin-right: 3rem;
         height: 100%; }
       #index-block-1 .inner-3 .inner-3-text-block:before {
+        pointer-events: none;
         content: "";
         position: absolute;
         height: calc( 100% - 2rem);
@@ -137,6 +138,7 @@
         left: 1rem;
         outline: 2px solid #C6543C; }
       #index-block-1 .inner-3 .inner-3-text-block:after {
+        pointer-events: none;
         position: absolute;
         right: 0;
         top: 2rem;
@@ -164,6 +166,7 @@
       padding: 6rem 3rem;
       position: relative; }
       #index-block-1 .inner-3-v .inner-3-text-block:before {
+        pointer-events: none;
         content: "";
         position: absolute;
         height: calc( 100% - 2rem);
@@ -172,6 +175,7 @@
         left: 1rem;
         outline: 2px solid #C6543C; }
       #index-block-1 .inner-3-v .inner-3-text-block:after {
+        pointer-events: none;
         position: absolute;
         right: 0;
         top: 2rem;
@@ -238,6 +242,7 @@
     .inner-block-3 .inner-3-text-block p {
       text-align: center; }
     .inner-block-3 .inner-3-text-block:before {
+      pointer-events: none;
       content: "";
       position: absolute;
       height: calc( 100% - 2rem);
@@ -246,6 +251,7 @@
       left: 1rem;
       outline: 2px solid #C6543C; }
     .inner-block-3 .inner-3-text-block:after {
+      pointer-events: none;
       position: absolute;
       right: 0;
       top: 2rem;
@@ -257,14 +263,14 @@
       height: auto;
       padding: 10px 5px;
       color: white; }
-    .inner-block-3 .inner-3-text-block img {
+    .inner-block-3 .inner-3-text-block > img {
       width: calc( 100% - 4rem);
       margin: 2rem; }
     .inner-block-3 .inner-3-text-block .go-map-overlay {
-      position: fixed;
-      bottom: 8rem;
+      position: absolute;
+      bottom: 12rem;
       left: 0;
-      height: 50%;
+      height: 21rem;
       width: 100%; }
       .inner-block-3 .inner-3-text-block .go-map-overlay #go-map {
         display: block;
@@ -275,8 +281,14 @@
         background-position: center;
         background-repeat: no-repeat; }
     .inner-block-3 .inner-3-text-block #block-3-anchor {
-      margin-top: 5rem;
-      margin-bottom: 7rem; }
+      margin-top: 3rem;
+      margin-bottom: 0; }
+    .inner-block-3 .inner-3-text-block .link-group {
+      display: flex;
+      justify-content: center; }
+      .inner-block-3 .inner-3-text-block .link-group img {
+        width: 3rem;
+        margin: 0 1rem; }
 
 @media (max-width: 767px) {
   #index-block-1 .inner-2 .monster-1 {

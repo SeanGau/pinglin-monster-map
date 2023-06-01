@@ -126,6 +126,7 @@
                 margin-right: 3rem
                 height: 100%
             &:before
+                pointer-events: none
                 content: ""
                 position: absolute
                 height: calc( 100% - 2rem )
@@ -134,6 +135,7 @@
                 left: 1rem
                 outline: 2px solid #C6543C
             &:after
+                pointer-events: none
                 position: absolute
                 right: 0
                 top: 2rem
@@ -161,6 +163,7 @@
             padding: 6rem 3rem
             position: relative
             &:before
+                pointer-events: none
                 content: ""
                 position: absolute
                 height: calc( 100% - 2rem )
@@ -169,6 +172,7 @@
                 left: 1rem
                 outline: 2px solid #C6543C
             &:after
+                pointer-events: none
                 position: absolute
                 right: 0
                 top: 2rem
@@ -235,6 +239,7 @@
         p
             text-align: center
         &:before
+            pointer-events: none
             content: ""
             position: absolute
             height: calc( 100% - 2rem )
@@ -243,6 +248,7 @@
             left: 1rem
             outline: 2px solid #C6543C
         &:after
+            pointer-events: none
             position: absolute
             right: 0
             top: 2rem
@@ -254,14 +260,14 @@
             height: auto
             padding: 10px 5px
             color: white
-        img
+        > img
             width: calc( 100% - 4rem )
             margin: 2rem
         .go-map-overlay
-            position: fixed
-            bottom: 8rem
+            position: absolute
+            bottom: 12rem
             left: 0
-            height: 50%
+            height: 21rem
             width: 100%
             #go-map
                 display: block
@@ -273,10 +279,15 @@
                 background-repeat: no-repeat
 
         #block-3-anchor
-            margin-top: 5rem
-            margin-bottom: 7rem
+            margin-top: 3rem
+            margin-bottom: 0
 
-
+        .link-group
+            display: flex
+            justify-content: center
+            img
+                width: 3rem
+                margin: 0 1rem
         
 @media (max-width: 767px)
     #index-block-1
